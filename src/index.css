@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Unified dual-thumb range slider ── */
+.range-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: none;
+  background: transparent;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.range-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: all;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #6366f1;
+  cursor: grab;
+  border: 2px solid #020617;
+  box-shadow: 0 0 6px rgba(99, 102, 241, 0.4);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.range-thumb::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+  transform: scale(1.15);
+}
+
+.range-thumb::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.7);
+  transform: scale(1.2);
+}
+
+.range-thumb::-moz-range-thumb {
+  pointer-events: all;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #6366f1;
+  cursor: grab;
+  border: 2px solid #020617;
+  box-shadow: 0 0 6px rgba(99, 102, 241, 0.4);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.range-thumb::-moz-range-thumb:hover {
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+  transform: scale(1.15);
+}
+
+.range-thumb::-moz-range-track {
+  background: transparent;
+}
+
+/* ── Scrollbar — minimal ── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* ── Glassmorphism utility ── */
+.glass {
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Hide scrollbar for carousels ── */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

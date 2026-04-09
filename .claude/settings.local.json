@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__zenrows__scrape",
+      "Bash(curl -s \"https://lzkdewuwrshiqjjndszx.supabase.co/rest/v1/lenses?select=id&limit=0\" -H \"apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6a2Rld3V3cnNoaXFqam5kc3p4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTYxNDk1MywiZXhwIjoyMDkxMTkwOTUzfQ.ZKwzCTeJ66gyYZVifjy-wuxk8unk3BnSeQ4YcHcXRD0\" -H \"Prefer: count=exact\" -I)",
+      "Bash(curl -s \"https://lzkdewuwrshiqjjndszx.supabase.co/rest/v1/lighting?select=id&limit=0\" -H \"apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6a2Rld3V3cnNoaXFqam5kc3p4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTYxNDk1MywiZXhwIjoyMDkxMTkwOTUzfQ.ZKwzCTeJ66gyYZVifjy-wuxk8unk3BnSeQ4YcHcXRD0\" -H \"Prefer: count=exact\" -I)",
+      "Bash(grep -E \"^\\(axios|cheerio|pg|dotenv\\)$\")",
+      "Bash(npm --version)",
+      "Bash(grep -E \"^\\(axios|cheerio|dotenv|pg|@supabase\\)$\")",
+      "Bash(node:*)",
+      "Bash(npm run:*)",
+      "Bash(curl -s http://localhost:5173)"
+    ]
+  }
+}
