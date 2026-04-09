@@ -2262,3 +2262,825 @@
 [2026-04-09T11:17:10.306Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1933618-REG/fujifilm_instax_mini_liplay_hybrid.html
 [2026-04-09T11:17:10.307Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1933619-REG/fujifilm_instax_mini_liplay_hybrid.html
 [2026-04-09T11:17:10.307Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1716549-REG/canon_4825c015aa_powershot_pick_ptz_camera.html
+[2026-04-09T11:17:50.770Z] [INFO ]   → Canon PowerShot PICK PTZ Camera (White) | $199 | 33 specs  [Image Sensor: 1/2.3"-Type CMOS | Effective Sensor Resolution: Effective: 11.7 MegapixelActual: 12.8 Megapixel | Shutter Speed: 1/16000 to 1/8 Seconds]
+[2026-04-09T11:17:50.792Z] [INFO ]   SKIP (kit/bundle): FUJIFILM instax mini Liplay Hybrid Instant Camera with Film Kit (Misty White, 20 Exposures)
+[2026-04-09T11:17:50.843Z] [INFO ]   → Kreate KR48 Digital Point and Shoot Camera (White) | $99.99 | 43 specs  [Effective Sensor Resolution: 48 Megapixel | Image Sensor: 1/4"-Type CMOS | Image Stabilization: Digital]
+[2026-04-09T11:17:50.856Z] [INFO ]   + New column: cameras."max_optical_zoom" TEXT
+[2026-04-09T11:17:50.884Z] [INFO ]   ✓ Saved: Kreate KR48 Digital Point and Shoot Camera (White)
+[2026-04-09T11:17:50.933Z] [INFO ]   + New column: cameras."max_digital_zoom" TEXT
+[2026-04-09T11:17:50.981Z] [INFO ]   + New column: cameras."mounting" TEXT
+[2026-04-09T11:17:51.011Z] [INFO ]   SKIP (kit/bundle): FUJIFILM instax mini Liplay Hybrid Instant Camera with Film Kit (Matcha Green, 20 Exposures)
+[2026-04-09T11:17:51.035Z] [INFO ]   + New column: cameras."focus_control" TEXT
+[2026-04-09T11:17:51.106Z] [INFO ]   + New column: cameras."pan_tilt" TEXT
+[2026-04-09T11:17:51.176Z] [INFO ]   + New column: cameras."os_compatibility" TEXT
+[2026-04-09T11:17:51.202Z] [INFO ]   ✓ Saved: Canon PowerShot PICK PTZ Camera (White)
+[2026-04-09T11:17:55.726Z] [INFO ]   → FUJIFILM instax PAL Digital Camera (Milky White) | $116.95 | 37 specs  [Image Sensor: 1/5"-Type CMOS | Image Stabilization: No | Aperture: Maximum: f/2.2Minimum: Not Specified by Manufacturer]
+[2026-04-09T11:17:55.752Z] [INFO ]   ✓ Saved: FUJIFILM instax PAL Digital Camera (Milky White)
+[2026-04-09T11:18:18.183Z] [INFO ]   SKIP (kit/bundle): Kodak PIXPRO FZ45 Digital Camera with Deluxe Kit (White)
+[2026-04-09T11:18:29.088Z] [INFO ]   → Kodak PRINTOMATIC+ 10MP Instant Digital Camera (Pink) | $79.99 | 20 specs  [Print Media: ZINK 2 x 3" Paper | Effective Sensor Resolution: 10 Megapixel | Image Sensor: Size-Unspecified CMOS]
+[2026-04-09T11:18:29.113Z] [INFO ]   ✓ Saved: Kodak PRINTOMATIC+ 10MP Instant Digital Camera (Pink)
+[2026-04-09T11:19:10.313Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:19:10.313Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:19:30.315Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1938719-REG/kreate_kr48_pk_kr48_digital_point_and.html
+[2026-04-09T11:19:45.852Z] [INFO ]   → Kreate KR48 Digital Point and Shoot Camera (Pink) | $99.99 | 43 specs  [Effective Sensor Resolution: 48 Megapixel | Image Sensor: 1/4"-Type CMOS | Image Stabilization: Digital]
+[2026-04-09T11:19:45.879Z] [INFO ]   ✓ Saved: Kreate KR48 Digital Point and Shoot Camera (Pink)
+[2026-04-09T11:19:47.917Z] [INFO ] 
+── Page 21: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811?pn=21
+[2026-04-09T11:19:47.918Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811?pn=21
+[2026-04-09T11:21:01.905Z] [INFO ]   Found 28 product links
+[2026-04-09T11:21:01.905Z] [INFO ]   Scraping 28 products (20 concurrent)
+[2026-04-09T11:21:01.905Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1747584-REG/kodak_az425wh_pixpro_az425_digital_camera.html
+[2026-04-09T11:21:01.905Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1731254-REG/kodak_az405wh_pixpro_az405_digital_camera.html
+[2026-04-09T11:21:01.906Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1731253-REG/kodak_az405bk_pixpro_az405_digital_camera.html
+[2026-04-09T11:21:01.906Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1747582-REG/kodak_az425bk_pixpro_az425_digital_camera.html
+[2026-04-09T11:21:01.906Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1924231-REG/yashica_yas_dgc100_bk_city_100_digital_camera.html
+[2026-04-09T11:21:01.906Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1766854-REG/canon_5946c002_powershot_v10_vlog_camera.html
+[2026-04-09T11:21:01.907Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1730531-REG/sony_zv1f_w_zv_1f_digital_camera_white.html
+[2026-04-09T11:21:01.907Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1576155-REG/olympus_v207130su000_om_d_e_m10_mark_iv.html
+[2026-04-09T11:21:01.907Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1907100-REG/canon_eos_r100_mirrorless_camera.html
+[2026-04-09T11:21:01.907Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1896520-REG/fujifilm_16954071_x_half_digital_camera.html
+[2026-04-09T11:21:01.908Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1735272-REG/pentax_01184_kf_dslr_camera.html
+[2026-04-09T11:21:01.908Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1804855-REG/panasonic_dc_g100dvk_panasonic_lumix_g100d_mirrorless.html
+[2026-04-09T11:21:01.908Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1730345-REG/sony_zv_1f_vlogging_camera_with.html
+[2026-04-09T11:21:01.908Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1846814-REG/ricoh_01472_g900_ii_digital_camera.html
+[2026-04-09T11:21:01.908Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1738755-REG/sony_zv_e10_mirrorless_camera_and.html
+[2026-04-09T11:21:01.909Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1380709-GREY/nikon_1581b_d7500_dslr_camera_body.html
+[2026-04-09T11:21:01.909Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1907082-REG/canon_eos_r50_mirrorless_camera.html
+[2026-04-09T11:21:01.909Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1502814-REG/sony_alpha_a6100_mirrorless_digital.html
+[2026-04-09T11:21:01.909Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1745698-REG/sony_zv_1f_vlogging_camera_with.html
+[2026-04-09T11:21:01.909Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1907085-REG/canon_eos_r50_mirrorless_camera.html
+[2026-04-09T11:21:07.569Z] [INFO ]   → Pentax KF DSLR Camera (Black) | $696.95 | 63 specs  [Lens Mount: Pentax K | Effective Sensor Resolution: Effective: 24.24 Megapixel (6000 x 4000)Actual: 24.78 Megapixel | Image Sensor: 23.5 x 15.6 mm (APS-C) CMOS]
+[2026-04-09T11:21:07.616Z] [INFO ]   ✓ Saved: Pentax KF DSLR Camera (Black)
+[2026-04-09T11:21:07.713Z] [INFO ]   → Yashica City 100 Digital Camera (Black) | $259.99 | 42 specs  [Effective Sensor Resolution: 13 Megapixel | Image Sensor: 1/3"-Type CMOS | Image Stabilization: Digital]
+[2026-04-09T11:21:07.740Z] [INFO ]   ✓ Saved: Yashica City 100 Digital Camera (Black)
+[2026-04-09T11:21:08.368Z] [INFO ]   SKIP (kit/bundle): Sony ZV-E10 Mirrorless Camera with Basic Bundle (White)
+[2026-04-09T11:21:08.830Z] [INFO ]   → Ricoh G900 II Digital Camera | $796.99 | 46 specs  [Effective Sensor Resolution: 20 Megapixel | Image Sensor: 1/2.3"-Type CMOS | Focal Length: 5 to 25mm (35mm Equivalent: 28 to 140mm)]
+[2026-04-09T11:21:08.857Z] [INFO ]   ✓ Saved: Ricoh G900 II Digital Camera
+[2026-04-09T11:21:09.430Z] [INFO ]   → Kodak PIXPRO AZ405 Digital Camera (White) | $249 | 50 specs  [Effective Sensor Resolution: Effective: 20.68 MegapixelActual: 21.14 Megapixel | Image Sensor: 1/2.3"-Type CCD | Image Stabilization: Optical in Integrated Lens]
+[2026-04-09T11:21:09.457Z] [INFO ]   ✓ Saved: Kodak PIXPRO AZ405 Digital Camera (White)
+[2026-04-09T11:21:10.333Z] [INFO ]   → Kodak PIXPRO AZ405 Digital Camera (Black) | $249.99 | 50 specs  [Effective Sensor Resolution: Effective: 20.68 MegapixelActual: 21.14 Megapixel | Image Sensor: 1/2.3"-Type CCD | Image Stabilization: Optical in Integrated Lens]
+[2026-04-09T11:21:10.361Z] [INFO ]   ✓ Saved: Kodak PIXPRO AZ405 Digital Camera (Black)
+[2026-04-09T11:21:11.564Z] [INFO ]   SKIP (kit/bundle): Panasonic LUMIX G100D Mirrorless Camera with 12-32mm Lens and Tripod Grip
+[2026-04-09T11:21:12.248Z] [INFO ]   SKIP (kit/bundle): Canon EOS R50 Mirrorless Camera with 18-45mm Lens and Essentials+ Kit (White)
+[2026-04-09T11:21:12.316Z] [INFO ]   → Kodak PIXPRO AZ425 Digital Camera (Black) | $249.99 | 51 specs  [Effective Sensor Resolution: Effective: 20.68 MegapixelActual: 21.14 Megapixel | Image Sensor: 1/2.3"-Type CMOS | Image Stabilization: Optical in Integrated Lens]
+[2026-04-09T11:21:12.344Z] [INFO ]   ✓ Saved: Kodak PIXPRO AZ425 Digital Camera (Black)
+[2026-04-09T11:21:12.679Z] [INFO ]   → Olympus OM-D E-M10 Mark IV Mirrorless Camera (Silver) | $599.99 | 65 specs  [Lens Mount: Micro Four Thirds | Effective Sensor Resolution: Effective: 20.3 Megapixel (5184 x 3888)Actual: 21.8 Megapixel | Image Sensor: 17.4 x 13 mm (Four Thirds) MOS]
+[2026-04-09T11:21:12.708Z] [INFO ]   ✓ Saved: Olympus OM-D E-M10 Mark IV Mirrorless Camera (Silver)
+[2026-04-09T11:21:13.362Z] [INFO ]   SKIP (kit/bundle): Sony ZV-1F Vlogging Camera (White)
+[2026-04-09T11:21:13.785Z] [INFO ]   SKIP (kit/bundle): Sony ZV-1F Vlogging Camera with Vlogger Accessory Kit (Black)
+[2026-04-09T11:21:14.333Z] [INFO ]   SKIP (kit/bundle): Sony ZV-1F Vlogging Camera with Content Creator Kit (White)
+[2026-04-09T11:21:18.628Z] [INFO ]   → Nikon D7500 DSLR Camera (Body Only, Refurbished) | $799 | 67 specs  [Lens Mount: Nikon F | Effective Sensor Resolution: Effective: 20.9 Megapixel (5568 x 3712)Actual: 21.51 Megapixel | Image Sensor: 23.5 x 15.6 mm (APS-C) CMOS]
+[2026-04-09T11:21:18.657Z] [INFO ]   ✓ Saved: Nikon D7500 DSLR Camera (Body Only, Refurbished)
+[2026-04-09T11:21:31.240Z] [INFO ]   SKIP (kit/bundle): Canon EOS R100 Mirrorless Camera with Essentials+ Kit
+[2026-04-09T11:21:39.688Z] [INFO ]   → Kodak PIXPRO AZ425 Digital Camera (White) | $219.95 | 51 specs  [Effective Sensor Resolution: Effective: 20.68 MegapixelActual: 21.14 Megapixel | Image Sensor: 1/2.3"-Type CMOS | Image Stabilization: Optical in Integrated Lens]
+[2026-04-09T11:21:39.729Z] [INFO ]   ✓ Saved: Kodak PIXPRO AZ425 Digital Camera (White)
+[2026-04-09T11:23:01.918Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:23:01.918Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:23:01.919Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:23:01.919Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:23:01.919Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:23:01.919Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:23:01.920Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:23:01.920Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:23:21.921Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1766854-REG/canon_5946c002_powershot_v10_vlog_camera.html
+[2026-04-09T11:23:21.925Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1896520-REG/fujifilm_16954071_x_half_digital_camera.html
+[2026-04-09T11:23:21.926Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1907082-REG/canon_eos_r50_mirrorless_camera.html
+[2026-04-09T11:23:21.927Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1502814-REG/sony_alpha_a6100_mirrorless_digital.html
+[2026-04-09T11:23:35.092Z] [INFO ]   SKIP (kit/bundle): Canon PowerShot V10 Vlog Camera (Silver)
+[2026-04-09T11:23:38.112Z] [INFO ]   → Sony a6100 Mirrorless Camera | $848 | 68 specs  [Lens Mount: Sony E | Effective Sensor Resolution: Effective: 24.2 Megapixel (6000 x 4000)Actual: 25 Megapixel | Image Sensor: 23.5 x 15.6 mm (APS-C) CMOS]
+[2026-04-09T11:23:38.143Z] [INFO ]   ✓ Saved: Sony a6100 Mirrorless Camera
+[2026-04-09T11:23:40.909Z] [INFO ]   SKIP (kit/bundle): Canon EOS R50 Mirrorless Camera with Essentials+ Kit (White)
+[2026-04-09T11:24:54.869Z] [INFO ]   → FUJIFILM X half Digital Camera (Black) | $649 | 49 specs  [Effective Sensor Resolution: 17.74 Megapixel | Image Sensor: 13.3 x 8.8 mm (1"-Type) CMOS | Image Stabilization: No]
+[2026-04-09T11:24:54.897Z] [INFO ]   ✓ Saved: FUJIFILM X half Digital Camera (Black)
+[2026-04-09T11:24:54.897Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1875012-REG/sony_ilce6100kb_a6100_mirrorless_camera_with.html
+[2026-04-09T11:24:54.897Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1703856-REG/nikon_zfc_mirrorless_camera_with.html
+[2026-04-09T11:24:54.898Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1912150-REG/canon_canon_eos_r50_mirrorless.html
+[2026-04-09T11:24:54.898Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1796472-REG/nikon_13602_z30_mirrorless_camera_with.html
+[2026-04-09T11:24:54.899Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1902331-REG/om_system_om_5_mirrorless_camera_with.html
+[2026-04-09T11:24:54.899Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1713851-REG/nikon_z30_mirrorless_camera_with.html
+[2026-04-09T11:24:54.899Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1649280-REG/nikon_1675_zfc_mirrorless_camera_with.html
+[2026-04-09T11:24:54.900Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1847151-GREY/canon_3616c002b_eos_90d_dslr_camera.html
+[2026-04-09T11:25:28.145Z] [INFO ]   SKIP (kit/bundle): Sony a6100 Mirrorless Camera with 16-50mm f/3.5-5.6 II Lens
+[2026-04-09T11:25:28.274Z] [INFO ]   SKIP (kit/bundle): Canon EOS R50 Mirrorless Camera with 18-45mm and 50mm Lenses Kit (White)
+[2026-04-09T11:25:29.270Z] [INFO ]   SKIP (kit/bundle): Nikon Z30 Creator's Kit
+[2026-04-09T11:26:00.296Z] [INFO ]   → Canon EOS 90D DSLR Camera (Body Only, Refurbished) | $1149 | 67 specs  [Lens Mount: Canon EF-S | Effective Sensor Resolution: Effective: 32.5 Megapixel (6960 x 4640)Actual: 34.4 Megapixel | Image Sensor: 22.3 x 14.8 mm (APS-C) CMOS]
+[2026-04-09T11:26:00.328Z] [INFO ]   ✓ Saved: Canon EOS 90D DSLR Camera (Body Only, Refurbished)
+[2026-04-09T11:26:01.371Z] [INFO ]   SKIP (kit/bundle): Nikon Zfc Mirrorless Camera with 16-50mm Lens (Silver)
+[2026-04-09T11:26:04.323Z] [INFO ]   SKIP (kit/bundle): OM SYSTEM OM-5 Mirrorless Camera with 14-42mm f/3.5-5.6 II Lens Kit (Black)
+[2026-04-09T11:26:04.503Z] [INFO ]   SKIP (kit/bundle): Nikon Z30 Mirrorless Camera with 16-50mm and 50-250mm Lenses
+[2026-04-09T11:26:11.469Z] [INFO ]   SKIP (kit/bundle): Nikon Zfc Mirrorless Camera with Basic Bundle
+[2026-04-09T11:26:13.505Z] [INFO ] 
+── Page 22: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811?pn=22
+[2026-04-09T11:26:13.505Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811?pn=22
+[2026-04-09T11:26:48.696Z] [INFO ]   Found 28 product links
+[2026-04-09T11:26:48.696Z] [INFO ]   Scraping 28 products (20 concurrent)
+[2026-04-09T11:26:48.696Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1769529-REG/sony_sony_zv_1_ii_digital.html
+[2026-04-09T11:26:48.696Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1839376-REG/sony_zv_e10_ii_mirrorless_camera.html
+[2026-04-09T11:26:48.697Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1900660-REG/om_system_v210070mu000_om_5_mark_ii_mirrorless.html
+[2026-04-09T11:26:48.697Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1907099-REG/canon_eos_r50_v_mirrorless.html
+[2026-04-09T11:26:48.698Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1912151-REG/canon_canon_eos_r50_mirrorless.html
+[2026-04-09T11:26:48.698Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1949610-REG/canon_eos_r10_mirrorless_camera.html
+[2026-04-09T11:26:48.698Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1738349-REG/sony_zv_1_digital_camera_content.html
+[2026-04-09T11:26:48.699Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1862785-REG/nikon_z50_ii_mirrorless_camera.html
+[2026-04-09T11:26:48.699Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1862816-REG/nikon_z50_ii_mirrorless_camera.html
+[2026-04-09T11:26:48.699Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1907083-REG/canon_eos_r50_mirrorless_camera.html
+[2026-04-09T11:26:48.700Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1847152-GREY/canon_3616c016b_eos_90d_dslr_camera.html
+[2026-04-09T11:26:48.700Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1863700-REG/nikon_z50_ii_mirrorless_camera.html
+[2026-04-09T11:26:48.700Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1863699-REG/nikon_z50_ii_mirrorless_camera.html
+[2026-04-09T11:26:48.701Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1738763-REG/sony_zv_e10_mirrorless_camera_with.html
+[2026-04-09T11:26:48.701Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1958708-REG/fujifilm_x_t30_iii_mirrorless_camera.html
+[2026-04-09T11:26:48.701Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1934499-REG/om_system_om_5_mark_ii_mirrorless.html
+[2026-04-09T11:26:48.702Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1949617-REG/fujifilm_x_t30_iii_mirrorless_camera.html
+[2026-04-09T11:26:48.702Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1856484-REG/nikon_z5_mirrorless_camera_with.html
+[2026-04-09T11:26:48.702Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1703857-REG/nikon_nikon_z6_ii_mirrorless.html
+[2026-04-09T11:26:48.702Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1854464-REG/nikon_z6_ii_mirrorless_camera.html
+[2026-04-09T11:26:55.090Z] [INFO ]   SKIP (kit/bundle): Canon EOS R10 Mirrorless Camera with 50mm f/1.8 Lens for Portrait Photography
+[2026-04-09T11:26:55.313Z] [INFO ]   SKIP (kit/bundle): Canon EOS R50 Mirrorless Camera with 18-45mm & 55-210mm Lenses and Essentials+ Kit (White)
+[2026-04-09T11:26:55.710Z] [INFO ]   SKIP (kit/bundle): Sony ZV-1 Digital Camera Content Creator Kit
+[2026-04-09T11:26:56.623Z] [INFO ]   SKIP (kit/bundle): Nikon Z50 II Mirrorless Camera with 24mm f/1.7 Lens Kit
+[2026-04-09T11:26:57.547Z] [INFO ]   SKIP (kit/bundle): Canon EOS R50 Mirrorless Camera with 18-45mm and 55-210mm Lenses Kit (White)
+[2026-04-09T11:26:59.402Z] [INFO ]   SKIP (kit/bundle): FUJIFILM X-T30 III Mirrorless Camera with Sigma 56mm f/1.4 Lens for Portrait Photography (Charcoal Silver)
+[2026-04-09T11:27:00.348Z] [INFO ]   SKIP (kit/bundle): Nikon Z50 II Mirrorless Camera with 12-28mm f/3.5-5.6 Lens and Essentials+ Kit
+[2026-04-09T11:27:02.226Z] [INFO ]   SKIP (kit/bundle): Nikon Z6 II Mirrorless Camera with Basic Bundle
+[2026-04-09T11:27:04.710Z] [INFO ]   → Sony ZV-E10 II Mirrorless Camera (White) | $1198 | 59 specs  [Lens Mount: Sony E | Effective Sensor Resolution: Effective: 26 Megapixel (6192 x 4128)Actual: 27 Megapixel | Image Sensor: 23.3 x 15.5 mm (APS-C) CMOS]
+[2026-04-09T11:27:04.740Z] [INFO ]   ✓ Saved: Sony ZV-E10 II Mirrorless Camera (White)
+[2026-04-09T11:27:08.216Z] [INFO ]   SKIP (kit/bundle): Canon EOS 90D DSLR Camera with 18-135mm Lens (Refurbished)
+[2026-04-09T11:27:09.263Z] [INFO ]   SKIP (kit/bundle): Nikon Z50 II Mirrorless Camera with 24mm f/1.7 Lens and Essentials+ Kit
+[2026-04-09T11:27:22.769Z] [INFO ]   SKIP (kit/bundle): Sony ZV-1 II Digital Camera with Vlogger Accessory Kit (Black)
+[2026-04-09T11:27:22.833Z] [INFO ]   SKIP (kit/bundle): Sony ZV-E10 Mirrorless Camera with 11mm f/1.8 Lens and Basic Bundle (Black)
+[2026-04-09T11:28:18.466Z] [INFO ]   SKIP (kit/bundle): Nikon Z6 II Mirrorless Camera with Essentials+ Kit
+[2026-04-09T11:28:36.334Z] [WARN ]   Fetch failed [1/3] (HTTP 422): Request failed with status code 422
+[2026-04-09T11:28:36.334Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:28:36.381Z] [WARN ]   Fetch failed [1/3] (HTTP 422): Request failed with status code 422
+[2026-04-09T11:28:36.381Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:28:48.707Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:28:48.707Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:28:48.708Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:28:48.708Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:28:48.708Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:28:48.708Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:28:48.708Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:28:48.708Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:28:56.336Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1862816-REG/nikon_z50_ii_mirrorless_camera.html
+[2026-04-09T11:28:56.383Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1958708-REG/fujifilm_x_t30_iii_mirrorless_camera.html
+[2026-04-09T11:29:06.703Z] [INFO ]   SKIP (kit/bundle): FUJIFILM X-T30 III Mirrorless Camera with 23mm f/2.8 R WR Lens Kit (Silver)
+[2026-04-09T11:29:08.708Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1900660-REG/om_system_v210070mu000_om_5_mark_ii_mirrorless.html
+[2026-04-09T11:29:08.713Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1907099-REG/canon_eos_r50_v_mirrorless.html
+[2026-04-09T11:29:08.714Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1934499-REG/om_system_om_5_mark_ii_mirrorless.html
+[2026-04-09T11:29:08.716Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1856484-REG/nikon_z5_mirrorless_camera_with.html
+[2026-04-09T11:29:12.033Z] [INFO ]   SKIP (kit/bundle): Nikon Z50 II Mirrorless Camera with 24mm f/1.7 Lens and Basic Bundle
+[2026-04-09T11:29:28.290Z] [INFO ]   SKIP (kit/bundle): Nikon Z5 Mirrorless Camera with FTZ II Mount Adapter Kit
+[2026-04-09T11:29:28.334Z] [INFO ]   → OM SYSTEM OM-5 Mark II Mirrorless Camera (Sand Beige) | $1199.99 | 63 specs  [Lens Mount: Micro Four Thirds | Effective Sensor Resolution: Effective: 20.4 MegapixelActual: 21.8 Megapixel | Image Sensor: 17.4 x 13 mm (Four Thirds) CMOS]
+[2026-04-09T11:29:28.362Z] [INFO ]   ✓ Saved: OM SYSTEM OM-5 Mark II Mirrorless Camera (Sand Beige)
+[2026-04-09T11:29:33.322Z] [INFO ]   SKIP (kit/bundle): OM SYSTEM OM-5 Mark II Mirrorless Camera with 14-42mm f/3.5-5.6 Lens Kit (Black)
+[2026-04-09T11:29:39.360Z] [INFO ]   SKIP (kit/bundle): Canon EOS R50 V Mirrorless Camera with 14-30mm f/4-6.3 Lens and Essentials+ Kit
+[2026-04-09T11:29:39.360Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1853539-REG/sony_zv_e10_ii_mirrorless_camera.html
+[2026-04-09T11:29:39.361Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1944585-REG/panasonic_dc_s9nwa9_lumix_s9_mirrorless_camera.html
+[2026-04-09T11:29:39.361Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1869193-REG/panasonic_lumix_s9_mirrorless_camera.html
+[2026-04-09T11:29:39.361Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1868979-REG/panasonic_lumix_s9_mirrorless_camera.html
+[2026-04-09T11:29:39.362Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1856483-REG/nikon_z5_mirrorless_camera_with.html
+[2026-04-09T11:29:39.362Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1869466-REG/panasonic_lumix_s9_mirrorless_camera.html
+[2026-04-09T11:29:39.362Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1854000-REG/nikon_z6_ii_mirrorless_camera.html
+[2026-04-09T11:29:39.362Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1856477-REG/nikon_z6_ii_mirrorless_camera.html
+[2026-04-09T11:30:04.740Z] [INFO ]   SKIP (kit/bundle): Panasonic LUMIX S9 Mirrorless Camera with 18-40mm f/4.5-6.3 Lens (White/Silver)
+[2026-04-09T11:30:26.041Z] [INFO ]   SKIP (kit/bundle): Nikon Z5 Mirrorless Camera with 50mm f/1.4 Lens Kit
+[2026-04-09T11:30:32.602Z] [INFO ]   SKIP (kit/bundle): Sony ZV-E10 II Mirrorless Camera with 16-50mm f/3.5-5.6 Lens and Live Streaming Kit (Black)
+[2026-04-09T11:30:32.654Z] [INFO ]   SKIP (kit/bundle): Panasonic LUMIX S9 Mirrorless Camera with 18-40mm f/4.5-6.3 Lens and Basic Bundle (Night Blue)
+[2026-04-09T11:30:33.439Z] [INFO ]   SKIP (kit/bundle): Panasonic LUMIX S9 Mirrorless Camera with 18-40mm f/4.5-6.3 Lens and Basic Bundle (Crimson Red)
+[2026-04-09T11:30:33.646Z] [INFO ]   SKIP (kit/bundle): Panasonic LUMIX S9 Mirrorless Camera with 18-40mm f/4.5-6.3 Lens and Essentials+ Kit (Dark Olive)
+[2026-04-09T11:30:35.464Z] [INFO ]   SKIP (kit/bundle): Nikon Z6 II Mirrorless Camera with FTZ II Mount Adapter and Basic Bundle
+[2026-04-09T11:31:39.368Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:31:39.369Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:31:59.371Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1856477-REG/nikon_z6_ii_mirrorless_camera.html
+[2026-04-09T11:33:15.858Z] [INFO ]   SKIP (kit/bundle): Nikon Z6 II Mirrorless Camera with FTZ II Mount Adapter Kit
+[2026-04-09T11:33:17.911Z] [INFO ] 
+── Page 23: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811?pn=23
+[2026-04-09T11:33:17.912Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811?pn=23
+[2026-04-09T11:34:31.200Z] [INFO ]   Found 0 product links
+[2026-04-09T11:34:31.200Z] [WARN ]   No products on page 23 (1 consecutive)
+[2026-04-09T11:34:31.200Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:34:33.214Z] [INFO ] 
+── Page 24: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811?pn=24
+[2026-04-09T11:34:33.215Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811?pn=24
+[2026-04-09T11:35:49.319Z] [INFO ]   Found 0 product links
+[2026-04-09T11:35:49.319Z] [WARN ]   No products on page 24 (2 consecutive)
+[2026-04-09T11:35:49.319Z] [INFO ]   Reached end of category, stopping pagination
+[2026-04-09T11:35:49.319Z] [INFO ] 
+  Category "cameras" done. Products saved/updated this run: 82
+[2026-04-09T11:35:49.319Z] [INFO ] 
+════════════════════════════════════════════════════════════════
+[2026-04-09T11:35:49.319Z] [INFO ]   CATEGORY: LENSES   →   table: lenses
+[2026-04-09T11:35:49.319Z] [INFO ] ════════════════════════════════════════════════════════════════
+[2026-04-09T11:35:49.627Z] [INFO ]   Table ready: lenses
+[2026-04-09T11:35:49.661Z] [INFO ]   Already fully scraped in this table: 0
+[2026-04-09T11:35:49.661Z] [INFO ] 
+  Start URL: https://www.bhphotovideo.com/c/browse/camera-lenses/ci/10946
+[2026-04-09T11:35:49.661Z] [INFO ] 
+── Page 1: https://www.bhphotovideo.com/c/browse/camera-lenses/ci/10946
+[2026-04-09T11:35:49.661Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/camera-lenses/ci/10946
+[2026-04-09T11:36:58.822Z] [WARN ]   Fetch failed [1/3] (HTTP 404): Request failed with status code 404
+[2026-04-09T11:36:58.822Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:37:18.825Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/browse/camera-lenses/ci/10946
+[2026-04-09T11:38:05.077Z] [WARN ]   Fetch failed [2/3] (HTTP 404): Request failed with status code 404
+[2026-04-09T11:38:05.078Z] [WARN ]   Backing off 40s...
+[2026-04-09T11:38:45.080Z] [INFO ]   Fetch [3/3]: https://www.bhphotovideo.com/c/browse/camera-lenses/ci/10946
+[2026-04-09T11:38:51.158Z] [WARN ]   Fetch failed [3/3] (HTTP 404): Request failed with status code 404
+[2026-04-09T11:38:51.158Z] [ERROR]   All retries exhausted: https://www.bhphotovideo.com/c/browse/camera-lenses/ci/10946
+[2026-04-09T11:38:51.158Z] [WARN ]   No HTML returned for listing page — skipping start URL
+[2026-04-09T11:38:51.158Z] [INFO ] 
+  Category "lenses" done. Products saved/updated this run: 0
+[2026-04-09T11:38:51.158Z] [INFO ] 
+════════════════════════════════════════════════════════════════
+[2026-04-09T11:38:51.158Z] [INFO ]   CATEGORY: LIGHTING   →   table: lighting
+[2026-04-09T11:38:51.158Z] [INFO ] ════════════════════════════════════════════════════════════════
+[2026-04-09T11:38:51.440Z] [INFO ]   Table ready: lighting
+[2026-04-09T11:38:51.474Z] [INFO ]   Already fully scraped in this table: 0
+[2026-04-09T11:38:51.474Z] [INFO ] 
+  Start URL: https://www.bhphotovideo.com/c/browse/continuous-lighting/ci/22442
+[2026-04-09T11:38:51.474Z] [INFO ] 
+── Page 1: https://www.bhphotovideo.com/c/browse/continuous-lighting/ci/22442
+[2026-04-09T11:38:51.474Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/continuous-lighting/ci/22442
+[2026-04-09T11:39:00.065Z] [WARN ]   Fetch failed [1/3] (HTTP 404): Request failed with status code 404
+[2026-04-09T11:39:00.065Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:39:20.068Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/browse/continuous-lighting/ci/22442
+[2026-04-09T11:39:50.447Z] [WARN ]   Fetch failed [2/3] (HTTP 404): Request failed with status code 404
+[2026-04-09T11:39:50.447Z] [WARN ]   Backing off 40s...
+[2026-04-09T11:40:30.450Z] [INFO ]   Fetch [3/3]: https://www.bhphotovideo.com/c/browse/continuous-lighting/ci/22442
+[2026-04-09T11:40:35.477Z] [WARN ]   Fetch failed [3/3] (HTTP 404): Request failed with status code 404
+[2026-04-09T11:40:35.477Z] [ERROR]   All retries exhausted: https://www.bhphotovideo.com/c/browse/continuous-lighting/ci/22442
+[2026-04-09T11:40:35.477Z] [WARN ]   No HTML returned for listing page — skipping start URL
+[2026-04-09T11:40:35.477Z] [INFO ] 
+  Category "lighting" done. Products saved/updated this run: 0
+[2026-04-09T11:40:35.477Z] [INFO ] 
+════════════════════════════════════════════════════════════════
+[2026-04-09T11:40:35.477Z] [INFO ]   CATEGORY: DRONES   →   table: drones
+[2026-04-09T11:40:35.477Z] [INFO ] ════════════════════════════════════════════════════════════════
+[2026-04-09T11:40:35.762Z] [INFO ]   Table ready: drones
+[2026-04-09T11:40:35.784Z] [INFO ]   Already fully scraped in this table: 0
+[2026-04-09T11:40:35.784Z] [INFO ] 
+  Start URL: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509
+[2026-04-09T11:40:35.784Z] [INFO ] 
+── Page 1: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509
+[2026-04-09T11:40:35.784Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509
+[2026-04-09T11:40:43.513Z] [INFO ]   Found 30 product links
+[2026-04-09T11:40:43.513Z] [INFO ]   Scraping 30 products (20 concurrent)
+[2026-04-09T11:40:43.513Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1328244-REG/gitzo_gt3533lsus_systematic_tripod_ser_3_3s.html
+[2026-04-09T11:40:43.513Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1605795-REG/robus_rc_5558_3_series_3_3_section.html
+[2026-04-09T11:40:43.513Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1286941-REG/gitzo_gm4552l_series_4_carbon.html
+[2026-04-09T11:40:43.514Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/404536-REG/Wimberley_WH_200_Gimbal_Type_Tripod_Head.html
+[2026-04-09T11:40:43.514Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1328233-REG/gitzo_gt2545tus_traveler_tripod_ser_2_4s.html
+[2026-04-09T11:40:43.515Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1379234-REG/oben_gh_30_gimbal_head.html
+[2026-04-09T11:40:43.515Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1328240-REG/gitzo_gt3543xlsus_systematic_tripod_ser_3_4s.html
+[2026-04-09T11:40:43.515Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1034913-REG/gitzo_gt2542_gt2532_mountaineer_series_2.html
+[2026-04-09T11:40:43.516Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1081622-REG/kinesis_r427_h_safarisack_4_2_beanbag_camera.html
+[2026-04-09T11:40:43.516Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1301051-REG/really_right_stuff_bh_55_lr_bh_55_ballhead_with_full_size.html
+[2026-04-09T11:40:43.516Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1328229-REG/gitzo_gk2545t_82qdus_traveler_tripod_kit_gt2545t.html
+[2026-04-09T11:40:43.517Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/253564-REG/Manfrotto_475B_475B_Professional_Tripod_Legs.html
+[2026-04-09T11:40:43.517Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/887574-REG/oben_ba_126_single_lever_ball.html
+[2026-04-09T11:40:43.518Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1162342-REG/manfrotto_mhxpro_bhq2_xpro_ball_head.html
+[2026-04-09T11:40:43.518Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/887593-REG/oben_be_126_ball_head.html
+[2026-04-09T11:40:43.518Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1157830-REG/benro_tma28a_mach3_aluminum_series_2.html
+[2026-04-09T11:40:43.519Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1157827-REG/benro_tma47axl_mach3_aluminum_series_4.html
+[2026-04-09T11:40:43.519Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1286942-REG/gitzo_gm4562_series_4_carbon.html
+[2026-04-09T11:40:43.519Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/554068-REG/Manfrotto_028B_028B_Studio_Pro_Triman.html
+[2026-04-09T11:40:43.520Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/554351-REG/Manfrotto_243_243_Car_Window_Pod.html
+[2026-04-09T11:40:48.435Z] [WARN ]   SKIP (no name parsed — selector mismatch?): https://www.bhphotovideo.com/c/product/554351-REG/Manfrotto_243_243_Car_Window_Pod.html
+[2026-04-09T11:40:48.670Z] [INFO ]   → Oben GH-30 Gimbal Head | $199.95 | 14 specs  [Camera Mounting: 1/4"-20 Male Screw with Retractable 3/8"-16 Sheath (Quick Release Plate: Arca-Type) | Head Type: Gimbal Head | Drag Control: Yes]
+[2026-04-09T11:40:48.757Z] [INFO ]   + New column: drones."camera_mounting" TEXT
+[2026-04-09T11:40:48.787Z] [INFO ]   → Manfrotto 475B Pro Geared Tripod with Geared Column | $499 | 16 specs  [Head Mount Type: 3/8"-16 Male | Primary Material: Aluminum | Load Capacity: 44.1 lb / 20 kg]
+[2026-04-09T11:40:48.834Z] [INFO ]   + New column: drones."head_type" TEXT
+[2026-04-09T11:40:48.857Z] [INFO ]   + New column: drones."head_mount_type" TEXT
+[2026-04-09T11:40:48.890Z] [INFO ]   → Benro TMA47AXL Extra Long Series 4 Mach3 Aluminum Tripod | $244.95 | 16 specs  [Head Mount Type: 3/8"-16 Male | Primary Material: Aluminum | Load Capacity: 44.1 lb / 20 kg]
+[2026-04-09T11:40:48.924Z] [INFO ]   → Benro TMA28A Series 2 Mach3 Aluminum Tripod | $149.95 | 16 specs  [Head Mount Type: 3/8"-16 Male | Primary Material: Aluminum | Load Capacity: 30.9 lb / 14 kg]
+[2026-04-09T11:40:48.979Z] [INFO ]   → Manfrotto XPRO Magnesium Ball Head with 200PL-14 Quick Release Plate | $179.95 | 13 specs  [Camera Mounting: 1/4"-20 Screw (Quick Release Plate: RC2) | Head Type: Ball Head | Drag Control: Yes]
+[2026-04-09T11:40:48.980Z] [INFO ]   + New column: drones."drag_control" TEXT
+[2026-04-09T11:40:49.026Z] [INFO ]   + New column: drones."primary_material" TEXT
+[2026-04-09T11:40:49.049Z] [INFO ]   + New column: drones."primary_material" TEXT
+[2026-04-09T11:40:49.098Z] [INFO ]   → Oben BA-126 Single Lever Ball Head | $79.95 | 13 specs  [Camera Mounting: 1/4"-20 Screw (Quick Release Plate: Proprietary) | Head Type: Ball Head | Drag Control: No]
+[2026-04-09T11:40:49.121Z] [INFO ]   + New column: drones."primary_material" TEXT
+[2026-04-09T11:40:49.199Z] [INFO ]   → Oben BE-126 Ball Head with Arca-Type Quick Release | $109.95 | 13 specs  [Camera Mounting: 1/4"-20 Screw (Quick Release Plate: Arca-Type) | Head Type: Ball Head | Drag Control: No]
+[2026-04-09T11:40:49.215Z] [INFO ]   → Gitzo GIGT2545T Traveler Series 2 Carbon Fiber Tripod | $439.88 | 18 specs  [Head Mount Type: 1/4"-20 or 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 26.46 lb / 12 kg]
+[2026-04-09T11:40:49.245Z] [INFO ]   + New column: drones."load_capacity" TEXT
+[2026-04-09T11:40:49.294Z] [INFO ]   + New column: drones."load_capacity" TEXT
+[2026-04-09T11:40:49.316Z] [INFO ]   + New column: drones."load_capacity" TEXT
+[2026-04-09T11:40:49.362Z] [INFO ]   + New column: drones."load_capacity" TEXT
+[2026-04-09T11:40:49.408Z] [INFO ]   + New column: drones."load_capacity" TEXT
+[2026-04-09T11:40:49.469Z] [INFO ]   → Gitzo GT3533LS Systematic Series 3 Carbon Fiber Tripod (Long) | $669 | 15 specs  [Head Mount Type: 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 61.7 lb / 28 kg]
+[2026-04-09T11:40:49.635Z] [INFO ]   + New column: drones."weight" TEXT
+[2026-04-09T11:40:49.683Z] [INFO ]   + New column: drones."maximum_working_height" TEXT
+[2026-04-09T11:40:49.707Z] [INFO ]   + New column: drones."maximum_working_height" TEXT
+[2026-04-09T11:40:49.730Z] [INFO ]   + New column: drones."maximum_working_height" TEXT
+[2026-04-09T11:40:49.753Z] [INFO ]   + New column: drones."weight" TEXT
+[2026-04-09T11:40:49.776Z] [INFO ]   + New column: drones."weight" TEXT
+[2026-04-09T11:40:49.798Z] [INFO ]   + New column: drones."maximum_working_height" TEXT
+[2026-04-09T11:40:49.820Z] [INFO ]   + New column: drones."weight" TEXT
+[2026-04-09T11:40:49.866Z] [INFO ]   + New column: drones."maximum_working_height" TEXT
+[2026-04-09T11:40:50.060Z] [INFO ]   + New column: drones."base_mount" TEXT
+[2026-04-09T11:40:50.106Z] [INFO ]   + New column: drones."max_height_without_center_column" TEXT
+[2026-04-09T11:40:50.129Z] [INFO ]   + New column: drones."max_height_without_center_column" TEXT
+[2026-04-09T11:40:50.151Z] [INFO ]   + New column: drones."max_height_without_center_column" TEXT
+[2026-04-09T11:40:50.173Z] [INFO ]   + New column: drones."base_mount" TEXT
+[2026-04-09T11:40:50.195Z] [INFO ]   + New column: drones."base_mount" TEXT
+[2026-04-09T11:40:50.218Z] [INFO ]   + New column: drones."max_height_without_center_column" TEXT
+[2026-04-09T11:40:50.241Z] [INFO ]   + New column: drones."base_mount" TEXT
+[2026-04-09T11:40:50.291Z] [INFO ]   + New column: drones."minimum_working_height" TEXT
+[2026-04-09T11:40:50.486Z] [INFO ]   + New column: drones."counter_balance" TEXT
+[2026-04-09T11:40:50.604Z] [INFO ]   + New column: drones."counter_balance" TEXT
+[2026-04-09T11:40:50.629Z] [INFO ]   + New column: drones."counter_balance" TEXT
+[2026-04-09T11:40:50.675Z] [INFO ]   + New column: drones."counter_balance" TEXT
+[2026-04-09T11:40:50.721Z] [INFO ]   + New column: drones."closed_length" TEXT
+[2026-04-09T11:40:50.744Z] [INFO ]   + New column: drones."closed_length" TEXT
+[2026-04-09T11:40:50.766Z] [INFO ]   + New column: drones."closed_length" TEXT
+[2026-04-09T11:40:50.807Z] [INFO ]   → Really Right Stuff BH-55 Ball Head with Full-Size Lever-Release Clamp (Chrome) | $560 | 16 specs  [Camera Mounting: 1/4"-20 Screw (Quick Release Plate: Arca-Type) | Head Type: Ball Head | Drag Control: Yes]
+[2026-04-09T11:40:50.818Z] [INFO ]   + New column: drones."closed_length" TEXT
+[2026-04-09T11:40:50.835Z] [INFO ]   → Gitzo GT2545T Series 2 Traveler Carbon Fiber Tripod with Center Ball Head | $599.95 | 18 specs  [Head Mount Type: 1/4"-20 or 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 26.46 lb / 12 kg]
+[2026-04-09T11:40:50.888Z] [INFO ]   + New column: drones."closed_length" TEXT
+[2026-04-09T11:40:50.935Z] [INFO ]   + New column: drones."dimensions" TEXT
+[2026-04-09T11:40:51.107Z] [INFO ]   + New column: drones."independent_pan_lock" TEXT
+[2026-04-09T11:40:51.130Z] [INFO ]   + New column: drones."independent_pan_lock" TEXT
+[2026-04-09T11:40:51.174Z] [INFO ]   + New column: drones."independent_pan_lock" TEXT
+[2026-04-09T11:40:51.219Z] [INFO ]   + New column: drones."leg_lock" TEXT
+[2026-04-09T11:40:51.244Z] [INFO ]   + New column: drones."leg_lock" TEXT
+[2026-04-09T11:40:51.267Z] [INFO ]   + New column: drones."leg_lock" TEXT
+[2026-04-09T11:40:51.313Z] [INFO ]   + New column: drones."leg_lock" TEXT
+[2026-04-09T11:40:51.335Z] [INFO ]   + New column: drones."leg_lock" TEXT
+[2026-04-09T11:40:51.405Z] [INFO ]   + New column: drones."leg_lock" TEXT
+[2026-04-09T11:40:51.620Z] [INFO ]   + New column: drones."vertical_tilt" TEXT
+[2026-04-09T11:40:51.643Z] [INFO ]   + New column: drones."vertical_tilt" TEXT
+[2026-04-09T11:40:51.690Z] [INFO ]   + New column: drones."vertical_tilt" TEXT
+[2026-04-09T11:40:51.712Z] [INFO ]   + New column: drones."vertical_tilt" TEXT
+[2026-04-09T11:40:51.734Z] [INFO ]   + New column: drones."leg_sections" NUMERIC
+[2026-04-09T11:40:51.757Z] [INFO ]   + New column: drones."leg_sections" NUMERIC
+[2026-04-09T11:40:51.779Z] [INFO ]   + New column: drones."leg_sections" NUMERIC
+[2026-04-09T11:40:51.802Z] [INFO ]   + New column: drones."independent_tilt_lock" TEXT
+[2026-04-09T11:40:51.825Z] [INFO ]   + New column: drones."leg_sections" NUMERIC
+[2026-04-09T11:40:51.848Z] [INFO ]   + New column: drones."leg_sections" NUMERIC
+[2026-04-09T11:40:51.919Z] [INFO ]   + New column: drones."leg_sections" NUMERIC
+[2026-04-09T11:40:52.133Z] [INFO ]   + New column: drones."lateral_tilt" TEXT
+[2026-04-09T11:40:52.156Z] [INFO ]   + New column: drones."lateral_tilt" TEXT
+[2026-04-09T11:40:52.202Z] [INFO ]   + New column: drones."lateral_tilt" TEXT
+[2026-04-09T11:40:52.224Z] [INFO ]   + New column: drones."lateral_tilt" TEXT
+[2026-04-09T11:40:52.246Z] [INFO ]   + New column: drones."independent_leg_spread" TEXT
+[2026-04-09T11:40:52.269Z] [INFO ]   + New column: drones."independent_leg_spread" TEXT
+[2026-04-09T11:40:52.291Z] [INFO ]   + New column: drones."independent_leg_spread" TEXT
+[2026-04-09T11:40:52.313Z] [INFO ]   + New column: drones."lateral_tilt" TEXT
+[2026-04-09T11:40:52.335Z] [INFO ]   + New column: drones."independent_leg_spread" TEXT
+[2026-04-09T11:40:52.358Z] [INFO ]   + New column: drones."independent_leg_spread" TEXT
+[2026-04-09T11:40:52.429Z] [INFO ]   + New column: drones."independent_leg_spread" TEXT
+[2026-04-09T11:40:52.641Z] [INFO ]   + New column: drones."bubble_level" TEXT
+[2026-04-09T11:40:52.664Z] [INFO ]   + New column: drones."bubble_level" TEXT
+[2026-04-09T11:40:52.710Z] [INFO ]   + New column: drones."bubble_level" TEXT
+[2026-04-09T11:40:52.733Z] [INFO ]   + New column: drones."bubble_level" TEXT
+[2026-04-09T11:40:52.755Z] [INFO ]   + New column: drones."leg_positions" TEXT
+[2026-04-09T11:40:52.778Z] [INFO ]   + New column: drones."foot_features" TEXT
+[2026-04-09T11:40:52.802Z] [INFO ]   + New column: drones."foot_features" TEXT
+[2026-04-09T11:40:52.823Z] [INFO ]   + New column: drones."accessory_mounting" TEXT
+[2026-04-09T11:40:52.846Z] [INFO ]   + New column: drones."foot_features" TEXT
+[2026-04-09T11:40:52.869Z] [INFO ]   + New column: drones."foot_features" TEXT
+[2026-04-09T11:40:52.939Z] [INFO ]   + New column: drones."foot_features" TEXT
+[2026-04-09T11:40:52.998Z] [INFO ]   → Gitzo GM4552L Series 4 Carbon Fiber Monopod | $379 | 10 specs  [Head Mount Type: 1/4"-20 or 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 77.2 lb / 35 kg]
+[2026-04-09T11:40:53.161Z] [INFO ]   + New column: drones."package_weight" TEXT
+[2026-04-09T11:40:53.184Z] [INFO ]   + New column: drones."package_weight" TEXT
+[2026-04-09T11:40:53.230Z] [INFO ]   + New column: drones."package_weight" TEXT
+[2026-04-09T11:40:53.277Z] [INFO ]   + New column: drones."package_weight" TEXT
+[2026-04-09T11:40:53.323Z] [INFO ]   + New column: drones."center_column" TEXT
+[2026-04-09T11:40:53.346Z] [INFO ]   + New column: drones."center_column" TEXT
+[2026-04-09T11:40:53.367Z] [INFO ]   + New column: drones."package_weight" TEXT
+[2026-04-09T11:40:53.389Z] [INFO ]   + New column: drones."center_column" TEXT
+[2026-04-09T11:40:53.412Z] [INFO ]   + New column: drones."center_column" TEXT
+[2026-04-09T11:40:53.480Z] [INFO ]   + New column: drones."center_column" TEXT
+[2026-04-09T11:40:53.672Z] [INFO ]   → Gitzo GM4562 Series 4 Carbon Fiber Monopod | $379 | 10 specs  [Head Mount Type: 1/4"-20 or 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 77.2 lb / 35 kg]
+[2026-04-09T11:40:53.717Z] [INFO ]   + New column: drones."box_dimensions_lxwxh" TEXT
+[2026-04-09T11:40:53.739Z] [INFO ]   + New column: drones."box_dimensions_lxwxh" TEXT
+[2026-04-09T11:40:53.784Z] [INFO ]   + New column: drones."box_dimensions_lxwxh" TEXT
+[2026-04-09T11:40:53.806Z] [INFO ]   + New column: drones."box_dimensions_lxwxh" TEXT
+[2026-04-09T11:40:53.830Z] [INFO ]   + New column: drones."box_dimensions_lxwxh" TEXT
+[2026-04-09T11:40:53.851Z] [INFO ]   + New column: drones."box_dimensions_lxwxh" TEXT
+[2026-04-09T11:40:53.874Z] [INFO ]   + New column: drones."box_dimensions_lxwxh" TEXT
+[2026-04-09T11:40:53.896Z] [INFO ]   + New column: drones."box_dimensions_lxwxh" TEXT
+[2026-04-09T11:40:53.919Z] [INFO ]   + New column: drones."box_dimensions_lxwxh" TEXT
+[2026-04-09T11:40:53.964Z] [INFO ]   + New column: drones."box_dimensions_lxwxh" TEXT
+[2026-04-09T11:40:53.986Z] [INFO ]   + New column: drones."detachable_monopod" TEXT
+[2026-04-09T11:40:54.013Z] [INFO ]   ✓ Saved: Oben BE-126 Ball Head with Arca-Type Quick Release
+[2026-04-09T11:40:54.037Z] [INFO ]   ✓ Saved: Manfrotto XPRO Magnesium Ball Head with 200PL-14 Quick Release Plate
+[2026-04-09T11:40:54.062Z] [INFO ]   + New column: drones."detachable_monopod" TEXT
+[2026-04-09T11:40:54.085Z] [INFO ]   ✓ Saved: Oben BA-126 Single Lever Ball Head
+[2026-04-09T11:40:54.110Z] [INFO ]   ✓ Saved: Gitzo GM4552L Series 4 Carbon Fiber Monopod
+[2026-04-09T11:40:54.133Z] [INFO ]   ✓ Saved: Oben GH-30 Gimbal Head
+[2026-04-09T11:40:54.155Z] [INFO ]   ✓ Saved: Gitzo GT3533LS Systematic Series 3 Carbon Fiber Tripod (Long)
+[2026-04-09T11:40:54.180Z] [INFO ]   ✓ Saved: Benro TMA28A Series 2 Mach3 Aluminum Tripod
+[2026-04-09T11:40:54.205Z] [INFO ]   ✓ Saved: Manfrotto 475B Pro Geared Tripod with Geared Column
+[2026-04-09T11:40:54.231Z] [INFO ]   ✓ Saved: Really Right Stuff BH-55 Ball Head with Full-Size Lever-Release Clamp (Chrome)
+[2026-04-09T11:40:54.254Z] [INFO ]   ✓ Saved: Gitzo GM4562 Series 4 Carbon Fiber Monopod
+[2026-04-09T11:40:54.278Z] [INFO ]   ✓ Saved: Benro TMA47AXL Extra Long Series 4 Mach3 Aluminum Tripod
+[2026-04-09T11:40:54.304Z] [INFO ]   ✓ Saved: Gitzo GT2545T Series 2 Traveler Carbon Fiber Tripod with Center Ball Head
+[2026-04-09T11:40:54.327Z] [INFO ]   ✓ Saved: Gitzo GIGT2545T Traveler Series 2 Carbon Fiber Tripod
+[2026-04-09T11:40:59.178Z] [INFO ]   → Manfrotto 028B Triman Camera Tripod with Geared Center Column | $479 | 16 specs  [Head Mount Type: 3/8"-16 Male | Primary Material: Aluminum | Load Capacity: 30.9 lb / 14 kg]
+[2026-04-09T11:40:59.201Z] [INFO ]   ✓ Saved: Manfrotto 028B Triman Camera Tripod with Geared Center Column
+[2026-04-09T11:41:07.324Z] [INFO ]   → Wimberley WH-200 Gimbal Tripod Head II with Quick Release Base | $595 | 11 specs  [Head Type: Gimbal Head | Drag Control: Yes | Load Capacity: Not Specified by Manufacturer]
+[2026-04-09T11:41:07.349Z] [INFO ]   ✓ Saved: Wimberley WH-200 Gimbal Tripod Head II with Quick Release Base
+[2026-04-09T11:41:25.791Z] [WARN ]   SKIP (no name parsed — selector mismatch?): https://www.bhphotovideo.com/c/product/1605795-REG/robus_rc_5558_3_series_3_3_section.html
+[2026-04-09T11:41:31.467Z] [WARN ]   SKIP (no name parsed — selector mismatch?): https://www.bhphotovideo.com/c/product/1034913-REG/gitzo_gt2542_gt2532_mountaineer_series_2.html
+[2026-04-09T11:41:39.249Z] [INFO ]   → Kinesis SafariSack 4.2 Beanbag Camera Support (Khaki) | $39.9 | 9 specs  [Item Type: 1x Beanbag (Empty) | Color: Tan/Beige | Type of Closure: Zipper]
+[2026-04-09T11:41:39.303Z] [INFO ]   + New column: drones."item_type" TEXT
+[2026-04-09T11:41:39.349Z] [INFO ]   + New column: drones."color" TEXT
+[2026-04-09T11:41:39.398Z] [INFO ]   + New column: drones."type_of_closure" TEXT
+[2026-04-09T11:41:39.446Z] [INFO ]   + New column: drones."maximum_volume" TEXT
+[2026-04-09T11:41:39.493Z] [INFO ]   + New column: drones."materials" TEXT
+[2026-04-09T11:41:39.519Z] [INFO ]   ✓ Saved: Kinesis SafariSack 4.2 Beanbag Camera Support (Khaki)
+[2026-04-09T11:42:10.670Z] [INFO ]   → Gitzo GT3543XLS Systematic Series 3 Carbon Fiber Tripod (Extra Long) | $1119.95 | 15 specs  [Head Mount Type: 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 61.7 lb / 28 kg]
+[2026-04-09T11:42:10.693Z] [INFO ]   ✓ Saved: Gitzo GT3543XLS Systematic Series 3 Carbon Fiber Tripod (Extra Long)
+[2026-04-09T11:42:10.694Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1452254-REG/oben_cwm_01_car_window_mount.html
+[2026-04-09T11:42:10.694Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/877643-REG/Sirui_BSRPH20_PH_20_Professional_Gimbal_Head.html
+[2026-04-09T11:42:10.695Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/205329-REG/Wimberley_SK_100_Arca_Sidekick_Ball_to.html
+[2026-04-09T11:42:10.695Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1175121-REG/gitzo_gm2562t_series_2_traveler.html
+[2026-04-09T11:42:10.696Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/687347-REG/Oben_CTM_2500_CTM_2500_5_Section_Carbon_Fiber.html
+[2026-04-09T11:42:10.696Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1162343-REG/manfrotto_mhxpro_bhq6_xpro_ball_head.html
+[2026-04-09T11:42:10.697Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1175122-REG/gitzo_gh1382tqd_series_1_traveler.html
+[2026-04-09T11:42:10.698Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1328234-REG/gitzo_gt5563gsus_systematic_tripod_ser_5_6s.html
+[2026-04-09T11:42:10.698Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1353168-REG/lenscoat_lclcm5_lenssack_beanbag_camera_support.html
+[2026-04-09T11:42:10.699Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1083916-REG/benro_a38fd_monopod.html
+[2026-04-09T11:42:24.077Z] [INFO ]   → Manfrotto XPRO Magnesium Ball Head with MSQ6PL Quick Release Plate | $182 | 13 specs  [Camera Mounting: 1/4"-20 Screw (Quick Release Plate: Q6) | Head Type: Ball Head | Drag Control: Yes]
+[2026-04-09T11:42:24.101Z] [INFO ]   ✓ Saved: Manfrotto XPRO Magnesium Ball Head with MSQ6PL Quick Release Plate
+[2026-04-09T11:42:25.153Z] [INFO ]   → Wimberley Arca Sidekick Ball to Gimbal Head Adapter | $250 | 9 specs  [Head Type: Gimbal Head | Load Capacity: Not Specified by Manufacturer | Weight: 1.3 lb / 0.6 kg]
+[2026-04-09T11:42:25.175Z] [INFO ]   ✓ Saved: Wimberley Arca Sidekick Ball to Gimbal Head Adapter
+[2026-04-09T11:42:26.041Z] [INFO ]   → Sirui PH-20 Gimbal Head | $249 | 11 specs  [Camera Mounting: 1/4"-20 Screw (Quick Release Plate: Arca-Type) | Head Type: Gimbal Head | Load Capacity: 44 lb / 20 kg]
+[2026-04-09T11:42:26.065Z] [INFO ]   ✓ Saved: Sirui PH-20 Gimbal Head
+[2026-04-09T11:42:26.149Z] [INFO ]   → Oben Car Window Mount | $29.95 | 9 specs  [Top Mount: 1x Built-In 3/8"-16 Male Screw | Bottom Mount: 1x Clamp | Clamping Range: 0.5" / 1.3 cm]
+[2026-04-09T11:42:26.198Z] [INFO ]   + New column: drones."top_mount" TEXT
+[2026-04-09T11:42:26.246Z] [INFO ]   + New column: drones."bottom_mount" TEXT
+[2026-04-09T11:42:26.294Z] [INFO ]   + New column: drones."clamping_range" TEXT
+[2026-04-09T11:42:26.317Z] [INFO ]   ✓ Saved: Oben Car Window Mount
+[2026-04-09T11:42:27.481Z] [INFO ]   → Gitzo GH1382TQD Series 1 Traveler Center Ball Head with Arca-Type Screw Knob QR Receiver | $267.88 | 13 specs  [Camera Mounting: 1/4"-20 Screw (Quick Release Plate: Arca-Type) | Head Type: Ball Head | Drag Control: No]
+[2026-04-09T11:42:27.504Z] [INFO ]   ✓ Saved: Gitzo GH1382TQD Series 1 Traveler Center Ball Head with Arca-Type Screw Knob QR Receiver
+[2026-04-09T11:42:29.149Z] [INFO ]   → Gitzo GT5563GS Systematic Series 5 Carbon Fiber Tripod (Giant) | $1599.88 | 15 specs  [Head Mount Type: 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 92.6 lb / 42 kg]
+[2026-04-09T11:42:29.174Z] [INFO ]   ✓ Saved: Gitzo GT5563GS Systematic Series 5 Carbon Fiber Tripod (Giant)
+[2026-04-09T11:42:29.375Z] [INFO ]   → LensCoat LenSack Beanbag Camera Support (Realtree Max5) | $39.25 | 8 specs  [Item Type: 1x Beanbag (Empty) | Color: Camouflage | Type of Closure: Zipper]
+[2026-04-09T11:42:29.399Z] [INFO ]   ✓ Saved: LensCoat LenSack Beanbag Camera Support (Realtree Max5)
+[2026-04-09T11:42:30.877Z] [INFO ]   → Gitzo GM2562T Series 2 Traveler Carbon Fiber Monopod | $340 | 10 specs  [Head Mount Type: 1/4"-20 or 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 39.7 lb / 18 kg]
+[2026-04-09T11:42:30.901Z] [INFO ]   ✓ Saved: Gitzo GM2562T Series 2 Traveler Carbon Fiber Monopod
+[2026-04-09T11:42:31.853Z] [INFO ]   → Benro A38FD Series 3 Aluminum Monopod with 3-Leg Locking Base | $79.95 | 14 specs  [Head Mount Type: 3/8"-16 Male | Primary Material: Aluminum | Load Capacity: 39.7 lb / 18 kg]
+[2026-04-09T11:42:31.876Z] [INFO ]   ✓ Saved: Benro A38FD Series 3 Aluminum Monopod with 3-Leg Locking Base
+[2026-04-09T11:44:10.692Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T11:44:10.692Z] [WARN ]   Backing off 20s...
+[2026-04-09T11:44:30.694Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/687347-REG/Oben_CTM_2500_CTM_2500_5_Section_Carbon_Fiber.html
+[2026-04-09T11:44:45.418Z] [INFO ]   → Oben CTM-2500 5-Section Carbon Fiber Monopod | $94.95 | 10 specs  [Head Mount Type: 1/4"-20 or 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 26 lb / 11.8 kg]
+[2026-04-09T11:44:45.449Z] [INFO ]   ✓ Saved: Oben CTM-2500 5-Section Carbon Fiber Monopod
+[2026-04-09T11:44:47.486Z] [INFO ] 
+── Page 2: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=2
+[2026-04-09T11:44:47.487Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=2
+[2026-04-09T11:46:13.984Z] [INFO ]   Found 30 product links
+[2026-04-09T11:46:13.984Z] [INFO ]   Skipping 27 already-scraped products
+[2026-04-09T11:46:13.984Z] [INFO ]   Scraping 3 products (20 concurrent)
+[2026-04-09T11:46:13.984Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1605795-REG/robus_rc_5558_3_series_3_3_section.html
+[2026-04-09T11:46:13.984Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1034913-REG/gitzo_gt2542_gt2532_mountaineer_series_2.html
+[2026-04-09T11:46:13.985Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/554351-REG/Manfrotto_243_243_Car_Window_Pod.html
+[2026-04-09T11:46:24.299Z] [INFO ]   → Robus RC-5558-3 Vantage Series 3 Carbon Fiber Tripod | $499.95 | 15 specs  [Head Mount Type: 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 55 lb / 24.95 kg]
+[2026-04-09T11:46:24.325Z] [INFO ]   ✓ Saved: Robus RC-5558-3 Vantage Series 3 Carbon Fiber Tripod
+[2026-04-09T11:46:25.844Z] [INFO ]   → Gitzo GT2542 Mountaineer Series 2 Carbon Fiber Tripod | $683.95 | 16 specs  [Head Mount Type: 3/8"-16 Male | Primary Material: Carbon Fiber | Load Capacity: 48.5 lb / 22 kg]
+[2026-04-09T11:46:25.870Z] [INFO ]   ✓ Saved: Gitzo GT2542 Mountaineer Series 2 Carbon Fiber Tripod
+[2026-04-09T11:46:29.755Z] [INFO ]   → Manfrotto 243 Car Window Pod | $39 | 4 specs  [Clamp Range: 0.5" (13mm) | Weight: 6 oz (180g) | Package Weight: 0.45 lb]
+[2026-04-09T11:46:29.843Z] [INFO ]   + New column: drones."clamp_range" TEXT
+[2026-04-09T11:46:29.867Z] [INFO ]   ✓ Saved: Manfrotto 243 Car Window Pod
+[2026-04-09T11:46:31.916Z] [INFO ] 
+── Page 3: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=3
+[2026-04-09T11:46:31.917Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=3
+[2026-04-09T11:46:46.942Z] [INFO ]   Found 30 product links
+[2026-04-09T11:46:46.943Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:46:46.943Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:46:48.971Z] [INFO ] 
+── Page 4: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=4
+[2026-04-09T11:46:48.972Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=4
+[2026-04-09T11:47:05.915Z] [INFO ]   Found 30 product links
+[2026-04-09T11:47:05.916Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:47:05.916Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:47:07.959Z] [INFO ] 
+── Page 5: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=5
+[2026-04-09T11:47:07.960Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=5
+[2026-04-09T11:48:39.832Z] [INFO ]   Found 30 product links
+[2026-04-09T11:48:39.832Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:48:39.832Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:48:41.869Z] [INFO ] 
+── Page 6: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=6
+[2026-04-09T11:48:41.869Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=6
+[2026-04-09T11:49:22.506Z] [INFO ]   Found 30 product links
+[2026-04-09T11:49:22.506Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:49:22.506Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:49:24.540Z] [INFO ] 
+── Page 7: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=7
+[2026-04-09T11:49:24.541Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=7
+[2026-04-09T11:49:33.130Z] [INFO ]   Found 30 product links
+[2026-04-09T11:49:33.130Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:49:33.130Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:49:35.160Z] [INFO ] 
+── Page 8: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=8
+[2026-04-09T11:49:35.161Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=8
+[2026-04-09T11:49:42.869Z] [INFO ]   Found 30 product links
+[2026-04-09T11:49:42.869Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:49:42.869Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:49:44.913Z] [INFO ] 
+── Page 9: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=9
+[2026-04-09T11:49:44.914Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=9
+[2026-04-09T11:51:03.360Z] [INFO ]   Found 30 product links
+[2026-04-09T11:51:03.360Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:51:03.360Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:51:05.386Z] [INFO ] 
+── Page 10: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=10
+[2026-04-09T11:51:05.387Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=10
+[2026-04-09T11:51:20.663Z] [INFO ]   Found 30 product links
+[2026-04-09T11:51:20.663Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:51:20.663Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:51:22.705Z] [INFO ] 
+── Page 11: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=11
+[2026-04-09T11:51:22.706Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=11
+[2026-04-09T11:51:46.590Z] [INFO ]   Found 30 product links
+[2026-04-09T11:51:46.590Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:51:46.590Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:51:48.615Z] [INFO ] 
+── Page 12: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=12
+[2026-04-09T11:51:48.616Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=12
+[2026-04-09T11:52:22.093Z] [INFO ]   Found 30 product links
+[2026-04-09T11:52:22.093Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:52:22.093Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:52:24.127Z] [INFO ] 
+── Page 13: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=13
+[2026-04-09T11:52:24.127Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=13
+[2026-04-09T11:52:58.243Z] [INFO ]   Found 30 product links
+[2026-04-09T11:52:58.243Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:52:58.243Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:53:00.268Z] [INFO ] 
+── Page 14: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=14
+[2026-04-09T11:53:00.269Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=14
+[2026-04-09T11:53:32.640Z] [INFO ]   Found 30 product links
+[2026-04-09T11:53:32.640Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:53:32.640Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:53:34.678Z] [INFO ] 
+── Page 15: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=15
+[2026-04-09T11:53:34.678Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=15
+[2026-04-09T11:54:08.406Z] [INFO ]   Found 30 product links
+[2026-04-09T11:54:08.406Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:54:08.406Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:54:10.433Z] [INFO ] 
+── Page 16: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=16
+[2026-04-09T11:54:10.434Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=16
+[2026-04-09T11:54:44.033Z] [INFO ]   Found 30 product links
+[2026-04-09T11:54:44.033Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:54:44.033Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:54:46.075Z] [INFO ] 
+── Page 17: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=17
+[2026-04-09T11:54:46.078Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=17
+[2026-04-09T11:55:19.998Z] [INFO ]   Found 30 product links
+[2026-04-09T11:55:19.998Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:55:19.998Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:55:22.022Z] [INFO ] 
+── Page 18: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=18
+[2026-04-09T11:55:22.023Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=18
+[2026-04-09T11:55:57.369Z] [INFO ]   Found 30 product links
+[2026-04-09T11:55:57.369Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:55:57.369Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:55:59.410Z] [INFO ] 
+── Page 19: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=19
+[2026-04-09T11:55:59.410Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=19
+[2026-04-09T11:56:33.794Z] [INFO ]   Found 30 product links
+[2026-04-09T11:56:33.795Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:56:33.795Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:56:35.820Z] [INFO ] 
+── Page 20: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=20
+[2026-04-09T11:56:35.820Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=20
+[2026-04-09T11:57:08.812Z] [INFO ]   Found 30 product links
+[2026-04-09T11:57:08.813Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:57:08.813Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:57:10.852Z] [INFO ] 
+── Page 21: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=21
+[2026-04-09T11:57:10.853Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=21
+[2026-04-09T11:57:43.442Z] [INFO ]   Found 30 product links
+[2026-04-09T11:57:43.442Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:57:43.442Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:57:45.469Z] [INFO ] 
+── Page 22: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=22
+[2026-04-09T11:57:45.469Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=22
+[2026-04-09T11:58:21.738Z] [INFO ]   Found 30 product links
+[2026-04-09T11:58:21.738Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:58:21.738Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:58:23.777Z] [INFO ] 
+── Page 23: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=23
+[2026-04-09T11:58:23.777Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=23
+[2026-04-09T11:59:05.242Z] [INFO ]   Found 30 product links
+[2026-04-09T11:59:05.242Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:59:05.242Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:59:07.265Z] [INFO ] 
+── Page 24: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=24
+[2026-04-09T11:59:07.265Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=24
+[2026-04-09T11:59:41.203Z] [INFO ]   Found 30 product links
+[2026-04-09T11:59:41.203Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T11:59:41.203Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T11:59:43.242Z] [INFO ] 
+── Page 25: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=25
+[2026-04-09T11:59:43.243Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=25
+[2026-04-09T12:00:22.192Z] [INFO ]   Found 30 product links
+[2026-04-09T12:00:22.192Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T12:00:22.192Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T12:00:24.220Z] [INFO ] 
+── Page 26: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=26
+[2026-04-09T12:00:24.220Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=26
+[2026-04-09T12:01:20.342Z] [INFO ]   Found 30 product links
+[2026-04-09T12:01:20.342Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T12:01:20.342Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T12:01:22.375Z] [INFO ] 
+── Page 27: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=27
+[2026-04-09T12:01:22.376Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=27
+[2026-04-09T12:02:49.499Z] [INFO ]   Found 30 product links
+[2026-04-09T12:02:49.499Z] [INFO ]   Skipping 30 already-scraped products
+[2026-04-09T12:02:49.499Z] [INFO ]   Scraping 0 products (20 concurrent)
+[2026-04-09T12:02:51.524Z] [INFO ] 
+── Page 28: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=28
+[2026-04-09T12:02:51.524Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/drones-uas/ci/38509?pn=28
+◇ injected env (5) from .env // tip: ⌘ enable debugging { debug: true }
+[2026-04-09T12:07:49.093Z] [INFO ] ════════════════════════════════════════════════════════════════
+[2026-04-09T12:07:49.094Z] [INFO ]   DOMINION SCRAPER  —  B&H Photo → Supabase
+[2026-04-09T12:07:49.094Z] [INFO ]   Run started : 2026-04-09T12:07:49.094Z
+[2026-04-09T12:07:49.094Z] [INFO ]   Categories  : cameras, lenses, lighting, drones, gimbals, sd_cards, lighting_accessories, tripods
+[2026-04-09T12:07:49.094Z] [INFO ]   Mode        : normal
+[2026-04-09T12:07:49.094Z] [INFO ]   Log file    : /Users/t/gearhub-pro/scraper_log.txt
+[2026-04-09T12:07:49.094Z] [INFO ] ════════════════════════════════════════════════════════════════
+[2026-04-09T12:07:49.093Z] [INFO ] ════════════════════════════════════════════════════════════════
+[2026-04-09T12:07:49.094Z] [INFO ]   DOMINION SCRAPER  —  B&H Photo → Supabase
+[2026-04-09T12:07:49.094Z] [INFO ]   Run started : 2026-04-09T12:07:49.094Z
+[2026-04-09T12:07:49.094Z] [INFO ]   Categories  : cameras, lenses, lighting, drones, gimbals, sd_cards, lighting_accessories, tripods
+[2026-04-09T12:07:49.094Z] [INFO ]   Mode        : normal
+[2026-04-09T12:07:49.094Z] [INFO ]   Log file    : /Users/t/gearhub-pro/scraper_log.txt
+[2026-04-09T12:07:49.094Z] [INFO ] ════════════════════════════════════════════════════════════════
+[2026-04-09T12:07:49.315Z] [INFO ] PostgreSQL connected ✓
+
+[2026-04-09T12:07:49.315Z] [INFO ] PostgreSQL connected ✓
+
+[2026-04-09T12:07:49.315Z] [INFO ] 
+── Phase 1: fill missing specs/images for core categories ──
+[2026-04-09T12:07:49.315Z] [INFO ] 
+════════════════════════════════════════════════════════════════
+[2026-04-09T12:07:49.315Z] [INFO ]   CATEGORY: CAMERAS   →   table: cameras  [fill-missing mode]
+[2026-04-09T12:07:49.315Z] [INFO ] ════════════════════════════════════════════════════════════════
+[2026-04-09T12:07:49.315Z] [INFO ] 
+── Phase 1: fill missing specs/images for core categories ──
+[2026-04-09T12:07:49.315Z] [INFO ] 
+════════════════════════════════════════════════════════════════
+[2026-04-09T12:07:49.315Z] [INFO ]   CATEGORY: CAMERAS   →   table: cameras  [fill-missing mode]
+[2026-04-09T12:07:49.315Z] [INFO ] ════════════════════════════════════════════════════════════════
+[2026-04-09T12:07:49.563Z] [INFO ]   Table ready: cameras
+[2026-04-09T12:07:49.563Z] [INFO ]   Table ready: cameras
+[2026-04-09T12:07:49.589Z] [INFO ]   Already fully scraped in this table: 0
+[2026-04-09T12:07:49.589Z] [INFO ] 
+  Start URL: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811
+[2026-04-09T12:07:49.589Z] [INFO ]   Already fully scraped in this table: 0
+[2026-04-09T12:07:49.589Z] [INFO ] 
+── Page 1: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811
+[2026-04-09T12:07:49.589Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811
+[2026-04-09T12:07:49.589Z] [INFO ] 
+  Start URL: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811
+[2026-04-09T12:07:49.589Z] [INFO ] 
+── Page 1: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811
+[2026-04-09T12:07:49.589Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/browse/digital-cameras/ci/9811
+[2026-04-09T12:08:00.154Z] [INFO ]   Found 28 product links
+[2026-04-09T12:08:00.154Z] [INFO ]   Found 28 product links
+[2026-04-09T12:08:00.155Z] [INFO ]   Scraping 28 products (20 concurrent)
+[2026-04-09T12:08:00.155Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1733214-REG/canon_eos_r6_mark_ii.html
+[2026-04-09T12:08:00.155Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1935439-REG/sony_a7_v_mirrorless_camera.html
+[2026-04-09T12:08:00.156Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1919557-REG/canon_7280c001_powershot_elph_360_hs.html
+[2026-04-09T12:08:00.157Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1699922-REG/kodak_fz55bk_pixpro_fz55_digital_camera.html
+[2026-04-09T12:08:00.157Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1920220-REG/kodak_rk0601_charmera_keychain_digital_camera.html
+[2026-04-09T12:08:00.158Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1928858-REG/canon_eos_r6_mark_iii.html
+[2026-04-09T12:08:00.159Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1732436-REG/sony_sony_a7_iv_mirrorless.html
+[2026-04-09T12:08:00.159Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1853975-REG/nikon_z6_iii_mirrorless_camera.html
+[2026-04-09T12:08:00.160Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1503857-REG/sony_cyber_shot_dsc_rx100_vii_digital.html
+[2026-04-09T12:08:00.160Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1926409-REG/fujifilm_16966880_x_t30_iii_mirrorless_camera.html
+[2026-04-09T12:08:00.161Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1933658-REG/canon_powershot_elph_360_camera.html
+[2026-04-09T12:08:00.161Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1731389-REG/sony_alpha_camera.html
+[2026-04-09T12:08:00.162Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1919558-REG/canon_7283c001_powershot_elph_360_hs.html
+[2026-04-09T12:08:00.162Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1898564-REG/ricoh_gr_iv_digital_camera.html
+[2026-04-09T12:08:00.162Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1765622-REG/nikon_z8_mirrorless_camera.html
+[2026-04-09T12:08:00.170Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1840289-REG/canon_6536c002_eos_r5_mark_ii.html
+[2026-04-09T12:08:00.170Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1926410-REG/fujifilm_16966957_x_t30_iii_mirrorless_camera.html
+[2026-04-09T12:08:00.171Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1926946-REG/ricoh_gr_iv_monochrome_digital.html
+[2026-04-09T12:08:00.171Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1795921-REG/sony_sony_a6700_mirrorless_camera.html
+[2026-04-09T12:08:00.171Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1899782-REG/fujifilm_16953962_x_m5_body_silver_with.html
+[2026-04-09T12:08:00.155Z] [INFO ]   Scraping 28 products (20 concurrent)
+[2026-04-09T12:08:00.155Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1733214-REG/canon_eos_r6_mark_ii.html
+[2026-04-09T12:08:00.155Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1935439-REG/sony_a7_v_mirrorless_camera.html
+[2026-04-09T12:08:00.156Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1919557-REG/canon_7280c001_powershot_elph_360_hs.html
+[2026-04-09T12:08:00.157Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1699922-REG/kodak_fz55bk_pixpro_fz55_digital_camera.html
+[2026-04-09T12:08:00.157Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1920220-REG/kodak_rk0601_charmera_keychain_digital_camera.html
+[2026-04-09T12:08:00.158Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1928858-REG/canon_eos_r6_mark_iii.html
+[2026-04-09T12:08:00.159Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1732436-REG/sony_sony_a7_iv_mirrorless.html
+[2026-04-09T12:08:00.159Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1853975-REG/nikon_z6_iii_mirrorless_camera.html
+[2026-04-09T12:08:00.160Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1503857-REG/sony_cyber_shot_dsc_rx100_vii_digital.html
+[2026-04-09T12:08:00.160Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1926409-REG/fujifilm_16966880_x_t30_iii_mirrorless_camera.html
+[2026-04-09T12:08:00.161Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1933658-REG/canon_powershot_elph_360_camera.html
+[2026-04-09T12:08:00.161Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1731389-REG/sony_alpha_camera.html
+[2026-04-09T12:08:00.162Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1919558-REG/canon_7283c001_powershot_elph_360_hs.html
+[2026-04-09T12:08:00.162Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1898564-REG/ricoh_gr_iv_digital_camera.html
+[2026-04-09T12:08:00.162Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1765622-REG/nikon_z8_mirrorless_camera.html
+[2026-04-09T12:08:00.170Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1840289-REG/canon_6536c002_eos_r5_mark_ii.html
+[2026-04-09T12:08:00.170Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1926410-REG/fujifilm_16966957_x_t30_iii_mirrorless_camera.html
+[2026-04-09T12:08:00.171Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1926946-REG/ricoh_gr_iv_monochrome_digital.html
+[2026-04-09T12:08:00.171Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1795921-REG/sony_sony_a6700_mirrorless_camera.html
+[2026-04-09T12:08:00.171Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1899782-REG/fujifilm_16953962_x_m5_body_silver_with.html
+[2026-04-09T12:08:07.175Z] [INFO ]   → Canon PowerShot ELPH 360 HS A Digital Camera (Black) | $379 | 54 specs  [Effective Sensor Resolution: Effective: 20.2 Megapixel (5184 x 3888)Actual: 21.1 Megapixel | Image Sensor: 1/2.3"-Type CMOS | Image Stabilization: Optical in Integrated Lens]
+[2026-04-09T12:08:07.175Z] [INFO ]   → Canon PowerShot ELPH 360 HS A Digital Camera (Black) | $379 | 54 specs  [Effective Sensor Resolution: Effective: 20.2 Megapixel (5184 x 3888)Actual: 21.1 Megapixel | Image Sensor: 1/2.3"-Type CMOS | Image Stabilization: Optical in Integrated Lens]
+[2026-04-09T12:08:08.558Z] [INFO ]   SKIP (kit/bundle): Canon PowerShot ELPH 360 HS A Camera with Basic Bundle (Black)
+[2026-04-09T12:08:08.558Z] [INFO ]   SKIP (kit/bundle): Canon PowerShot ELPH 360 HS A Camera with Basic Bundle (Black)
+[2026-04-09T12:08:08.562Z] [INFO ]   ✓ Saved: Canon PowerShot ELPH 360 HS A Digital Camera (Black)
+[2026-04-09T12:08:08.562Z] [INFO ]   ✓ Saved: Canon PowerShot ELPH 360 HS A Digital Camera (Black)
+[2026-04-09T12:08:08.586Z] [WARN ]   SKIP (no name parsed — selector mismatch?): https://www.bhphotovideo.com/c/product/1899782-REG/fujifilm_16953962_x_m5_body_silver_with.html
+[2026-04-09T12:08:08.586Z] [WARN ]   SKIP (no name parsed — selector mismatch?): https://www.bhphotovideo.com/c/product/1899782-REG/fujifilm_16953962_x_m5_body_silver_with.html
+[2026-04-09T12:08:08.809Z] [INFO ]   SKIP (kit/bundle): Sony RX100 VII Digital Camera with Basic Bundle
+[2026-04-09T12:08:08.809Z] [INFO ]   SKIP (kit/bundle): Sony RX100 VII Digital Camera with Basic Bundle
+[2026-04-09T12:08:09.865Z] [INFO ]   SKIP (kit/bundle): Sony a6700 Mirrorless Camera with Basic Bundle
+[2026-04-09T12:08:09.865Z] [INFO ]   SKIP (kit/bundle): Sony a6700 Mirrorless Camera with Basic Bundle
+[2026-04-09T12:08:09.892Z] [INFO ]   → Sony a7R V Mirrorless Camera | $3298 | 69 specs  [Lens Mount: Sony E | Effective Sensor Resolution: Effective: 61 Megapixel (9504 x 6336)Actual: 62.5 Megapixel | Image Sensor: 35.7 x 23.8 mm (Full-Frame) CMOS]
+[2026-04-09T12:08:09.892Z] [INFO ]   → Sony a7R V Mirrorless Camera | $3298 | 69 specs  [Lens Mount: Sony E | Effective Sensor Resolution: Effective: 61 Megapixel (9504 x 6336)Actual: 62.5 Megapixel | Image Sensor: 35.7 x 23.8 mm (Full-Frame) CMOS]
+[2026-04-09T12:08:09.919Z] [INFO ]   SKIP (kit/bundle): Sony a7 IV Mirrorless Camera with Basic Bundle
+[2026-04-09T12:08:09.919Z] [INFO ]   SKIP (kit/bundle): Sony a7 IV Mirrorless Camera with Basic Bundle
+[2026-04-09T12:08:10.085Z] [INFO ]   → Ricoh GR IV Digital Camera | $1496.99 | 49 specs  [Effective Sensor Resolution: 25.74 Megapixel (6192 x 4128) | Image Sensor: 23.3 x 15.5 mm (APS-C) CMOS | Image Stabilization: Sensor-Shift, 5-Axis]
+[2026-04-09T12:08:10.085Z] [INFO ]   → Ricoh GR IV Digital Camera | $1496.99 | 49 specs  [Effective Sensor Resolution: 25.74 Megapixel (6192 x 4128) | Image Sensor: 23.3 x 15.5 mm (APS-C) CMOS | Image Stabilization: Sensor-Shift, 5-Axis]
+[2026-04-09T12:08:10.206Z] [INFO ]   ✓ Saved: Ricoh GR IV Digital Camera
+[2026-04-09T12:08:10.206Z] [INFO ]   ✓ Saved: Ricoh GR IV Digital Camera
+[2026-04-09T12:08:10.617Z] [INFO ]   ✓ Saved: Sony a7R V Mirrorless Camera
+[2026-04-09T12:08:10.617Z] [INFO ]   ✓ Saved: Sony a7R V Mirrorless Camera
+[2026-04-09T12:08:11.353Z] [INFO ]   → Canon PowerShot ELPH 360 HS A Digital Camera (Silver) | $379 | 54 specs  [Effective Sensor Resolution: Effective: 20.2 Megapixel (5184 x 3888)Actual: 21.1 Megapixel | Image Sensor: 1/2.3"-Type CMOS | Image Stabilization: Optical in Integrated Lens]
+[2026-04-09T12:08:11.353Z] [INFO ]   → Canon PowerShot ELPH 360 HS A Digital Camera (Silver) | $379 | 54 specs  [Effective Sensor Resolution: Effective: 20.2 Megapixel (5184 x 3888)Actual: 21.1 Megapixel | Image Sensor: 1/2.3"-Type CMOS | Image Stabilization: Optical in Integrated Lens]
+[2026-04-09T12:08:11.390Z] [INFO ]   ✓ Saved: Canon PowerShot ELPH 360 HS A Digital Camera (Silver)
+[2026-04-09T12:08:11.390Z] [INFO ]   ✓ Saved: Canon PowerShot ELPH 360 HS A Digital Camera (Silver)
+[2026-04-09T12:08:11.607Z] [INFO ]   → Sony a7 V Mirrorless Camera | $2898 | 69 specs  [Lens Mount: Sony E | Effective Sensor Resolution: Effective: 33 Megapixel (7008 x 4672)Actual: 35.7 Megapixel | Image Sensor: 35.9 x 23.9 mm (Full-Frame) Partially Stacked CMOS]
+[2026-04-09T12:08:11.607Z] [INFO ]   → Sony a7 V Mirrorless Camera | $2898 | 69 specs  [Lens Mount: Sony E | Effective Sensor Resolution: Effective: 33 Megapixel (7008 x 4672)Actual: 35.7 Megapixel | Image Sensor: 35.9 x 23.9 mm (Full-Frame) Partially Stacked CMOS]
+[2026-04-09T12:08:11.658Z] [INFO ]   ✓ Saved: Sony a7 V Mirrorless Camera
+[2026-04-09T12:08:11.658Z] [INFO ]   ✓ Saved: Sony a7 V Mirrorless Camera
+[2026-04-09T12:08:11.790Z] [INFO ]   → Canon EOS R6 Mark II Mirrorless Camera | $1999 | 66 specs  [Lens Mount: Canon RF | Effective Sensor Resolution: Effective: 24.2 Megapixel (6000 x 4000)Actual: 25.6 Megapixel | Image Sensor: 35.9 x 23.9 mm (Full-Frame) CMOS]
+[2026-04-09T12:08:11.790Z] [INFO ]   → Canon EOS R6 Mark II Mirrorless Camera | $1999 | 66 specs  [Lens Mount: Canon RF | Effective Sensor Resolution: Effective: 24.2 Megapixel (6000 x 4000)Actual: 25.6 Megapixel | Image Sensor: 35.9 x 23.9 mm (Full-Frame) CMOS]
+[2026-04-09T12:08:11.819Z] [INFO ]   ✓ Saved: Canon EOS R6 Mark II Mirrorless Camera
+[2026-04-09T12:08:11.819Z] [INFO ]   ✓ Saved: Canon EOS R6 Mark II Mirrorless Camera
+[2026-04-09T12:08:12.554Z] [INFO ]   → Kodak Charmera Key Chain Digital Camera (Random Style Blind Box) | $34.99 | 38 specs  [Effective Sensor Resolution: 1.6 Megapixel (1440 x 1080) | Image Sensor: 1/4"-Type CMOS | Image Stabilization: No]
+[2026-04-09T12:08:12.554Z] [INFO ]   → Kodak Charmera Key Chain Digital Camera (Random Style Blind Box) | $34.99 | 38 specs  [Effective Sensor Resolution: 1.6 Megapixel (1440 x 1080) | Image Sensor: 1/4"-Type CMOS | Image Stabilization: No]
+[2026-04-09T12:08:12.581Z] [INFO ]   ✓ Saved: Kodak Charmera Key Chain Digital Camera (Random Style Blind Box)
+[2026-04-09T12:08:12.581Z] [INFO ]   ✓ Saved: Kodak Charmera Key Chain Digital Camera (Random Style Blind Box)
+[2026-04-09T12:08:12.878Z] [INFO ]   → Canon EOS R5 Mark II Mirrorless Camera | $3899 | 67 specs  [Lens Mount: Canon RF | Effective Sensor Resolution: Effective: 45 Megapixel (8192 x 5464)Actual: 50.3 Megapixel | Image Sensor: 36 x 24 mm (Full-Frame) BSI Stacked CMOS]
+[2026-04-09T12:08:12.878Z] [INFO ]   → Canon EOS R5 Mark II Mirrorless Camera | $3899 | 67 specs  [Lens Mount: Canon RF | Effective Sensor Resolution: Effective: 45 Megapixel (8192 x 5464)Actual: 50.3 Megapixel | Image Sensor: 36 x 24 mm (Full-Frame) BSI Stacked CMOS]
+[2026-04-09T12:08:12.913Z] [INFO ]   SKIP (kit/bundle): Nikon Z6 III Mirrorless Camera with Basic Bundle
+[2026-04-09T12:08:12.913Z] [INFO ]   SKIP (kit/bundle): Nikon Z6 III Mirrorless Camera with Basic Bundle
+[2026-04-09T12:08:12.923Z] [INFO ]   ✓ Saved: Canon EOS R5 Mark II Mirrorless Camera
+[2026-04-09T12:08:12.923Z] [INFO ]   ✓ Saved: Canon EOS R5 Mark II Mirrorless Camera
+[2026-04-09T12:08:13.598Z] [INFO ]   SKIP (kit/bundle): FUJIFILM X-T30 III Mirrorless Camera with 13-33mm f/3.5-6.3 Lens (Charcoal Silver)
+[2026-04-09T12:08:13.598Z] [INFO ]   SKIP (kit/bundle): FUJIFILM X-T30 III Mirrorless Camera with 13-33mm f/3.5-6.3 Lens (Charcoal Silver)
+[2026-04-09T12:08:21.195Z] [INFO ]   → Nikon Z8 Mirrorless Camera | $3796.95 | 68 specs  [Lens Mount: Nikon Z | Effective Sensor Resolution: Effective: 45.7 Megapixel (8256 x 5504)Actual: 52.37 Megapixel | Image Sensor: 35.9 x 23.9 mm (Full-Frame) CMOS]
+[2026-04-09T12:08:21.195Z] [INFO ]   → Nikon Z8 Mirrorless Camera | $3796.95 | 68 specs  [Lens Mount: Nikon Z | Effective Sensor Resolution: Effective: 45.7 Megapixel (8256 x 5504)Actual: 52.37 Megapixel | Image Sensor: 35.9 x 23.9 mm (Full-Frame) CMOS]
+[2026-04-09T12:08:21.224Z] [INFO ]   ✓ Saved: Nikon Z8 Mirrorless Camera
+[2026-04-09T12:08:21.224Z] [INFO ]   ✓ Saved: Nikon Z8 Mirrorless Camera
+[2026-04-09T12:08:25.600Z] [INFO ]   SKIP (kit/bundle): FUJIFILM X-T30 III Mirrorless Camera with 13-33mm f/3.5-6.3 Lens (Black)
+[2026-04-09T12:08:25.600Z] [INFO ]   SKIP (kit/bundle): FUJIFILM X-T30 III Mirrorless Camera with 13-33mm f/3.5-6.3 Lens (Black)
+[2026-04-09T12:08:36.251Z] [INFO ]   → Canon EOS R6 Mark III Mirrorless Camera | $2799 | 68 specs  [Lens Mount: Canon RF | Effective Sensor Resolution: Effective: 32.5 Megapixel (6960 x 4640)Actual: 34.2 Megapixel | Image Sensor: 35.9 x 23.9 mm (Full-Frame) CMOS]
+[2026-04-09T12:08:36.251Z] [INFO ]   → Canon EOS R6 Mark III Mirrorless Camera | $2799 | 68 specs  [Lens Mount: Canon RF | Effective Sensor Resolution: Effective: 32.5 Megapixel (6960 x 4640)Actual: 34.2 Megapixel | Image Sensor: 35.9 x 23.9 mm (Full-Frame) CMOS]
+[2026-04-09T12:08:36.282Z] [INFO ]   ✓ Saved: Canon EOS R6 Mark III Mirrorless Camera
+[2026-04-09T12:08:36.282Z] [INFO ]   ✓ Saved: Canon EOS R6 Mark III Mirrorless Camera
+[2026-04-09T12:08:43.007Z] [INFO ]   → Ricoh GR IV Monochrome Digital Camera | $2196.99 | 48 specs  [Effective Sensor Resolution: 25.74 Megapixel (6192 x 4128) | Image Sensor: 23.3 x 15.5 mm (APS-C) CMOS | Image Stabilization: Sensor-Shift, 5-Axis]
+[2026-04-09T12:08:43.007Z] [INFO ]   → Ricoh GR IV Monochrome Digital Camera | $2196.99 | 48 specs  [Effective Sensor Resolution: 25.74 Megapixel (6192 x 4128) | Image Sensor: 23.3 x 15.5 mm (APS-C) CMOS | Image Stabilization: Sensor-Shift, 5-Axis]
+[2026-04-09T12:08:43.034Z] [INFO ]   ✓ Saved: Ricoh GR IV Monochrome Digital Camera
+[2026-04-09T12:08:43.034Z] [INFO ]   ✓ Saved: Ricoh GR IV Monochrome Digital Camera
+[2026-04-09T12:10:00.181Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T12:10:00.181Z] [WARN ]   Fetch failed [1/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T12:10:00.181Z] [WARN ]   Backing off 20s...
+[2026-04-09T12:10:00.181Z] [WARN ]   Backing off 20s...
+[2026-04-09T12:10:20.171Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1699922-REG/kodak_fz55bk_pixpro_fz55_digital_camera.html
+[2026-04-09T12:10:20.171Z] [INFO ]   Fetch [2/3]: https://www.bhphotovideo.com/c/product/1699922-REG/kodak_fz55bk_pixpro_fz55_digital_camera.html
+[2026-04-09T12:12:20.175Z] [WARN ]   Fetch failed [2/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T12:12:20.176Z] [WARN ]   Backing off 40s...
+[2026-04-09T12:12:20.175Z] [WARN ]   Fetch failed [2/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T12:12:20.176Z] [WARN ]   Backing off 40s...
+[2026-04-09T12:13:00.177Z] [INFO ]   Fetch [3/3]: https://www.bhphotovideo.com/c/product/1699922-REG/kodak_fz55bk_pixpro_fz55_digital_camera.html
+[2026-04-09T12:13:00.177Z] [INFO ]   Fetch [3/3]: https://www.bhphotovideo.com/c/product/1699922-REG/kodak_fz55bk_pixpro_fz55_digital_camera.html
+[2026-04-09T12:15:00.186Z] [WARN ]   Fetch failed [3/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T12:15:00.186Z] [ERROR]   All retries exhausted: https://www.bhphotovideo.com/c/product/1699922-REG/kodak_fz55bk_pixpro_fz55_digital_camera.html
+[2026-04-09T12:15:00.186Z] [WARN ]   FAIL: https://www.bhphotovideo.com/c/product/1699922-REG/kodak_fz55bk_pixpro_fz55_digital_camera.html
+[2026-04-09T12:15:00.186Z] [WARN ]   Fetch failed [3/3] (HTTP N/A): timeout of 120000ms exceeded
+[2026-04-09T12:15:00.187Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1748812-REG/canon_eos_r50_with_rf_s.html
+[2026-04-09T12:15:00.190Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1889823-REG/nikon_1680_z5_ii_mirrorless_camera.html
+[2026-04-09T12:15:00.192Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1926411-REG/fujifilm_16966969_x_t30_iii_mirrorless_camera.html
+[2026-04-09T12:15:00.194Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1900551-REG/fujifilm_16949882_x_e5_mirrorless_camera_with.html
+[2026-04-09T12:15:00.195Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1934093-REG/kodak_pixpro_fz55_digital_camera.html
+[2026-04-09T12:15:00.196Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1351688-REG/nikon_d850_dslr_camera_body.html
+[2026-04-09T12:15:00.196Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1899781-REG/fujifilm_16953950_x_m5_body_black_with.html
+[2026-04-09T12:15:00.197Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1908829-REG/hasselblad_cp_hb_00000927_01_x2d_ii_100c_medium.html
+[2026-04-09T12:15:00.186Z] [ERROR]   All retries exhausted: https://www.bhphotovideo.com/c/product/1699922-REG/kodak_fz55bk_pixpro_fz55_digital_camera.html
+[2026-04-09T12:15:00.186Z] [WARN ]   FAIL: https://www.bhphotovideo.com/c/product/1699922-REG/kodak_fz55bk_pixpro_fz55_digital_camera.html
+[2026-04-09T12:15:00.187Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1748812-REG/canon_eos_r50_with_rf_s.html
+[2026-04-09T12:15:00.190Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1889823-REG/nikon_1680_z5_ii_mirrorless_camera.html
+[2026-04-09T12:15:00.192Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1926411-REG/fujifilm_16966969_x_t30_iii_mirrorless_camera.html
+[2026-04-09T12:15:00.194Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1900551-REG/fujifilm_16949882_x_e5_mirrorless_camera_with.html
+[2026-04-09T12:15:00.195Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1934093-REG/kodak_pixpro_fz55_digital_camera.html
+[2026-04-09T12:15:00.196Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1351688-REG/nikon_d850_dslr_camera_body.html
+[2026-04-09T12:15:00.196Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1899781-REG/fujifilm_16953950_x_m5_body_black_with.html
+[2026-04-09T12:15:00.197Z] [INFO ]   Fetch [1/3]: https://www.bhphotovideo.com/c/product/1908829-REG/hasselblad_cp_hb_00000927_01_x2d_ii_100c_medium.html
+[2026-04-09T12:16:06.119Z] [INFO ]   → Nikon D850 DSLR Camera | $2396.95 | 66 specs  [Lens Mount: Nikon F | Effective Sensor Resolution: Effective: 45.7 Megapixel (8256 x 5504)Actual: 46.89 Megapixel | Image Sensor: 35.9 x 23.9 mm (Full-Frame) BSI CMOS]
+[2026-04-09T12:16:06.119Z] [INFO ]   → Nikon D850 DSLR Camera | $2396.95 | 66 specs  [Lens Mount: Nikon F | Effective Sensor Resolution: Effective: 45.7 Megapixel (8256 x 5504)Actual: 46.89 Megapixel | Image Sensor: 35.9 x 23.9 mm (Full-Frame) BSI CMOS]
+[2026-04-09T12:16:06.261Z] [INFO ]   ✓ Saved: Nikon D850 DSLR Camera
+[2026-04-09T12:16:06.261Z] [INFO ]   ✓ Saved: Nikon D850 DSLR Camera
+[2026-04-09T12:16:06.561Z] [INFO ]   SKIP (kit/bundle): Canon EOS R50 Mirrorless Camera with 18-45mm Lens (Black)
+[2026-04-09T12:16:06.561Z] [INFO ]   SKIP (kit/bundle): Canon EOS R50 Mirrorless Camera with 18-45mm Lens (Black)

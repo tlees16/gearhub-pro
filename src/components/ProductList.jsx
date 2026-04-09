@@ -42,7 +42,7 @@ export default function ProductList() {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-950 px-5 py-4">
+    <div className="flex-1 min-h-0 overflow-y-auto bg-slate-950 px-5 py-4">
       {/* List header */}
       <div className="flex items-center justify-between mb-3 px-4">
         <span className="text-[10px] text-slate-600 tabular-nums font-light uppercase tracking-widest">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import { Database, LogIn, LogOut, User } from 'lucide-react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Database, LogIn, LogOut, User, List } from 'lucide-react'
 import useStore from './store/useStore'
 import SearchBar from './components/SearchBar'
 import FilterSidebar from './components/FilterSidebar'
@@ -13,6 +13,27 @@ import ProjectDashboard from './components/ProjectDashboard'
 import ProjectSelector from './components/ProjectSelector'
 import AIConcierge from './components/AIConcierge'
 import AuthModal from './components/auth/AuthModal'
+
+function MyListsButton() {
+  const navigate = useNavigate()
+  const { projects } = useStore()
+  const totalItems = projects.reduce((s, p) => s + p.items.length, 0)
+
+  return (
+    <button
+      onClick={() => navigate('/projects')}
+      className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-slate-400 hover:text-slate-100 border border-slate-800 hover:border-slate-600 rounded-lg transition-colors"
+    >
+      <List size={13} />
+      My Lists
+      {totalItems > 0 && (
+        <span className="bg-indigo-500/20 text-indigo-300 text-[10px] font-medium px-1.5 py-0.5 rounded-full tabular-nums">
+          {totalItems}
+        </span>
+      )}
+    </button>
+  )
+}
 
 function UserButton() {
   const { user, signOut } = useStore()
@@ -92,7 +113,7 @@ function DashboardLayout() {
             <SearchBar />
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <ProjectSelector />
+            <MyListsButton />
             <UserButton />
           </div>
         </div>

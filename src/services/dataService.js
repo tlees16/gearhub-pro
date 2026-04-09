@@ -84,6 +84,18 @@ function normalizeProduct(row, category) {
     }
   }
 
+  // Normalise lens subcategory to Prime / Zoom
+  if (category === 'lenses' && specs.subcategory) {
+    const raw = (specs.subcategory.raw || '').toLowerCase()
+    const name = (row.name || '').toLowerCase()
+    let lensType = null
+    if (raw.includes('zoom') || name.includes('zoom')) lensType = 'Zoom'
+    else if (raw.includes('prime') || name.includes('prime')) lensType = 'Prime'
+    else if (row.focal_length_mm && String(row.focal_length_mm).includes('-')) lensType = 'Zoom'
+    else if (row.focal_length_mm) lensType = 'Prime'
+    if (lensType) specs.subcategory = { ...specs.subcategory, raw: lensType, value: lensType }
+  }
+
   return {
     id: `${category}-${row.id}`,
     dbId: row.id,
@@ -111,7 +123,7 @@ async function fetchTable(table) {
   return data || []
 }
 
-const ALL_TABLES = ['cameras', 'lenses', 'lighting', 'drones', 'gimbals', 'sd_cards', 'lighting_accessories']
+const ALL_TABLES = ['cameras', 'lenses', 'lighting', 'drones', 'gimbals', 'sd_cards', 'lighting_accessories', 'tripods']
 
 export async function fetchAllProducts() {
   const results = await Promise.allSettled(ALL_TABLES.map(t => fetchTable(t)))

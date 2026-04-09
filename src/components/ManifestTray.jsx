@@ -1,19 +1,39 @@
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ClipboardList, X, ChevronRight } from 'lucide-react'
 import useStore from '../store/useStore'
 
+const DISMISS_AFTER_MS = 5000
+
 export default function ManifestTray() {
   const navigate = useNavigate()
-  const {
-    projects, activeProjectId, products,
-    removeItemFromProject, getProjectStats,
-  } = useStore()
+  const { projects, activeProjectId, products, removeItemFromProject, getProjectStats } = useStore()
 
-  const project = projects.find(p => p.id === activeProjectId)
-  const stats = project ? getProjectStats(project.id) : null
-  const items = project ? project.items : []
-  const totalQty = items.reduce((s, i) => s + i.quantity, 0)
+  const project   = projects.find(p => p.id === activeProjectId)
+  const items     = project ? project.items : []
+  const totalQty  = items.reduce((s, i) => s + i.quantity, 0)
+  const stats     = project ? getProjectStats(project.id) : null
+
+  const [visible, setVisible] = useState(false)
+  const timerRef  = useRef(null)
+  const prevQty   = useRef(0)
+
+  // Show tray whenever qty increases, then auto-dismiss
+  useEffect(() => {
+    if (totalQty > prevQty.current) {
+      setVisible(true)
+      clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => setVisible(false), DISMISS_AFTER_MS)
+    }
+    prevQty.current = totalQty
+    return () => clearTimeout(timerRef.current)
+  }, [totalQty])
+
+  const dismiss = () => {
+    clearTimeout(timerRef.current)
+    setVisible(false)
+  }
 
   const thumbProducts = items.slice(0, 8).map(item => {
     const product = products.find(p => p.id === item.productId)
@@ -22,7 +42,7 @@ export default function ManifestTray() {
 
   return (
     <AnimatePresence>
-      {project && items.length > 0 && (
+      {visible && project && items.length > 0 && (
         <motion.div
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -89,11 +109,17 @@ export default function ManifestTray() {
               {/* Actions */}
               <div className="flex items-center gap-2 shrink-0 pl-2 border-l border-slate-800/30">
                 <button
-                  onClick={() => navigate(`/manifest/${project.id}`)}
+                  onClick={() => { navigate(`/manifest/${project.id}`); dismiss() }}
                   className="flex items-center gap-1 text-[11px] font-medium text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 rounded-lg px-3.5 py-1.5 transition-all duration-300"
                 >
                   View List
                   <ChevronRight size={12} />
+                </button>
+                <button
+                  onClick={dismiss}
+                  className="text-slate-600 hover:text-slate-400 transition-colors p-1"
+                >
+                  <X size={13} />
                 </button>
               </div>
             </div>

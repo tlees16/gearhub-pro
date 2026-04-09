@@ -125,6 +125,13 @@ const ALL_CATEGORIES = [
       'https://www.bhphotovideo.com/c/browse/lighting-studio-accessories/ci/22444',
     ],
   },
+  {
+    key: 'tripods',
+    table: 'tripods',
+    startUrls: [
+      'https://www.bhphotovideo.com/c/browse/tripods-supports/ci/9108',
+    ],
+  },
 ]
 
 // ─── Utilities ────────────────────────────────────────────────────────────────
@@ -145,6 +152,16 @@ function isKitOrBundle(name) {
     /\bwith\b.{1,40}\bf\/[\d.]+/i,      // "with f/1.8 Lens"
   ]
   return KIT_PATTERNS.some(re => re.test(name))
+}
+
+/**
+ * Per-category reject patterns.
+ * If a product name matches these patterns it doesn't belong in that category's
+ * table — usually caused by B&H pagination bleeding into adjacent categories.
+ */
+const CATEGORY_REJECT = {
+  drones:  /\b(tripod|monopod|ball\s*head|gimbal\s*head|beanbag|bean\s*bag|car\s*window|window\s*pod|window\s*mount|pan\s*head|fluid\s*head|tilt\s*head|video\s*head|suction\s*mount|clamp)\b/i,
+  gimbals: /\b(tripod|monopod|beanbag|bean\s*bag|car\s*window|window\s*pod|window\s*mount)\b/i,
 }
 
 /** Convert any spec label to a safe Postgres column name. */
@@ -327,7 +344,8 @@ function extractProductData(html) {
   }
 
   // ── Image ─────────────────────────────────────────────────────────────────
-  const imageUrl = (
+  // Try selenium attrs first, then fall back to CDN URL pattern match
+  let imageUrl = (
     $('[data-selenium="swatchImage"]').attr('src') ||
     $('[data-selenium="productImage"]').attr('src') ||
     $('img[itemprop="image"]').attr('src') ||
@@ -335,6 +353,26 @@ function extractProductData(html) {
     $('img.primary-image').attr('src') ||
     ''
   )
+  if (!imageUrl) {
+    // B&H product images always live on static.bhphotovideo.com/c/products/
+    $('img').each((_, el) => {
+      if (imageUrl) return
+      const src = $(el).attr('src') || ''
+      if (src.includes('bhphotovideo.com/c/products') || src.includes('static.bhphoto')) {
+        imageUrl = src
+      }
+    })
+  }
+  // JSON-LD image fallback
+  if (!imageUrl) {
+    $('script[type="application/ld+json"]').each((_, el) => {
+      if (imageUrl) return
+      try {
+        const data = JSON.parse($(el).html())
+        if (data?.image) imageUrl = Array.isArray(data.image) ? data.image[0] : data.image
+      } catch { /* skip */ }
+    })
+  }
 
   // ── Subcategory from breadcrumb ───────────────────────────────────────────
   const breadcrumbs = []
@@ -449,11 +487,15 @@ async function ensureColumn(pg, table, colName, colType) {
   colCache.set(key, true)
 }
 
-/** Load bhphoto_url values for products that have already been fully scraped. */
-async function loadScrapedUrls(pg, table) {
+/** Load bhphoto_url values for products that have already been fully scraped.
+ *  In fill-missing mode, excludes products with null image_url so they get re-scraped. */
+async function loadScrapedUrls(pg, table, fillMissing = false) {
   try {
+    const condition = fillMissing
+      ? `scraped_at IS NOT NULL AND image_url IS NOT NULL AND specs_json IS NOT NULL AND specs_json != '{}'::jsonb`
+      : `scraped_at IS NOT NULL`
     const { rows } = await pg.query(
-      `SELECT bhphoto_url FROM "${table}" WHERE scraped_at IS NOT NULL`
+      `SELECT bhphoto_url FROM "${table}" WHERE ${condition}`
     )
     return new Set(rows.map(r => r.bhphoto_url))
   } catch {
@@ -480,7 +522,7 @@ async function upsertProduct(pg, table, record) {
 }
 
 // ─── Single-product scraper ───────────────────────────────────────────────────
-async function scrapeOneProduct(pg, table, productUrl, scrapedUrls) {
+async function scrapeOneProduct(pg, table, categoryKey, productUrl, scrapedUrls) {
   const productHtml = await zrFetch(productUrl)
   if (!productHtml) {
     log(`  FAIL: ${productUrl}`, 'WARN')
@@ -496,6 +538,12 @@ async function scrapeOneProduct(pg, table, productUrl, scrapedUrls) {
 
   if (isKitOrBundle(name)) {
     log(`  SKIP (kit/bundle): ${name}`)
+    return 0
+  }
+
+  const rejectRe = CATEGORY_REJECT[categoryKey]
+  if (rejectRe && rejectRe.test(name)) {
+    log(`  SKIP (wrong category for "${categoryKey}"): ${name}`)
     return 0
   }
 
@@ -542,14 +590,14 @@ async function scrapeOneProduct(pg, table, productUrl, scrapedUrls) {
 }
 
 // ─── Category scraper ─────────────────────────────────────────────────────────
-async function scrapeCategory(pg, category) {
+async function scrapeCategory(pg, category, fillMissing = false) {
   const { key, table, startUrls } = category
   log(`\n${'═'.repeat(64)}`)
-  log(`  CATEGORY: ${key.toUpperCase()}   →   table: ${table}`)
+  log(`  CATEGORY: ${key.toUpperCase()}   →   table: ${table}${fillMissing ? '  [fill-missing mode]' : ''}`)
   log(`${'═'.repeat(64)}`)
 
   await ensureTable(pg, table)
-  const scrapedUrls = await loadScrapedUrls(pg, table)
+  const scrapedUrls = await loadScrapedUrls(pg, table, fillMissing)
   log(`  Already fully scraped in this table: ${scrapedUrls.size}`)
 
   let totalSaved = 0
@@ -588,7 +636,7 @@ async function scrapeCategory(pg, category) {
       for (let i = 0; i < toScrape.length; i += CONCURRENCY) {
         const batch   = toScrape.slice(i, i + CONCURRENCY)
         const results = await Promise.allSettled(
-          batch.map(url => scrapeOneProduct(pg, table, url, scrapedUrls))
+          batch.map(url => scrapeOneProduct(pg, table, key, url, scrapedUrls))
         )
         totalSaved += results
           .filter(r => r.status === 'fulfilled')
@@ -614,7 +662,10 @@ async function scrapeCategory(pg, category) {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 async function main() {
-  const targetKey = process.argv[2]?.toLowerCase() || null
+  const args = process.argv.slice(2)
+  const fillMissing = args.includes('--fill-missing')
+  const targetKey   = args.find(a => !a.startsWith('--'))?.toLowerCase() || null
+
   const categories = targetKey
     ? ALL_CATEGORIES.filter(c => c.key === targetKey)
     : ALL_CATEGORIES
@@ -628,6 +679,7 @@ async function main() {
   log('  DOMINION SCRAPER  —  B&H Photo → Supabase')
   log(`  Run started : ${new Date().toISOString()}`)
   log(`  Categories  : ${categories.map(c => c.key).join(', ')}`)
+  log(`  Mode        : ${fillMissing ? 'fill-missing (re-scrape null image/specs)' : 'normal'}`)
   log(`  Log file    : ${LOG_FILE}`)
   log('════════════════════════════════════════════════════════════════')
 
@@ -635,10 +687,28 @@ async function main() {
   await pg.connect()
   log('PostgreSQL connected ✓\n')
 
+  // When running all categories without --fill-missing, automatically run
+  // fill-missing on the core categories first to backfill any gaps from
+  // previous runs, then do a normal scrape pass on everything.
+  const FILL_FIRST_CATEGORIES = new Set(['cameras', 'lenses', 'lighting'])
+
   let grandTotal = 0
+  if (!targetKey && !fillMissing) {
+    log('\n── Phase 1: fill missing specs/images for core categories ──')
+    for (const category of categories.filter(c => FILL_FIRST_CATEGORIES.has(c.key))) {
+      try {
+        grandTotal += await scrapeCategory(pg, category, true)
+      } catch (err) {
+        log(`Category "${category.key}" (fill-missing) crashed: ${err.message}`, 'ERROR')
+        log(err.stack, 'ERROR')
+      }
+    }
+    log('\n── Phase 2: normal scrape for all categories ──')
+  }
+
   for (const category of categories) {
     try {
-      grandTotal += await scrapeCategory(pg, category)
+      grandTotal += await scrapeCategory(pg, category, fillMissing)
     } catch (err) {
       log(`Category "${category.key}" crashed: ${err.message}`, 'ERROR')
       log(err.stack, 'ERROR')

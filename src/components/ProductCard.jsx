@@ -1,7 +1,15 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ExternalLink, Camera, Aperture, Zap, Plus, Check } from 'lucide-react'
-import { SPEC_COLUMNS, getSpecLabel, getSpecUnit } from '../services/dataService'
+import { getSpecLabel, getSpecUnit } from '../services/dataService'
 import useStore from '../store/useStore'
+import ListPicker from './ListPicker'
+
+const CARD_SPECS = {
+  cameras:  ['sensor_size', 'max_video_resolution', 'lens_mount'],
+  lenses:   ['subcategory', 'lens_mount', 'max_aperture'],
+  lighting: ['form_factor', 'power_draw_w', 'cri'],
+}
 
 const CATEGORY_ICON = {
   cameras: Camera,
@@ -11,24 +19,16 @@ const CATEGORY_ICON = {
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate()
-  const { comparisonIds, toggleComparison, addItemToProject, removeItemFromProject, isInActiveProject, activeProjectId, createProject, user, openAuthModal } = useStore()
-  const specCols = (SPEC_COLUMNS[product.category] || []).map(([col]) => col)
+  const { comparisonIds, toggleComparison, projects, user, openAuthModal } = useStore()
+  const specCols    = CARD_SPECS[product.category] || []
   const isComparing = comparisonIds.includes(product.id)
-  const inList = activeProjectId ? isInActiveProject(product.id) : false
+  const inAnyList   = projects.some(p => p.items.some(i => i.productId === product.id))
+  const [showPicker, setShowPicker] = useState(false)
 
-  const handleToggleList = () => {
+  const handleListClick = (e) => {
+    e.stopPropagation()
     if (!user) { openAuthModal(); return }
-    let projId = activeProjectId
-    if (!projId) {
-      projId = createProject('My List')
-      addItemToProject(projId, product.id)
-      return
-    }
-    if (inList) {
-      removeItemFromProject(projId, product.id)
-    } else {
-      addItemToProject(projId, product.id)
-    }
+    setShowPicker(v => !v)
   }
   const CatIcon = CATEGORY_ICON[product.category]
 
@@ -51,7 +51,7 @@ export default function ProductCard({ product }) {
       </div>
 
       {/* Thumbnail */}
-      <div className="w-11 h-11 min-w-[44px] rounded-md bg-slate-950/80 overflow-hidden flex items-center justify-center ring-1 ring-slate-800/50">
+      <div className="w-16 h-16 min-w-[64px] rounded-md bg-slate-950/80 overflow-hidden flex items-center justify-center ring-1 ring-slate-800/50">
         {product.image ? (
           <img
             src={product.image}
@@ -121,18 +121,25 @@ export default function ProductCard({ product }) {
       </div>
 
       {/* Add to List */}
-      <div className="shrink-0 pl-2 border-l border-slate-800/30">
+      <div className="shrink-0 pl-2 border-l border-slate-800/30 relative">
         <button
-          onClick={handleToggleList}
+          onClick={handleListClick}
           className={`w-6 h-6 rounded-md flex items-center justify-center transition-all duration-200 ${
-            inList
+            inAnyList
               ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/25'
               : 'text-slate-600 hover:text-indigo-400 hover:bg-indigo-500/10 border border-slate-800/40 hover:border-indigo-500/25'
           }`}
-          title={inList ? 'Remove from List' : 'Add to List'}
+          title="Add to list"
         >
-          {inList ? <Check size={12} /> : <Plus size={13} />}
+          {inAnyList ? <Check size={12} /> : <Plus size={13} />}
         </button>
+        {showPicker && (
+          <ListPicker
+            productId={product.id}
+            onClose={() => setShowPicker(false)}
+            align="right"
+          />
+        )}
       </div>
 
       {/* Compare checkbox */}

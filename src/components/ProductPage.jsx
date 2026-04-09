@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   ArrowLeft, ExternalLink, Star, ThumbsUp, ThumbsDown,
@@ -10,6 +10,7 @@ import { SPEC_COLUMNS, getSpecLabel, getSpecUnit } from '../services/dataService
 import { getExpertAnalysis } from '../services/expertAnalysis'
 import CompatibleGear from './CompatibleGear'
 import CommunityHub from './CommunityHub'
+import ListPicker from './ListPicker'
 
 const CATEGORY_ICON = { cameras: Camera, lenses: Aperture, lighting: Zap }
 
@@ -69,16 +70,9 @@ function VerdictRing({ score }) {
 export default function ProductPage() {
   const { productId } = useParams()
   const navigate = useNavigate()
-  const { products, loading, addItemToProject, isInActiveProject, activeProjectId, createProject } = useStore()
-
-  const handleAddToList = () => {
-    if (!product) return
-    let projId = activeProjectId
-    if (!projId) {
-      projId = createProject('My List')
-    }
-    addItemToProject(projId, product.id)
-  }
+  const { products, loading, projects, user, openAuthModal } = useStore()
+  const [showPicker, setShowPicker] = useState(false)
+  const inAnyList = projects.some(p => p.items.some(i => i.productId === productId))
 
   const product = useMemo(
     () => products.find(p => p.id === productId),
@@ -199,17 +193,26 @@ export default function ProductPage() {
 
             {/* Action buttons */}
             <div className="flex items-center gap-3 mt-8">
-              <button
-                onClick={handleAddToList}
-                className={`inline-flex items-center gap-2 text-[12px] font-medium rounded-xl px-5 py-2.5 transition-all duration-300 ${
-                  activeProjectId && isInActiveProject(product.id)
-                    ? 'text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/15'
-                    : 'text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/15'
-                }`}
-              >
-                {activeProjectId && isInActiveProject(product.id) ? <Check size={14} /> : <Plus size={14} />}
-                {activeProjectId && isInActiveProject(product.id) ? 'In List' : 'Add to List'}
-              </button>
+              <div className="relative">
+                <button
+                  onClick={() => { if (!user) { openAuthModal(); return } setShowPicker(v => !v) }}
+                  className={`inline-flex items-center gap-2 text-[12px] font-medium rounded-xl px-5 py-2.5 transition-all duration-300 ${
+                    inAnyList
+                      ? 'text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/15'
+                      : 'text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/15'
+                  }`}
+                >
+                  {inAnyList ? <Check size={14} /> : <Plus size={14} />}
+                  {inAnyList ? 'In List' : 'Add to List'}
+                </button>
+                {showPicker && (
+                  <ListPicker
+                    productId={product.id}
+                    onClose={() => setShowPicker(false)}
+                    align="left"
+                  />
+                )}
+              </div>
               {product.url && (
                 <a
                   href={product.url}
