@@ -108,6 +108,7 @@ function normalizeProduct(row, category) {
     url: row.bhphoto_url || '',
     image: row.image_url || '',
     specs,
+    allSpecs: row.specs_json || {},
   }
 }
 
@@ -123,7 +124,7 @@ async function fetchTable(table) {
   return data || []
 }
 
-const ALL_TABLES = ['cameras', 'lenses', 'lighting', 'drones', 'gimbals', 'sd_cards', 'lighting_accessories', 'tripods']
+const ALL_TABLES = ['cameras', 'lenses', 'lighting', 'drones', 'gimbals', 'sd_cards', 'lighting_accessories', 'tripods', 'monitors']
 
 export async function fetchAllProducts() {
   const results = await Promise.allSettled(ALL_TABLES.map(t => fetchTable(t)))

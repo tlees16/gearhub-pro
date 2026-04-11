@@ -3,6 +3,18 @@ import { persist } from 'zustand/middleware'
 import { fetchAllProducts, isNumericSpec, isBooleanSpec, getSpecColumns } from '../services/dataService'
 import { onAuthStateChange, signOut as authSignOut } from '../services/auth'
 
+// Maps nav category keys to the DB table names they include.
+// Single-table categories map to themselves; 'accessories' groups multiple tables.
+const CATEGORY_TABLES = {
+  cameras:     ['cameras'],
+  lenses:      ['lenses'],
+  lighting:    ['lighting'],
+  drones:      ['drones'],
+  gimbals:     ['gimbals'],
+  accessories: ['sd_cards', 'tripods', 'monitors', 'lighting_accessories'],
+}
+const getCategoryTables = (key) => CATEGORY_TABLES[key] || [key]
+
 let _idCounter = Date.now()
 const uid = () => `proj_${_idCounter++}`
 
@@ -289,7 +301,10 @@ const useStore = create(
         } = get()
         let filtered = products
 
-        if (activeCategory) filtered = filtered.filter(p => p.category === activeCategory)
+        if (activeCategory) {
+          const tables = getCategoryTables(activeCategory)
+          filtered = filtered.filter(p => tables.includes(p.category))
+        }
 
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase()
@@ -347,7 +362,7 @@ const useStore = create(
       getAvailableBrands: () => {
         const { products, activeCategory } = get()
         const pool = activeCategory
-          ? products.filter(p => p.category === activeCategory)
+          ? products.filter(p => getCategoryTables(activeCategory).includes(p.category))
           : products
         return [...new Set(pool.map(p => p.brand))].sort()
       },
@@ -355,7 +370,7 @@ const useStore = create(
       getPriceRange: () => {
         const { products, activeCategory } = get()
         const pool = activeCategory
-          ? products.filter(p => p.category === activeCategory)
+          ? products.filter(p => getCategoryTables(activeCategory).includes(p.category))
           : products
         const prices = pool.map(p => p.price).filter(p => p !== null)
         if (prices.length === 0) return null
@@ -367,7 +382,7 @@ const useStore = create(
         if (!activeCategory) return { numeric: {}, categorical: {}, boolean: {} }
 
         const specCols = getSpecColumns(activeCategory)
-        const pool = products.filter(p => p.category === activeCategory)
+        const pool = products.filter(p => getCategoryTables(activeCategory).includes(p.category))
         const numeric = {}
         const categorical = {}
         const boolean = {}

@@ -370,7 +370,7 @@ export default function ProductPage() {
         </section>
 
         {/* ═══ FULL SPECIFICATIONS ACCORDION ═══ */}
-        {Object.keys(product.allSpecs).length > 0 && (
+        {Object.keys(product.allSpecs || {}).length > 0 && (
           <section className="bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden">
             <button
               onClick={() => setShowAllSpecs(v => !v)}
