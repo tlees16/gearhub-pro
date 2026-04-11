@@ -3,7 +3,7 @@ import useStore from '../store/useStore'
 
 // Top-level nav categories
 // Accessories groups: sd_cards, tripods, monitors, lighting_accessories
-const ACCESSORIES_TABLES = ['sd_cards', 'tripods', 'monitors', 'lighting_accessories']
+const ACCESSORIES_TABLES = ['sd_cards', 'tripods', 'lighting_accessories']
 
 const CATEGORIES = [
   { key: 'cameras',     label: 'Cameras',     icon: Camera,  tables: ['cameras'] },

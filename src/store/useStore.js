@@ -11,7 +11,7 @@ const CATEGORY_TABLES = {
   lighting:    ['lighting'],
   drones:      ['drones'],
   gimbals:     ['gimbals'],
-  accessories: ['sd_cards', 'tripods', 'monitors', 'lighting_accessories'],
+  accessories: ['sd_cards', 'tripods', 'lighting_accessories'],
 }
 const getCategoryTables = (key) => CATEGORY_TABLES[key] || [key]
 

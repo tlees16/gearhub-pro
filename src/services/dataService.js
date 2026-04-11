@@ -124,7 +124,7 @@ async function fetchTable(table) {
   return data || []
 }
 
-const ALL_TABLES = ['cameras', 'lenses', 'lighting', 'drones', 'gimbals', 'sd_cards', 'lighting_accessories', 'tripods', 'monitors']
+const ALL_TABLES = ['cameras', 'lenses', 'lighting', 'drones', 'gimbals', 'sd_cards', 'lighting_accessories', 'tripods']
 
 export async function fetchAllProducts() {
   const results = await Promise.allSettled(ALL_TABLES.map(t => fetchTable(t)))
