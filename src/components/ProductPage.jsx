@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   ArrowLeft, ExternalLink, Star, ThumbsUp, ThumbsDown,
   Award, ShoppingCart, Camera, Aperture, Zap, Sparkles,
-  Plus, Check,
+  Plus, Check, ChevronDown, ChevronUp, List,
 } from 'lucide-react'
 import useStore from '../store/useStore'
 import { SPEC_COLUMNS, getSpecLabel, getSpecUnit } from '../services/dataService'
@@ -72,12 +72,21 @@ export default function ProductPage() {
   const navigate = useNavigate()
   const { products, loading, projects, user, openAuthModal } = useStore()
   const [showPicker, setShowPicker] = useState(false)
+  const [showAllSpecs, setShowAllSpecs] = useState(false)
+  const [analysis, setAnalysis] = useState(null)
   const inAnyList = projects.some(p => p.items.some(i => i.productId === productId))
 
   const product = useMemo(
     () => products.find(p => p.id === productId),
     [products, productId]
   )
+
+  // Must be before early returns — React rules of hooks
+  useEffect(() => {
+    if (!product) return
+    const initial = getExpertAnalysis(product, (data) => setAnalysis(data))
+    setAnalysis(initial)
+  }, [product?.id])
 
   if (loading) {
     return (
@@ -101,7 +110,15 @@ export default function ProductPage() {
     )
   }
 
-  const analysis = getExpertAnalysis(product)
+  const activeAnalysis = analysis || {
+    description: 'Loading analysis…',
+    pros: ['Loading analysis…'],
+    cons: ['Loading analysis…'],
+    communityVoice: null,
+    verdict: 75,
+    loading: true,
+  }
+
   const priceSources = getPriceSources(product)
   const specCols = (SPEC_COLUMNS[product.category] || []).map(([col]) => col)
   const CatIcon = CATEGORY_ICON[product.category]
@@ -169,23 +186,20 @@ export default function ProductPage() {
               </p>
             </div>
 
-            {/* Spec grid */}
-            <div className="mt-8 grid grid-cols-3 gap-x-6 gap-y-4">
+            {/* Key specs grid */}
+            <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-4">
               {specCols.map(col => {
                 const spec = product.specs[col]
-                if (!spec) return null
-                const isNA = !spec.value && spec.raw === 'N/A'
+                if (!spec || (!spec.value && spec.raw === 'N/A')) return null
                 const unit = getSpecUnit(col)
                 return (
-                  <div key={col} className="border-l-2 border-slate-800/60 pl-3">
-                    <div className="text-[9px] uppercase tracking-widest text-slate-600 font-light mb-1">
+                  <div key={col} className="flex items-start justify-between gap-2 border-b border-slate-800/40 pb-3">
+                    <span className="text-[11px] text-slate-500 font-light shrink-0">
                       {getSpecLabel(col)}
-                    </div>
-                    <div className={`text-[14px] font-medium tabular-nums ${
-                      isNA ? 'text-slate-700' : 'text-slate-200'
-                    }`}>
-                      {isNA ? 'N/A' : `${spec.raw}${unit}`}
-                    </div>
+                    </span>
+                    <span className="text-[12px] font-medium text-slate-200 text-right tabular-nums">
+                      {`${spec.raw}${unit}`}
+                    </span>
                   </div>
                 )
               })}
@@ -242,8 +256,8 @@ export default function ProductPage() {
             </div>
 
             {/* Description */}
-            <p className="text-[13px] text-slate-400 font-light leading-relaxed mb-6">
-              {analysis.description}
+            <p className={`text-[13px] leading-relaxed mb-6 ${activeAnalysis.loading ? 'text-slate-600 animate-pulse' : 'text-slate-400 font-light'}`}>
+              {activeAnalysis.description}
             </p>
 
             {/* Pros & Cons */}
@@ -254,9 +268,9 @@ export default function ProductPage() {
                   <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-widest">Strengths</span>
                 </div>
                 <ul className="space-y-2">
-                  {analysis.pros.map((pro, i) => (
-                    <li key={i} className="flex items-start gap-2 text-[12px] text-slate-300 font-light">
-                      <span className="text-emerald-500/60 mt-0.5">+</span>
+                  {activeAnalysis.pros.map((pro, i) => (
+                    <li key={i} className={`flex items-start gap-2 text-[12px] font-light ${activeAnalysis.loading ? 'text-slate-700' : 'text-slate-300'}`}>
+                      <span className="text-emerald-500/60 mt-0.5 shrink-0">+</span>
                       {pro}
                     </li>
                   ))}
@@ -268,15 +282,28 @@ export default function ProductPage() {
                   <span className="text-[10px] font-semibold text-amber-400 uppercase tracking-widest">Limitations</span>
                 </div>
                 <ul className="space-y-2">
-                  {analysis.cons.map((con, i) => (
-                    <li key={i} className="flex items-start gap-2 text-[12px] text-slate-300 font-light">
-                      <span className="text-amber-500/60 mt-0.5">&ndash;</span>
+                  {activeAnalysis.cons.map((con, i) => (
+                    <li key={i} className={`flex items-start gap-2 text-[12px] font-light ${activeAnalysis.loading ? 'text-slate-700' : 'text-slate-300'}`}>
+                      <span className="text-amber-500/60 mt-0.5 shrink-0">&ndash;</span>
                       {con}
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
+
+            {/* Community Voice */}
+            {activeAnalysis.communityVoice && (
+              <div className="border-t border-slate-800/30 pt-4">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <Star size={11} className="text-slate-500" />
+                  <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">On Set & In The Field</span>
+                </div>
+                <p className="text-[12px] text-slate-500 font-light leading-relaxed italic">
+                  "{activeAnalysis.communityVoice}"
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Right column — Verdict + Live Deals */}
@@ -287,11 +314,11 @@ export default function ProductPage() {
                 <Award size={14} className="text-indigo-400" />
                 <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Final Verdict</span>
               </div>
-              <VerdictRing score={analysis.verdict} />
+              <VerdictRing score={activeAnalysis.verdict} />
               <p className="text-[11px] text-slate-500 font-light mt-3 text-center leading-relaxed">
-                {analysis.verdict >= 90 ? 'Exceptional — best in class' :
-                 analysis.verdict >= 80 ? 'Excellent — highly recommended' :
-                 analysis.verdict >= 70 ? 'Solid — good value proposition' :
+                {activeAnalysis.verdict >= 90 ? 'Exceptional — best in class' :
+                 activeAnalysis.verdict >= 80 ? 'Excellent — highly recommended' :
+                 activeAnalysis.verdict >= 70 ? 'Solid — good value proposition' :
                  'Decent — consider alternatives'}
               </p>
             </div>
@@ -341,6 +368,44 @@ export default function ProductPage() {
             </div>
           </div>
         </section>
+
+        {/* ═══ FULL SPECIFICATIONS ACCORDION ═══ */}
+        {Object.keys(product.allSpecs).length > 0 && (
+          <section className="bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden">
+            <button
+              onClick={() => setShowAllSpecs(v => !v)}
+              className="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-800/20 transition-colors duration-200"
+            >
+              <div className="flex items-center gap-2.5">
+                <List size={14} className="text-indigo-400" />
+                <span className="text-sm font-bold text-slate-100 tracking-tight">Full Specifications</span>
+                <span className="text-[10px] text-slate-600 font-light">
+                  {Object.keys(product.allSpecs).length} specs
+                </span>
+              </div>
+              {showAllSpecs
+                ? <ChevronUp size={14} className="text-slate-500" />
+                : <ChevronDown size={14} className="text-slate-500" />
+              }
+            </button>
+            {showAllSpecs && (
+              <div className="px-6 pb-6 grid grid-cols-2 gap-x-12 gap-y-0 border-t border-slate-800/25">
+                {Object.entries(product.allSpecs).map(([key, val]) => {
+                  if (val == null || val === '') return null
+                  const label = key
+                    .replace(/_/g, ' ')
+                    .replace(/\b\w/g, c => c.toUpperCase())
+                  return (
+                    <div key={key} className="flex items-start justify-between gap-4 border-b border-slate-800/25 py-2.5">
+                      <span className="text-[11px] text-slate-500 font-light shrink-0 max-w-[45%]">{label}</span>
+                      <span className="text-[11px] text-slate-300 text-right">{String(val)}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </section>
+        )}
 
         {/* ═══ COMPATIBLE GEAR CAROUSEL ═══ */}
         <CompatibleGear product={product} />
