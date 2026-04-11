@@ -12,45 +12,42 @@ const SUBCATEGORIES = {
 //   type: 'categorical' = checkbox filter, 'numeric' = range slider, 'boolean' = toggle
 const SPEC_COLUMNS = {
   cameras: [
-    ['subcategory', 'Type', 'categorical'],
-    ['sensor_size', 'Sensor Size', 'categorical'],
-    ['lens_mount', 'Lens Mount', 'categorical'],
-    ['megapixels', 'Megapixels', 'numeric'],
-    ['max_video_resolution', 'Max Video Res', 'categorical'],
-    ['dynamic_range_stops', 'Dynamic Range', 'numeric'],
-    ['continuous_fps', 'Burst FPS', 'numeric'],
-    ['af_points', 'AF Points', 'numeric'],
-    ['weight_g', 'Weight (g)', 'numeric'],
-    ['ibis', 'IBIS', 'boolean'],
-    ['weather_sealed', 'Weather Sealed', 'boolean'],
-    ['recording_media', 'Recording Media', 'categorical'],
-    ['bit_depth', 'Bit Depth', 'categorical'],
+    ['subcategory',          'Type',             'categorical'],
+    ['sensor_size',          'Sensor Size',       'categorical'],
+    ['lens_mount',           'Lens Mount',        'categorical'],
+    ['megapixels',           'Megapixels',        'numeric'],
+    ['max_video_resolution', 'Max Video Res',     'categorical'],
+    ['dynamic_range_stops',  'Dynamic Range',     'numeric'],
+    ['continuous_fps',       'Burst FPS',         'numeric'],
+    ['bit_depth',            'Bit Depth',         'categorical'],
+    ['weight_g',             'Weight (g)',        'numeric'],
+    ['ibis',                 'IBIS',              'boolean'],
+    ['weather_sealed',       'Weather Sealed',    'boolean'],
+    ['recording_media',      'Recording Media',   'categorical'],
   ],
   lenses: [
-    ['subcategory', 'Type', 'categorical'],
-    ['lens_mount', 'Lens Mount', 'categorical'],
-    ['format_coverage', 'Format Coverage', 'categorical'],
-    ['max_aperture', 'Max Aperture', 'categorical'],
-    ['filter_size_mm', 'Filter Size (mm)', 'numeric'],
-    ['aperture_blades', 'Aperture Blades', 'numeric'],
-    ['weight_g', 'Weight (g)', 'numeric'],
-    ['autofocus', 'Autofocus', 'boolean'],
-    ['image_stabilization', 'Image Stabilization', 'boolean'],
-    ['weather_sealed', 'Weather Sealed', 'boolean'],
-    ['anamorphic_ratio', 'Anamorphic', 'categorical'],
+    ['subcategory',        'Type',                'categorical'],
+    ['lens_mount',         'Lens Mount',          'categorical'],
+    ['format_coverage',    'Format Coverage',     'categorical'],
+    ['max_aperture',       'Max Aperture',        'categorical'],
+    ['filter_size_mm',     'Filter Size (mm)',    'numeric'],
+    ['weight_g',           'Weight (g)',          'numeric'],
+    ['autofocus',          'Autofocus',           'boolean'],
+    ['image_stabilization','Image Stabilization', 'boolean'],
+    ['weather_sealed',     'Weather Sealed',      'boolean'],
+    ['anamorphic_ratio',   'Anamorphic',          'categorical'],
   ],
   lighting: [
-    ['subcategory', 'Light Source', 'categorical'],
-    ['form_factor', 'Form Factor', 'categorical'],
-    ['color_type', 'Color Type', 'categorical'],
-    ['cri', 'CRI', 'numeric'],
-    ['tlci', 'TLCI', 'numeric'],
-    ['power_draw_w', 'Power (W)', 'numeric'],
-    ['weight_g', 'Weight (g)', 'numeric'],
-    ['ip_rating', 'IP Rating', 'categorical'],
-    ['battery_option', 'Battery Option', 'boolean'],
-    ['accessory_mount', 'Accessory Mount', 'categorical'],
-    ['cooling', 'Cooling', 'categorical'],
+    ['subcategory',             'Light Source',    'categorical'],
+    ['item_type',               'Type',            'categorical'],  // 63/93 (was form_factor: 0/93)
+    ['color_type',              'Color Type',      'categorical'],
+    ['color_accuracy_standard', 'CRI/TLCI',        'categorical'],  // 65/93 (was cri: 10/93)
+    ['power_draw_w',            'Power (W)',       'numeric'],
+    ['weight_g',                'Weight (g)',      'numeric'],
+    ['environmental_resistance','Weather',         'categorical'],  // 53/93 (was ip_rating: 2/93)
+    ['battery_option',          'Battery Option',  'boolean'],
+    ['front_accessory_mount',   'Accessory Mount', 'categorical'],  // 61/93 (was accessory_mount: 12/93)
+    ['cooling',                 'Cooling',         'categorical'],
   ],
 }
 
@@ -82,6 +79,12 @@ function normalizeProduct(row, category) {
     } else {
       specs[col] = { raw: raw || 'N/A', value: raw || null, label }
     }
+  }
+
+  // Strip B&H quantity prefix from item_type: "1x LED Fresnel" → "LED Fresnel"
+  if (specs.item_type?.value) {
+    const cleaned = specs.item_type.raw.replace(/^\d+x\s+/i, '').trim()
+    specs.item_type = { ...specs.item_type, raw: cleaned, value: cleaned }
   }
 
   // Normalise lens subcategory to Prime / Zoom

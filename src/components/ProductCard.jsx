@@ -8,7 +8,7 @@ import ListPicker from './ListPicker'
 const CARD_SPECS = {
   cameras:  ['sensor_size', 'max_video_resolution', 'lens_mount'],
   lenses:   ['subcategory', 'lens_mount', 'max_aperture'],
-  lighting: ['form_factor', 'power_draw_w', 'cri'],
+  lighting: ['item_type', 'power_draw_w', 'color_accuracy_standard'],
 }
 
 const CATEGORY_ICON = {
