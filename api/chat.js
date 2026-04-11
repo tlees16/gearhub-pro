@@ -5,15 +5,10 @@ export default async function handler(req, res) {
 
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey) {
-    return res.status(500).json({ error: 'ANTHROPIC_API_KEY not set in Vercel environment' })
+    return res.status(500).json({ error: 'ANTHROPIC_API_KEY not set' })
   }
 
-  let body
-  try {
-    body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-  } catch {
-    return res.status(400).json({ error: 'Invalid JSON body' })
-  }
+  const body = req.body || {}
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
