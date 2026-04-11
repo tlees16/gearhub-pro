@@ -10,6 +10,11 @@ export default async function handler(req, res) {
 
   const body = req.body || {}
 
+  // Allow callers to specify a model; default to Haiku for speed/cost.
+  // Allowlist prevents arbitrary model selection.
+  const ALLOWED_MODELS = ['claude-haiku-4-5-20251001', 'claude-sonnet-4-6']
+  const model = ALLOWED_MODELS.includes(body.model) ? body.model : 'claude-haiku-4-5-20251001'
+
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -19,7 +24,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model,
         max_tokens: body.max_tokens || 1024,
         system: body.system,
         messages: body.messages,

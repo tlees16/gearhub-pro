@@ -143,9 +143,10 @@ async function fetchAnalysisFromAPI(product) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
       messages: [{ role: 'user', content: prompt }],
       system: 'You are an expert in professional film and photography equipment with deep knowledge of production workflows, gear reputation, and real-world use. You write honest, technically accurate analysis — not marketing copy. Always respond with valid JSON only.',
-      max_tokens: 800,
+      max_tokens: 600,
     }),
   })
 
