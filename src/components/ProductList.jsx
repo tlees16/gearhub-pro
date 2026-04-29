@@ -361,18 +361,17 @@ export default function ProductList() {
         <button
           onClick={openSearchDrawer}
           className="group relative flex items-center gap-2.5 px-6 py-3.5 rounded-full
-            bg-zinc-950/95 backdrop-blur-xl
-            border border-zinc-700/50
-            shadow-[0_4px_24px_rgba(0,0,0,0.8),0_1px_0_rgba(255,255,255,0.04)_inset]
-            hover:bg-zinc-900/95 hover:border-zinc-600/60
-            hover:shadow-[0_4px_32px_rgba(0,0,0,0.9),0_0_40px_rgba(255,255,255,0.03)]
+            bg-white
+            shadow-[0_4px_28px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.15),0_1px_60px_rgba(255,255,255,0.12)]
+            hover:bg-zinc-100
+            hover:shadow-[0_6px_36px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.2),0_1px_80px_rgba(255,255,255,0.16)]
             active:scale-[0.96]
             transition-all duration-200"
         >
-          <Search size={14} className="text-zinc-400 group-hover:text-zinc-200 transition-colors shrink-0" />
-          <span className="text-[14px] font-bold text-white tracking-tight">Search</span>
+          <Search size={14} className="text-zinc-700 shrink-0" />
+          <span className="text-[14px] font-bold text-zinc-900 tracking-tight">Search</span>
           {activeFilterCount > 0 && (
-            <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-indigo-600 text-white text-[9px] font-bold rounded-full tabular-nums">
+            <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-zinc-800 text-white text-[9px] font-bold rounded-full tabular-nums">
               {activeFilterCount > 9 ? '9+' : activeFilterCount}
             </span>
           )}
