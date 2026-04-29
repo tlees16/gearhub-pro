@@ -22,9 +22,9 @@ export default function DashboardGrid() {
     activeSubcategory ? 1 : 0,
     selectedBrands.length,
     priceRange ? 1 : 0,
-    Object.values(specFilters).filter(v => v?.length > 0).length,
+    Object.values(specFilters as Record<string, string[]>).filter(v => Array.isArray(v) && v.length > 0).length,
     Object.keys(rangeFilters).length,
-    Object.values(booleanFilters).filter(v => v != null).length,
+    Object.values(booleanFilters as Record<string, boolean | null>).filter(v => v != null).length,
   ].reduce((a, b) => a + b, 0)
 
   useEffect(() => {
