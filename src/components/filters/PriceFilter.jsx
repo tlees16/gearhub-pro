@@ -1,3 +1,5 @@
+'use client'
+
 import useStore from '../../store/useStore'
 import RangeSlider from './RangeSlider'
 

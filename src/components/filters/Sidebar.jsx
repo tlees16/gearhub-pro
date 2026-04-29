@@ -1,3 +1,5 @@
+'use client'
+
 import { RotateCcw } from 'lucide-react'
 import useStore from '../../store/useStore'
 import SearchBar from './SearchBar'

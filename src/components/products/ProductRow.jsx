@@ -1,3 +1,5 @@
+'use client'
+
 import { ExternalLink, Plus, Check } from 'lucide-react'
 import useStore from '../../store/useStore'
 

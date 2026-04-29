@@ -1,6 +1,8 @@
+'use client'
+
 import { useMemo, useRef } from 'react'
 import { ChevronLeft, ChevronRight, Camera, Aperture, Zap, Link2 } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 import useStore from '../store/useStore'
 
 const CATEGORY_ICON = { cameras: Camera, lenses: Aperture, lighting: Zap }
@@ -50,12 +52,12 @@ function getCompatibleProducts(product, allProducts) {
 }
 
 function GearCard({ product }) {
-  const navigate = useNavigate()
+  const router = useRouter()
   const CatIcon = CATEGORY_ICON[product.category]
 
   return (
     <button
-      onClick={() => navigate(`/product/${product.id}`)}
+      onClick={() => router.push(`/product/${product.id}`)}
       className="group shrink-0 w-52 bg-slate-900/40 border border-slate-800/30 rounded-xl p-3.5 hover:bg-slate-900/60 hover:border-indigo-500/20 transition-all duration-300 text-left"
     >
       {/* Image */}

@@ -1,10 +1,12 @@
+'use client'
+
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 import { Check, Plus, ChevronRight } from 'lucide-react'
 import useStore from '../store/useStore'
 
 export default function ListPicker({ productId, onClose, align = 'right' }) {
-  const navigate  = useNavigate()
+  const navigate  = useRouter()
   const { projects, addItemToProject, removeItemFromProject, createProject, user, openAuthModal } = useStore()
   const [newListName, setNewListName] = useState('')
   const [showNew, setShowNew]         = useState(false)
@@ -115,7 +117,7 @@ export default function ListPicker({ productId, onClose, align = 'right' }) {
       {/* My Lists link */}
       <div className="border-t border-slate-800/40">
         <button
-          onClick={() => { navigate('/projects'); onClose() }}
+          onClick={() => { router.push('/projects'); onClose() }}
           className="w-full flex items-center justify-between px-3 py-2 text-[11px] text-slate-500 hover:text-slate-300 hover:bg-slate-800/30 transition-colors"
         >
           <span>View all my lists</span>

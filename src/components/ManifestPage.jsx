@@ -1,5 +1,7 @@
+'use client'
+
 import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useRouter } from 'next/navigation'
 import {
   ArrowLeft, ClipboardList, Trash2, Minus, Plus,
   Zap, Weight, DollarSign, AlertTriangle, Copy, Check,
@@ -26,7 +28,7 @@ function StatCard({ icon: Icon, label, value, unit, color }) {
 
 export default function ManifestPage() {
   const { projectId } = useParams()
-  const navigate = useNavigate()
+  const router = useRouter()
   const [copied, setCopied] = useState(false)
   const {
     projects, getProjectById, getProjectProducts, getProjectStats, getProjectConflicts,
@@ -42,7 +44,7 @@ export default function ManifestPage() {
     return (
       <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center gap-3">
         <p className="text-slate-400 text-sm font-light">List not found</p>
-        <button onClick={() => navigate('/projects')} className="text-[11px] text-indigo-400 hover:text-indigo-300 transition-colors">
+        <button onClick={() => router.push('/projects')} className="text-[11px] text-indigo-400 hover:text-indigo-300 transition-colors">
           View all lists
         </button>
       </div>
@@ -77,7 +79,7 @@ export default function ManifestPage() {
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate('/')}
+              onClick={() => router.push('/')}
               className="flex items-center gap-1.5 text-[12px] text-slate-400 hover:text-slate-200 transition-colors duration-200"
             >
               <ArrowLeft size={14} />
@@ -128,7 +130,7 @@ export default function ManifestPage() {
                 key={p.id}
                 onClick={() => {
                   setActiveProject(p.id)
-                  navigate(`/manifest/${p.id}`)
+                  router.push(`/manifest/${p.id}`)
                 }}
                 className={`flex items-center gap-1.5 shrink-0 text-[11px] font-medium px-3.5 py-2 rounded-lg transition-all duration-200 ${
                   isActive
@@ -146,7 +148,7 @@ export default function ManifestPage() {
             onClick={() => {
               const id = createProject('New List')
               setActiveProject(id)
-              navigate(`/manifest/${id}`)
+              router.push(`/manifest/${id}`)
             }}
             className="flex items-center gap-1 shrink-0 text-[11px] text-slate-600 hover:text-indigo-300 px-3 py-2 rounded-lg hover:bg-slate-800/40 transition-all duration-200"
           >
@@ -161,7 +163,7 @@ export default function ManifestPage() {
             <Package size={32} className="text-slate-800" />
             <p className="text-slate-500 text-sm font-light">This list has no gear yet</p>
             <button
-              onClick={() => navigate('/')}
+              onClick={() => router.push('/')}
               className="flex items-center gap-2 text-[12px] font-medium text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 rounded-xl px-5 py-2.5 transition-all duration-300 mt-2"
             >
               <Search size={14} />
@@ -220,7 +222,7 @@ export default function ManifestPage() {
                     <div className="w-12">
                       <div
                         className="w-10 h-10 rounded-lg bg-slate-950/60 border border-slate-800/30 overflow-hidden flex items-center justify-center cursor-pointer"
-                        onClick={() => navigate(`/product/${product.id}`)}
+                        onClick={() => router.push(`/product/${product.id}`)}
                       >
                         {product.image ? (
                           <img src={product.image} alt={product.name} className="w-full h-full object-contain p-1" loading="lazy" />
@@ -230,7 +232,7 @@ export default function ManifestPage() {
                       </div>
                     </div>
 
-                    <div className="flex-1 min-w-0 cursor-pointer" onClick={() => navigate(`/product/${product.id}`)}>
+                    <div className="flex-1 min-w-0 cursor-pointer" onClick={() => router.push(`/product/${product.id}`)}>
                       <h3 className="text-[12.5px] font-semibold text-slate-100 truncate tracking-tight hover:text-indigo-300 transition-colors">
                         {product.name}
                       </h3>

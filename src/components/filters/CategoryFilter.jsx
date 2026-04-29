@@ -1,3 +1,5 @@
+'use client'
+
 import { Camera, CircleDot, Lightbulb, Layers } from 'lucide-react'
 import useStore from '../../store/useStore'
 

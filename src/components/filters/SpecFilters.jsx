@@ -1,3 +1,5 @@
+'use client'
+
 import { ChevronDown, ChevronRight, X } from 'lucide-react'
 import { useState } from 'react'
 import useStore from '../../store/useStore'

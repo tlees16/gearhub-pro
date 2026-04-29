@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { X, Mail, Lock, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react'
 import {
@@ -50,12 +52,12 @@ export default function AuthModal({ onClose, hint }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Modal */}
-      <div className="relative w-full max-w-sm bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-6">
+      {/* Modal — bottom sheet on mobile, centered dialog on desktop */}
+      <div className="relative w-full max-w-sm max-h-[85dvh] overflow-y-auto bg-slate-900 border border-slate-800 rounded-t-2xl sm:rounded-xl shadow-2xl p-6 mb-14 sm:mb-0">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-slate-500 hover:text-slate-300 transition-colors"

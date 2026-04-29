@@ -1,10 +1,12 @@
+'use client'
+
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 import { ChevronDown, Plus, FolderOpen, Check, ClipboardList } from 'lucide-react'
 import useStore from '../store/useStore'
 
 export default function ProjectSelector() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const { projects, activeProjectId, setActiveProject, createProject } = useStore()
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
@@ -27,7 +29,7 @@ export default function ProjectSelector() {
   if (projects.length === 0) {
     return (
       <button
-        onClick={() => navigate('/projects')}
+        onClick={() => router.push('/projects')}
         className="flex items-center gap-1.5 text-[10px] text-slate-500 hover:text-indigo-400 font-light transition-colors duration-200"
       >
         <FolderOpen size={12} />
@@ -40,7 +42,7 @@ export default function ProjectSelector() {
     <div className="flex items-center gap-2">
       {activeProject && (
         <button
-          onClick={() => navigate(`/manifest/${activeProject.id}`)}
+          onClick={() => router.push(`/manifest/${activeProject.id}`)}
           className="flex items-center gap-1.5 text-[10.5px] text-indigo-400/80 hover:text-indigo-300 font-medium transition-colors duration-200"
         >
           <ClipboardList size={12} />
@@ -91,7 +93,7 @@ export default function ProjectSelector() {
               <span className="font-light">New list</span>
             </button>
             <button
-              onClick={() => { navigate('/projects'); setOpen(false) }}
+              onClick={() => { router.push('/projects'); setOpen(false) }}
               className="flex items-center gap-2.5 w-full px-3.5 py-2 text-[11px] text-slate-500 hover:text-slate-300 transition-colors duration-150"
             >
               <FolderOpen size={11} />

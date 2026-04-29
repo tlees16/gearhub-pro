@@ -1,3 +1,5 @@
+'use client'
+
 import { Database, GitCompare } from 'lucide-react'
 import useStore from '../../store/useStore'
 

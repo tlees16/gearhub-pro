@@ -1,5 +1,7 @@
+'use client'
+
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowLeft, FolderOpen, Plus, Trash2, Pencil, Check, X,
@@ -8,7 +10,7 @@ import {
 import useStore from '../store/useStore'
 
 function ProjectCard({ project, onDelete }) {
-  const navigate = useNavigate()
+  const router = useRouter()
   const { setActiveProject, activeProjectId, renameProject, getProjectStats, products } = useStore()
   const [editing, setEditing] = useState(false)
   const [name, setName] = useState(project.name)
@@ -125,7 +127,7 @@ function ProjectCard({ project, onDelete }) {
           </button>
         )}
         <button
-          onClick={() => navigate(`/manifest/${project.id}`)}
+          onClick={() => router.push(`/manifest/${project.id}`)}
           className="flex items-center gap-1 text-[10px] font-medium text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 rounded-lg px-3 py-1.5 transition-all duration-300"
         >
           View List <ChevronRight size={10} />
@@ -136,7 +138,7 @@ function ProjectCard({ project, onDelete }) {
 }
 
 export default function ProjectDashboard() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const { projects, createProject, deleteProject } = useStore()
   const [creating, setCreating] = useState(false)
   const [newName, setNewName] = useState('')
@@ -155,7 +157,7 @@ export default function ProjectDashboard() {
         <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate('/')}
+              onClick={() => router.push('/')}
               className="flex items-center gap-1.5 text-[12px] text-slate-400 hover:text-slate-200 transition-colors duration-200"
             >
               <ArrowLeft size={14} />

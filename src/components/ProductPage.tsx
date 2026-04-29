@@ -12,13 +12,15 @@ import {
   Zap,
 } from 'lucide-react'
 
-import { fetchProductById, fetchPrices } from '@/lib/supabase-server'
+import { fetchProductById, fetchPrices, fetchVariantGroup } from '@/lib/supabase-server'
 import type { RetailPrice } from '@/types/gear'
+import { stripProductVariant } from '@/lib/variant'
 import PriceTable from './PriceTable'
 import CategoryLink from './CategoryLink'
 import ExpertAnalysisSection from './ExpertAnalysisSection'
 import ProductActions from './ProductActions'
 import CommunityHub from './CommunityHub'
+import PhotometricTable from './PhotometricTable'
 
 // ─── hero spec whitelist ──────────────────────────────────────────────────────
 
@@ -57,10 +59,6 @@ const SPEC_LABEL_OVERRIDES: Record<string, string> = {
   photometrics_at_3_3_1_m: 'Photometrics (3.3m / 1m)',
 }
 
-const PHOTOMETRIC_KEYS = [
-  'output_lux', 'beam_angle', 'cri', 'tlci', 'lumens', 'lumen_output',
-  'photometrics_at_3_3_1_m', 'photometrics',
-]
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
 
@@ -116,12 +114,15 @@ export default async function ProductPage({ productId }: { productId: string }) 
 
   if (!category || isNaN(dbId)) notFound()
 
-  const [rawProduct, { retail, used }] = await Promise.all([
-    fetchProductById(productId),
-    fetchPrices(category, dbId),
-  ])
-
+  const rawProduct = await fetchProductById(productId)
   if (!rawProduct) notFound()
+
+  const { baseModel, configLabel } = stripProductVariant(rawProduct.name, category)
+
+  const [{ retail, used }, { variants, bestPhotometrics }] = await Promise.all([
+    fetchPrices(category, dbId),
+    fetchVariantGroup(category, baseModel, (rawProduct.brand as string) ?? '', dbId),
+  ])
 
   const specsJson: Record<string, unknown> =
     typeof rawProduct.specs_json === 'object' && rawProduct.specs_json !== null
@@ -156,14 +157,6 @@ export default async function ProductPage({ productId }: { productId: string }) 
       displaySpecs.push([k, v])
     }
   }
-
-  // Photometrics — lighting products only
-  const photometricSpecs: Array<[string, string | number]> = category === 'lighting'
-    ? PHOTOMETRIC_KEYS
-        .map(k => [k, allSpecs[k]] as [string, unknown])
-        .filter(([, v]) => v !== null && v !== undefined && v !== '' && String(v).trim() !== 'N/A')
-        .map(([k, v]) => [k, typeof v === 'number' ? v : String(v)] as [string, string | number])
-    : []
 
   const msrp: number = rawProduct.price ?? 0
 
@@ -206,6 +199,12 @@ export default async function ProductPage({ productId }: { productId: string }) 
     } else if (v !== undefined) {
       specsForClient[k] = String(v)
     }
+  }
+
+  // If a variant has richer photometric data, use that for the PhotometricTable
+  if (bestPhotometrics) {
+    specsForClient['photometrics'] = bestPhotometrics
+    specsForClient['Photometrics'] = bestPhotometrics
   }
 
   return (
@@ -324,9 +323,13 @@ export default async function ProductPage({ productId }: { productId: string }) 
                   </div>
 
                   <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-50 leading-tight">
-                    {rawProduct.name}
+                    {baseModel || rawProduct.name}
                   </h1>
-                  <p className="text-base text-slate-500 font-light mt-0.5">{rawProduct.brand}</p>
+                  {configLabel ? (
+                    <p className="text-[13px] text-slate-500 font-mono mt-1 tracking-tight">{configLabel}</p>
+                  ) : (
+                    <p className="text-base text-slate-500 font-light mt-0.5">{rawProduct.brand}</p>
+                  )}
 
                   {/* MSRP */}
                   <div className="mt-5">
@@ -402,7 +405,12 @@ export default async function ProductPage({ productId }: { productId: string }) 
                 </div>
 
                 {/* price comparison table */}
-                <PriceTable retail={allRetail} used={used} msrp={msrp} />
+                <PriceTable
+                  retail={allRetail}
+                  used={used}
+                  msrp={msrp}
+                  variantGroups={variants.length > 1 ? variants : undefined}
+                />
 
                 {/* market context */}
                 {(allRetail.length > 0 || used.length > 0) && (
@@ -446,38 +454,9 @@ export default async function ProductPage({ productId }: { productId: string }) 
             </aside>
 
             {/* ── PHOTOMETRICS (lighting only) ────────────────────────────── */}
-            {photometricSpecs.length > 0 && (
-              <details className="group bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden lg:col-start-1" open>
-                <summary className="flex items-center justify-between px-5 sm:px-6 py-4 cursor-pointer list-none select-none hover:bg-slate-800/20 transition-colors duration-200">
-                  <span className="text-sm font-bold text-slate-100 tracking-tight">Photometrics</span>
-                  <ChevronDown className="w-4 h-4 text-slate-500 transition-transform group-open:rotate-180" />
-                </summary>
-                <div className="border-t border-slate-800/25 px-5 sm:px-6 pb-5 sm:pb-6 pt-4">
-                  <table className="w-full">
-                    <tbody>
-                      {photometricSpecs.map(([key, val]) => {
-                        const label = SPEC_LABEL_OVERRIDES[key] ?? key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-                        const strVal = String(val)
-                        const isLong = strVal.length > 80
-                        return isLong ? (
-                          <tr key={key} className="border-b border-slate-800/25">
-                            <td colSpan={2} className="py-3">
-                              <div className="text-[11px] text-slate-500 font-light mb-1.5">{label}</div>
-                              <div className="text-[11px] text-slate-300 leading-relaxed">{strVal}</div>
-                            </td>
-                          </tr>
-                        ) : (
-                          <tr key={key} className="border-b border-slate-800/25">
-                            <td className="py-2.5 text-[11px] text-slate-500 font-light pr-6 w-1/2">{label}</td>
-                            <td className="py-2.5 text-[12px] text-slate-300 font-medium text-right tabular-nums">{strVal}</td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </details>
-            )}
+            <div className="lg:col-start-1">
+              <PhotometricTable product={{ category, allSpecs: specsForClient }} />
+            </div>
 
             {/* ── FULL SPECIFICATIONS ─────────────────────────────────────── */}
             <details className="group bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden lg:col-start-1">

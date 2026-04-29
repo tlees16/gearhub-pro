@@ -1,3 +1,5 @@
+'use client'
+
 import { PackageOpen, Loader2 } from 'lucide-react'
 import useStore from '../../store/useStore'
 import ProductRow from './ProductRow'

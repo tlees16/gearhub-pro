@@ -1,17 +1,12 @@
-import { Camera, Aperture, Sun, Plane, Wind, CreditCard, Package, Monitor } from 'lucide-react'
+'use client'
+
+import { Camera, Aperture, Sun } from 'lucide-react'
 import useStore from '../store/useStore'
 
-// Top-level nav categories
-// Accessories groups: sd_cards, tripods, monitors, lighting_accessories
-const ACCESSORIES_TABLES = ['sd_cards', 'tripods', 'lighting_accessories']
-
 const CATEGORIES = [
-  { key: 'cameras',     label: 'Cameras',     icon: Camera,  tables: ['cameras'] },
-  { key: 'lenses',      label: 'Lenses',       icon: Aperture, tables: ['lenses'] },
-  { key: 'lighting',    label: 'Lighting',     icon: Sun,     tables: ['lighting'] },
-  { key: 'drones',      label: 'Drones',       icon: Plane,   tables: ['drones'] },
-  { key: 'gimbals',     label: 'Gimbals',      icon: Wind,    tables: ['gimbals'] },
-  { key: 'accessories', label: 'Accessories',  icon: Package, tables: ACCESSORIES_TABLES },
+  { key: 'cameras',  label: 'Cameras',  icon: Camera,   tables: ['cameras'] },
+  { key: 'lenses',   label: 'Lenses',   icon: Aperture, tables: ['lenses'] },
+  { key: 'lighting', label: 'Lighting', icon: Sun,      tables: ['lighting'] },
 ]
 
 export default function CategoryTabs() {

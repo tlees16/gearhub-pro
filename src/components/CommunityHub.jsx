@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect, useCallback } from 'react'
 import { MessageSquare, Star, HelpCircle, Send, User, ChevronDown, ChevronUp, Loader2, Trash2 } from 'lucide-react'
 import { supabase } from '../services/supabase'

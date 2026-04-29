@@ -1,3 +1,5 @@
+'use client'
+
 import { Search, X, Command } from 'lucide-react'
 import useStore from '../store/useStore'
 
