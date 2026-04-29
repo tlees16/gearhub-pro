@@ -102,7 +102,7 @@ export async function fetchVariantGroup(
 
   const { data: rows } = await db
     .from(category)
-    .select('id, name, photometrics, specs_json')
+    .select('id, name, price, bhphoto_url, photometrics, specs_json')
     .eq('brand', brand)
     .ilike('name', `${baseModel}%`)
 
@@ -124,12 +124,23 @@ export async function fetchVariantGroup(
     filtered.map(async (r) => {
       const { retail, used } = await fetchPrices(category, r.id)
       const { configLabel } = stripProductVariant(r.name, category)
+      // Inject B&H from product row (retail_prices table doesn't store B&H)
+      const cleanedRetail = retail.filter((rp) => !rp.retailer.startsWith('B&H'))
+      if (r.price && r.bhphoto_url) {
+        cleanedRetail.unshift({
+          retailer: 'B&H Photo',
+          price: r.price as number,
+          currency: 'USD',
+          inStock: true,
+          url: r.bhphoto_url as string,
+        })
+      }
       return {
         id: r.id,
         name: r.name,
         configLabel: configLabel || r.name,
         isCurrent: r.id === currentId,
-        retail,
+        retail: cleanedRetail,
         used,
       }
     }),
