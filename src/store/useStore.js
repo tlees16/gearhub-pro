@@ -1,6 +1,14 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-import { fetchAllProducts, isNumericSpec, isBooleanSpec, getSpecColumns } from '../services/dataService'
+import { persist, createJSONStorage } from 'zustand/middleware'
+
+// SSR-safe localStorage wrapper — Zustand persist runs during Next.js SSR,
+// where localStorage is not defined. This guard prevents the crash.
+const ssrSafeStorage = createJSONStorage(() =>
+  typeof window !== 'undefined'
+    ? localStorage
+    : { getItem: () => null, setItem: () => undefined, removeItem: () => undefined }
+)
+import { fetchAllProducts, fetchLowestRetailPrices, fetchLowestUsedPrices, fetchLowestRentalRates, isNumericSpec, isBooleanSpec, getSpecColumns } from '../services/dataService'
 import { onAuthStateChange, signOut as authSignOut } from '../services/auth'
 
 // Maps nav category keys to the DB table names they include.
@@ -14,6 +22,80 @@ const CATEGORY_TABLES = {
   accessories: ['sd_cards', 'tripods', 'lighting_accessories'],
 }
 const getCategoryTables = (key) => CATEGORY_TABLES[key] || [key]
+
+const CINEMA_LENS_RE = /\bT[0-9]|cine\b|cinema|\bPL\b|anamorphic|master\s*prime|signature\s*prime|summilux/i
+
+// ─── Core filter engine ───────────────────────────────────────────
+// Builds a filtered product pool from state, optionally skipping
+// specific filter dimensions (for faceted navigation counts).
+// skip is a Set of: 'category' | 'subcategory' | 'search' | 'brands' | 'price' | 'specs'
+function buildFilteredPool(state, skip = new Set()) {
+  const {
+    products, searchQuery, activeCategory, activeSubcategory,
+    selectedBrands, priceRange, specFilters, rangeFilters, booleanFilters,
+  } = state
+
+  let filtered = products
+
+  if (!skip.has('category') && activeCategory) {
+    filtered = filtered.filter(p => getCategoryTables(activeCategory).includes(p.category))
+  }
+
+  if (!skip.has('subcategory') && activeSubcategory) {
+    if (activeCategory === 'accessories') {
+      filtered = filtered.filter(p => p.category === activeSubcategory)
+    } else if (activeCategory === 'lenses' && activeSubcategory === 'Cinema') {
+      filtered = filtered.filter(p => CINEMA_LENS_RE.test(p.name))
+    } else if (activeCategory === 'lenses' && activeSubcategory === 'Photo') {
+      filtered = filtered.filter(p => !CINEMA_LENS_RE.test(p.name))
+    } else {
+      filtered = filtered.filter(p => p.subcategory === activeSubcategory)
+    }
+  }
+
+  if (!skip.has('search') && searchQuery?.trim()) {
+    const q = searchQuery.toLowerCase()
+    filtered = filtered.filter(p =>
+      p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q)
+    )
+  }
+
+  if (!skip.has('brands') && selectedBrands.length > 0) {
+    filtered = filtered.filter(p => selectedBrands.includes(p.brand))
+  }
+
+  if (!skip.has('price') && priceRange) {
+    const [min, max] = priceRange
+    filtered = filtered.filter(p => p.price == null || (p.price >= min && p.price <= max))
+  }
+
+  if (!skip.has('specs')) {
+    for (const [specName, values] of Object.entries(specFilters)) {
+      if (values?.length > 0) {
+        filtered = filtered.filter(p => {
+          const spec = p.specs[specName]
+          return spec?.value != null && values.includes(spec.raw)
+        })
+      }
+    }
+    for (const [specName, range] of Object.entries(rangeFilters)) {
+      if (range) {
+        const [rMin, rMax] = range
+        filtered = filtered.filter(p => {
+          const v = p.specs[specName]?.value
+          return v == null || (v >= rMin && v <= rMax)
+        })
+      }
+    }
+    for (const [specName, value] of Object.entries(booleanFilters)) {
+      if (value != null) {
+        filtered = filtered.filter(p => p.specs[specName]?.value === value)
+      }
+    }
+  }
+
+  return filtered
+}
 
 let _idCounter = Date.now()
 const uid = () => `proj_${_idCounter++}`
@@ -43,21 +125,30 @@ const useStore = create(
 
       // Data (not persisted — fetched fresh each load)
       products: [],
+      lowestPrices: {},       // { [productKey]: lowestRetailPrice }
+      lowestUsedPrices: {},   // { [productKey]: lowestUsedPrice }
+      lowestRentalRates: {},  // { [productKey]: lowestDailyRate } — for user's currency
+      userCountry: null,      // ISO country code from IP geo
       loading: true,
       error: null,
 
       // Filters (not persisted)
       searchQuery: '',
       activeCategory: null,
+      activeSubcategory: null,
       selectedBrands: [],
       priceRange: null,
       specFilters: {},
       rangeFilters: {},
-
       booleanFilters: {},
 
       // Comparison basket (not persisted)
       comparisonIds: [],
+      comparisonModalOpen: false,
+
+      // UI overlays (not persisted)
+      conciergeOpen: false,
+      searchDrawerOpen: false,
 
       // ── Multi-Project Manifest (persisted) ──
       projects: [],            // [{ id, name, items: [{ productId, quantity }] }]
@@ -67,13 +158,52 @@ const useStore = create(
       // Actions — Data
       // ══════════════════════════════════════
       loadProducts: async () => {
-        set({ loading: true, error: null })
-        try {
-          const products = await fetchAllProducts()
-          set({ products, loading: false })
-        } catch (err) {
-          set({ error: err.message, loading: false })
+        const CACHE_KEY = 'gearhub_products_v1'
+        const CACHE_TTL = 10 * 60 * 1000 // 10 minutes
+        const COUNTRY_TO_CURRENCY = { US:'USD', GB:'GBP', AU:'AUD', IN:'INR', CA:'CAD', NZ:'NZD' }
+
+        // Helper: fetch fresh data, cache it, update store
+        const fetchFresh = async ({ showLoading = true } = {}) => {
+          if (showLoading) set({ loading: true, error: null })
+          try {
+            const [products, lowestPrices, lowestUsedPrices] = await Promise.all([
+              fetchAllProducts(),
+              fetchLowestRetailPrices(),
+              fetchLowestUsedPrices(),
+            ])
+            try {
+              localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products, lowestPrices, lowestUsedPrices }))
+            } catch (_) {} // quota exceeded — silently skip caching
+            set({ products, lowestPrices, lowestUsedPrices, loading: false })
+          } catch (err) {
+            if (showLoading) set({ error: err.message, loading: false })
+          }
+
+          // Geo + rental load non-blocking (doesn't hold up the UI)
+          fetch('https://ipapi.co/json/')
+            .then(r => r.json()).catch(() => ({}))
+            .then(geo => {
+              const userCountry  = geo?.country_code || null
+              const userCurrency = COUNTRY_TO_CURRENCY[userCountry] || 'USD'
+              set({ userCountry })
+              return fetchLowestRentalRates(userCurrency)
+            })
+            .then(lowestRentalRates => set({ lowestRentalRates }))
+            .catch(() => {})
         }
+
+        // Try to serve from cache first for instant load
+        try {
+          const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null')
+          if (cached && Date.now() - cached.ts < CACHE_TTL) {
+            set({ products: cached.products, lowestPrices: cached.lowestPrices, lowestUsedPrices: cached.lowestUsedPrices, loading: false })
+            // Refresh in background — user sees content immediately
+            fetchFresh({ showLoading: false })
+            return
+          }
+        } catch (_) {} // corrupt cache — fall through to full fetch
+
+        await fetchFresh({ showLoading: true })
       },
 
       // ══════════════════════════════════════
@@ -83,11 +213,14 @@ const useStore = create(
 
       setActiveCategory: (category) => set({
         activeCategory: category,
+        activeSubcategory: null,
         selectedBrands: [],
         specFilters: {},
         rangeFilters: {},
         booleanFilters: {},
       }),
+
+      setActiveSubcategory: (sub) => set({ activeSubcategory: sub }),
 
       toggleBrand: (brand) => set((state) => ({
         selectedBrands: state.selectedBrands.includes(brand)
@@ -112,6 +245,7 @@ const useStore = create(
       clearAllFilters: () => set({
         searchQuery: '',
         activeCategory: null,
+        activeSubcategory: null,
         selectedBrands: [],
         priceRange: null,
         specFilters: {},
@@ -129,6 +263,13 @@ const useStore = create(
       })),
 
       clearComparison: () => set({ comparisonIds: [] }),
+      openComparisonModal: () => set({ comparisonModalOpen: true }),
+      closeComparisonModal: () => set({ comparisonModalOpen: false }),
+
+      toggleConcierge: () => set((s) => ({ conciergeOpen: !s.conciergeOpen })),
+      closeConcierge: () => set({ conciergeOpen: false }),
+      openSearchDrawer: () => set({ searchDrawerOpen: true }),
+      closeSearchDrawer: () => set({ searchDrawerOpen: false }),
 
       // ══════════════════════════════════════
       // Actions — Projects
@@ -294,120 +435,63 @@ const useStore = create(
       // ══════════════════════════════════════
       // Derived — Filters
       // ══════════════════════════════════════
-      getFilteredProducts: () => {
-        const {
-          products, searchQuery, activeCategory,
-          selectedBrands, priceRange, specFilters, rangeFilters, booleanFilters,
-        } = get()
-        let filtered = products
 
-        if (activeCategory) {
-          const tables = getCategoryTables(activeCategory)
-          filtered = filtered.filter(p => tables.includes(p.category))
-        }
+      // Full filter result — used for product grid
+      getFilteredProducts: () => buildFilteredPool(get()),
 
-        if (searchQuery.trim()) {
-          const q = searchQuery.toLowerCase()
-          filtered = filtered.filter(p =>
-            p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q)
-          )
-        }
-
-        if (selectedBrands.length > 0) {
-          filtered = filtered.filter(p => selectedBrands.includes(p.brand))
-        }
-
-        if (priceRange) {
-          const [min, max] = priceRange
-          filtered = filtered.filter(p => {
-            if (p.price === null) return true
-            return p.price >= min && p.price <= max
-          })
-        }
-
-        for (const [specName, values] of Object.entries(specFilters)) {
-          if (values && values.length > 0) {
-            filtered = filtered.filter(p => {
-              const spec = p.specs[specName]
-              if (!spec || !spec.value) return false
-              return values.includes(spec.raw)
-            })
-          }
-        }
-
-        for (const [specName, range] of Object.entries(rangeFilters)) {
-          if (range) {
-            const [min, max] = range
-            filtered = filtered.filter(p => {
-              const spec = p.specs[specName]
-              if (!spec || spec.value === null) return true
-              return spec.value >= min && spec.value <= max
-            })
-          }
-        }
-
-        for (const [specName, value] of Object.entries(booleanFilters)) {
-          if (value !== null && value !== undefined) {
-            filtered = filtered.filter(p => {
-              const spec = p.specs[specName]
-              if (!spec) return false
-              return spec.value === value
-            })
-          }
-        }
-
-        return filtered
-      },
-
+      // Brands available given all active filters EXCEPT the brand filter itself.
+      // Ensures brand list contracts to only brands present in the current subcategory/spec context.
       getAvailableBrands: () => {
-        const { products, activeCategory } = get()
-        const pool = activeCategory
-          ? products.filter(p => getCategoryTables(activeCategory).includes(p.category))
-          : products
+        const pool = buildFilteredPool(get(), new Set(['brands']))
         return [...new Set(pool.map(p => p.brand))].sort()
       },
 
+      // Per-brand product counts using the same faceted pool (excludes brand filter).
+      getBrandCounts: () => {
+        const pool = buildFilteredPool(get(), new Set(['brands']))
+        const counts = {}
+        for (const p of pool) counts[p.brand] = (counts[p.brand] || 0) + 1
+        return counts
+      },
+
+      // Subcategory-counting pool: everything except subcategory filter.
+      // Used to show how many products each subcategory has given brand/spec/price filters.
+      getSubcategoryPool: () => buildFilteredPool(get(), new Set(['subcategory'])),
+
       getPriceRange: () => {
-        const { products, activeCategory } = get()
-        const pool = activeCategory
-          ? products.filter(p => getCategoryTables(activeCategory).includes(p.category))
-          : products
+        // Use full category + subcategory pool (unaffected by price slider itself)
+        const pool = buildFilteredPool(get(), new Set(['price', 'brands', 'specs']))
         const prices = pool.map(p => p.price).filter(p => p !== null)
         if (prices.length === 0) return null
         return [Math.min(...prices), Math.max(...prices)]
       },
 
+      // Spec options/ranges computed from pool with all filters EXCEPT spec filters.
+      // This means spec options reflect the current subcategory + brand selection,
+      // rather than showing all possible values for the whole category.
       getSpecMeta: () => {
-        const { products, activeCategory } = get()
-        if (!activeCategory) return { numeric: {}, categorical: {}, boolean: {} }
+        const state = get()
+        if (!state.activeCategory) return { numeric: {}, categorical: {}, boolean: {} }
 
-        const specCols = getSpecColumns(activeCategory)
-        const pool = products.filter(p => getCategoryTables(activeCategory).includes(p.category))
+        const specCols = getSpecColumns(state.activeCategory)
+        const pool = buildFilteredPool(state, new Set(['specs']))
         const numeric = {}
         const categorical = {}
         const boolean = {}
 
-        for (const [col, label, type] of specCols) {
+        for (const [col, , type] of specCols) {
           if (type === 'numeric') {
-            const values = pool
-              .map(p => p.specs[col]?.value)
-              .filter(v => v !== null && v !== undefined)
-            if (values.length > 0) {
-              numeric[col] = [Math.min(...values), Math.max(...values)]
-            }
+            const values = pool.map(p => p.specs[col]?.value).filter(v => v != null)
+            if (values.length > 0) numeric[col] = [Math.min(...values), Math.max(...values)]
           } else if (type === 'boolean') {
-            const trueCount = pool.filter(p => p.specs[col]?.value === true).length
+            const trueCount  = pool.filter(p => p.specs[col]?.value === true).length
             const falseCount = pool.filter(p => p.specs[col]?.value === false).length
-            if (trueCount > 0 || falseCount > 0) {
-              boolean[col] = { trueCount, falseCount }
-            }
+            if (trueCount > 0 || falseCount > 0) boolean[col] = { trueCount, falseCount }
           } else {
             const values = [...new Set(
               pool.map(p => p.specs[col]?.raw).filter(v => v && v !== 'N/A')
             )].sort()
-            if (values.length > 0) {
-              categorical[col] = values
-            }
+            if (values.length > 0) categorical[col] = values
           }
         }
 
@@ -416,6 +500,7 @@ const useStore = create(
     }),
     {
       name: 'gearhub-projects',
+      storage: ssrSafeStorage,
       // Only persist project data — everything else is ephemeral
       partialize: (state) => ({
         projects: state.projects,

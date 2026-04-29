@@ -1,7 +1,9 @@
+'use client'
+
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 import {
-  MessageSquareText, X, Send, Sparkles, Camera, Aperture, Zap,
+  X, Send, Sparkles, Camera, Aperture, Zap,
   ExternalLink, Bot, User, Loader, AlertCircle,
 } from 'lucide-react'
 import useStore from '../store/useStore'
@@ -19,12 +21,12 @@ const SUGGESTED_PROMPTS = [
 // ── Mini product card rendered inside chat bubbles ──
 
 function MiniProductCard({ product }) {
-  const navigate = useNavigate()
+  const router = useRouter()
   const CatIcon = CATEGORY_ICON[product.category]
 
   return (
     <button
-      onClick={() => navigate(`/product/${product.id}`)}
+      onClick={() => router.push(`/product/${product.id}`)}
       className="flex items-center gap-3 w-full bg-slate-950/60 border border-slate-800/30 rounded-xl px-3 py-2.5 hover:border-indigo-500/25 hover:bg-slate-950/80 transition-all duration-200 text-left group mt-1.5 mb-1"
     >
       {/* Thumbnail */}
@@ -126,14 +128,14 @@ function FormattedText({ text }) {
 // ── Main Concierge Component ──
 
 export default function AIConcierge() {
-  const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const scrollRef = useRef(null)
   const inputRef = useRef(null)
-  const { products } = useStore()
+  const { products, conciergeOpen, closeConcierge } = useStore()
+  const open = conciergeOpen
 
   const systemPrompt = useMemo(
     () => products.length > 0 ? buildSystemPrompt(products) : null,
@@ -191,21 +193,9 @@ export default function AIConcierge() {
 
   return (
     <>
-      {/* ── FAB Button ── */}
-      <button
-        onClick={() => setOpen(!open)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-lg ${
-          open
-            ? 'bg-slate-800 text-slate-400 hover:text-slate-200 rotate-0'
-            : 'bg-indigo-500 text-white hover:bg-indigo-400 hover:shadow-[0_0_24px_rgba(99,102,241,0.3)]'
-        }`}
-      >
-        {open ? <X size={20} /> : <MessageSquareText size={20} />}
-      </button>
-
       {/* ── Chat Window ── */}
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-[420px] h-[600px] flex flex-col bg-slate-900/70 backdrop-blur-xl border border-slate-700/30 rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div className="fixed bottom-[60px] md:bottom-4 right-3 left-3 sm:left-auto sm:right-6 sm:w-[420px] z-50 h-[70vh] sm:h-[600px] flex flex-col bg-slate-900/70 backdrop-blur-xl border border-slate-700/30 rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.5)] overflow-hidden">
 
           {/* Header */}
           <div className="px-5 py-4 border-b border-slate-800/40 bg-slate-900/50">
@@ -217,9 +207,18 @@ export default function AIConcierge() {
                 <h3 className="text-[13px] font-bold text-slate-100 tracking-tight">AI Concierge</h3>
                 <p className="text-[10px] text-slate-500 font-light">Expert cinematography advisor</p>
               </div>
-              <div className="ml-auto flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[9px] text-emerald-400/70 font-light">Online</span>
+              <div className="ml-auto flex items-center gap-2.5">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[9px] text-emerald-400/70 font-light">Online</span>
+                </div>
+                <button
+                  onClick={closeConcierge}
+                  className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-500 hover:text-white hover:bg-slate-800 transition-colors"
+                  aria-label="Close"
+                >
+                  <X size={14} />
+                </button>
               </div>
             </div>
           </div>
