@@ -63,7 +63,7 @@ function buildSubcategories(catKey, pool, allProducts) {
 const PRIMARY_SPECS = {
   cameras:  new Set(['sensor_size', 'max_video_resolution', 'lens_mount', 'dynamic_range_stops', 'ibis', 'weather_sealed']),
   lenses:   new Set(['focal_length', 'max_aperture', 'lens_mount', 'image_stabilization']),
-  lighting: new Set(['power_draw_w', 'color_type', 'battery_option']),
+  lighting: new Set(['power_draw_w', 'battery_option']),
 }
 
 // ─── Checkbox filter ───────────────────────────────────────────────────────────
