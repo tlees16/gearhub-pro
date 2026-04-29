@@ -414,12 +414,7 @@ export default function FilterSidebar() {
       {activeCategory ? (
         <div className="space-y-0">
           {primaryFilters}
-
-          {secondaryFilters.length > 0 && (
-            <Section title="More Filters" defaultOpen={false}>
-              <div className="space-y-0 pt-1">{secondaryFilters}</div>
-            </Section>
-          )}
+          {secondaryFilters}
 
           {/* Brand */}
           {brands.length > 0 && (
