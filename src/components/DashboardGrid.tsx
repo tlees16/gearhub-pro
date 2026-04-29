@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect } from 'react'
-import { X } from 'lucide-react'
+import { X, Search } from 'lucide-react'
 import FilterSidebar from './FilterSidebar'
 import ProductList from './ProductList'
 import useStore from '@/store/useStore'
 
 export default function DashboardGrid() {
-  const { searchDrawerOpen, closeSearchDrawer } = useStore()
+  const { searchDrawerOpen, closeSearchDrawer, searchQuery, setSearchQuery } = useStore()
   const filteredCount = useStore(s => s.getFilteredProducts().length)
 
   // Clean up drawer state when this component unmounts (user navigated away)
@@ -40,6 +40,29 @@ export default function DashboardGrid() {
               >
                 <X size={14} />
               </button>
+            </div>
+
+            {/* Search input */}
+            <div className="flex-shrink-0 px-4 py-3 border-b border-zinc-800">
+              <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 focus-within:border-zinc-600 transition-colors">
+                <Search size={14} className="text-zinc-600 shrink-0" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search gear..."
+                  autoFocus
+                  className="flex-1 bg-transparent text-[13px] text-zinc-200 placeholder-zinc-600 outline-none"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="text-zinc-600 hover:text-zinc-400 transition-colors"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Filter content — scrollable */}

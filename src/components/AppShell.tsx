@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
-  Database, GitCompareArrows, List, LogIn, LogOut, User, Home, Sparkles, SlidersHorizontal,
+  Database, GitCompareArrows, List, LogIn, LogOut, User, Home, Sparkles,
 } from 'lucide-react'
 import useStore from '../store/useStore'
 import ComparisonTray from './ComparisonTray'
@@ -20,21 +20,11 @@ function Header() {
   const pathname = usePathname()
   const {
     products, comparisonIds, projects, user, signOut, openAuthModal,
-    conciergeOpen, toggleConcierge, openSearchDrawer,
-    activeCategory, selectedBrands, priceRange, specFilters, rangeFilters, booleanFilters,
+    conciergeOpen, toggleConcierge,
   } = useStore()
 
   const totalItems = projects.reduce((s: number, p: { items: unknown[] }) => s + p.items.length, 0)
   const onHome = pathname === '/'
-
-  const activeFilterCount = [
-    activeCategory ? 1 : 0,
-    (selectedBrands as string[]).length,
-    priceRange ? 1 : 0,
-    Object.values(specFilters as Record<string, unknown[]>).filter((v) => v?.length > 0).length,
-    Object.keys(rangeFilters as Record<string, unknown>).length,
-    Object.values(booleanFilters as Record<string, unknown>).filter((v) => v !== null && v !== undefined).length,
-  ].reduce((a, b) => a + b, 0)
 
   return (
     <header className="h-12 flex-shrink-0 flex items-center justify-between px-4 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm z-40">
@@ -53,22 +43,6 @@ function Header() {
 
       {/* Nav actions */}
       <nav className="flex items-center gap-2" aria-label="Main navigation">
-        {/* Filters — home page only, all sizes */}
-        {onHome && (
-          <button
-            onClick={openSearchDrawer}
-            className="relative flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] font-medium text-zinc-400 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 rounded-md transition-colors"
-          >
-            <SlidersHorizontal className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Filters</span>
-            {activeFilterCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 bg-indigo-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1 tabular-nums">
-                {activeFilterCount}
-              </span>
-            )}
-          </button>
-        )}
-
         {/* AI Concierge — all sizes */}
         <button
           onClick={toggleConcierge}

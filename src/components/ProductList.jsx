@@ -8,6 +8,7 @@ import { SUBCATEGORIES } from '../services/dataService'
 import {
   Package, Loader, Camera, Aperture, Zap, Wind,
   CircleDot, ChevronLeft, ChevronRight, Flame, GitCompareArrows,
+  Search, SlidersHorizontal,
 } from 'lucide-react'
 
 const CATEGORY_META = {
@@ -195,7 +196,7 @@ function CategoryCarouselRow({ icon: Icon, iconColor, label, products, onViewAll
   )
 }
 
-function HomePage({ products, setActiveCategory }) {
+function HomePage({ products, setActiveCategory, openSearchDrawer, activeFilterCount }) {
   const router = useRouter()
   const { comparisonIds } = useStore()
 
@@ -258,7 +259,7 @@ function HomePage({ products, setActiveCategory }) {
       )}
 
       {/* ── Category tiles ────────────────────────────────────────── */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-10">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
         <CategoryTile catKey="cameras" label="Cameras" icon={Camera} count={cameraCount}
           subs="Cinema · Mirrorless · DSLR" accentText="text-blue-400" accentBg="bg-blue-500/10"
           setActiveCategory={setActiveCategory} />
@@ -268,6 +269,27 @@ function HomePage({ products, setActiveCategory }) {
         <CategoryTile catKey="lighting" label="Lighting" icon={Zap} count={lightingCount}
           subs="Panels · Monolights · Fresnels" accentText="text-amber-400" accentBg="bg-amber-500/10"
           setActiveCategory={setActiveCategory} />
+      </div>
+
+      {/* ── Floating search button ────────────────────────────────── */}
+      <div className="flex justify-center mb-10">
+        <button
+          onClick={openSearchDrawer}
+          className="group relative flex items-center gap-3 w-full max-w-sm px-5 py-3.5 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900 transition-all duration-200 shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)]"
+        >
+          <Search size={15} className="text-zinc-500 group-hover:text-zinc-400 transition-colors shrink-0" />
+          <span className="text-[13px] text-zinc-500 font-light group-hover:text-zinc-400 transition-colors">
+            Search gear...
+          </span>
+          {activeFilterCount > 0 && (
+            <span className="ml-auto flex items-center gap-1 text-[10px] font-semibold text-indigo-400 tabular-nums">
+              <span className="w-4 h-4 flex items-center justify-center bg-indigo-600 text-white text-[8px] font-bold rounded-full">
+                {activeFilterCount}
+              </span>
+              active
+            </span>
+          )}
+        </button>
       </div>
 
       {/* ── Just Released ─────────────────────────────────────────── */}
@@ -314,7 +336,7 @@ export default function ProductList() {
     loading, error, getFilteredProducts, products,
     activeCategory, searchQuery, selectedBrands, priceRange,
     specFilters, rangeFilters, booleanFilters, setActiveCategory,
-    clearAllFilters,
+    clearAllFilters, openSearchDrawer,
   } = useStore()
 
   const filtered = getFilteredProducts()
@@ -363,6 +385,13 @@ export default function ProductList() {
       {/* ── Active filter chips strip — only when filters are active ── */}
       {hasActiveFilters && (
         <div className="flex-shrink-0 flex items-center gap-2 px-4 py-2 border-b border-zinc-800/40 bg-zinc-950 overflow-x-auto scrollbar-none">
+          <button
+            onClick={openSearchDrawer}
+            className="shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-800 border border-zinc-700 hover:border-zinc-600 text-[11px] font-medium text-zinc-300 transition-colors"
+          >
+            <SlidersHorizontal size={11} />
+            Search
+          </button>
           {activeCategory && (
             <span className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/25 text-[11px] font-medium text-indigo-300">
               {CATEGORY_LABELS[activeCategory] || activeCategory}
@@ -395,7 +424,7 @@ export default function ProductList() {
       {/* ── Content ─────────────────────────────────────────────────── */}
       <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-6 bg-black">
         {!hasActiveFilters ? (
-          <HomePage products={products} setActiveCategory={setActiveCategory} />
+          <HomePage products={products} setActiveCategory={setActiveCategory} openSearchDrawer={openSearchDrawer} activeFilterCount={activeFilterCount} />
         ) : (
           <>
             {filtered.length === 0 ? (

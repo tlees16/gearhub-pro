@@ -285,7 +285,7 @@ export default function ComparePage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="h-full overflow-y-auto bg-zinc-950 text-white">
       {/* Header */}
       <header className="sticky top-0 z-30 border-b border-zinc-800/60 bg-zinc-950/90 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
