@@ -8,7 +8,7 @@ import { SUBCATEGORIES } from '../services/dataService'
 import {
   Package, Loader, Camera, Aperture, Zap, Wind,
   CircleDot, ChevronLeft, ChevronRight, Flame, GitCompareArrows,
-  Search, SlidersHorizontal,
+  Search,
 } from 'lucide-react'
 
 const CATEGORY_META = {
@@ -196,7 +196,7 @@ function CategoryCarouselRow({ icon: Icon, iconColor, label, products, onViewAll
   )
 }
 
-function HomePage({ products, setActiveCategory, openSearchDrawer, activeFilterCount }) {
+function HomePage({ products, setActiveCategory }) {
   const router = useRouter()
   const { comparisonIds } = useStore()
 
@@ -271,23 +271,6 @@ function HomePage({ products, setActiveCategory, openSearchDrawer, activeFilterC
           setActiveCategory={setActiveCategory} />
       </div>
 
-      {/* ── Search button ─────────────────────────────────────────── */}
-      <div className="flex justify-center mb-10">
-        <button
-          onClick={openSearchDrawer}
-          className="group flex items-center gap-2.5 px-7 py-3 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/80 transition-all duration-200 shadow-[0_4px_24px_rgba(0,0,0,0.5)]"
-        >
-          <Search size={14} className="text-zinc-500 group-hover:text-zinc-400 transition-colors" />
-          <span className="text-[14px] font-semibold text-zinc-300 group-hover:text-white transition-colors tracking-tight">
-            Search
-          </span>
-          {activeFilterCount > 0 && (
-            <span className="w-4 h-4 flex items-center justify-center bg-indigo-600 text-white text-[8px] font-bold rounded-full tabular-nums">
-              {activeFilterCount}
-            </span>
-          )}
-        </button>
-      </div>
 
       {/* ── Just Released ─────────────────────────────────────────── */}
       {hasNew && (
@@ -379,16 +362,25 @@ export default function ProductList() {
   return (
     <div className="flex-1 min-h-0 flex flex-col overflow-hidden bg-zinc-950">
 
-      {/* ── Active filter chips strip — only when filters are active ── */}
+      {/* ── Search row — always visible, no border, centered pill ── */}
+      <div className="flex-shrink-0 flex items-center justify-center px-4 py-2.5 bg-zinc-950">
+        <button
+          onClick={openSearchDrawer}
+          className="group flex items-center gap-2 px-7 py-2 rounded-full bg-zinc-900 border border-zinc-700/60 shadow-[0_2px_14px_rgba(0,0,0,0.55)] hover:border-zinc-600 hover:bg-zinc-800/80 transition-all duration-200"
+        >
+          <Search size={13} className="text-zinc-500 group-hover:text-zinc-400 transition-colors" />
+          <span className="text-[13px] font-semibold text-zinc-300 group-hover:text-white transition-colors tracking-tight">Search</span>
+          {activeFilterCount > 0 && (
+            <span className="w-4 h-4 flex items-center justify-center bg-indigo-600 text-white text-[8px] font-bold rounded-full tabular-nums ml-0.5">
+              {activeFilterCount}
+            </span>
+          )}
+        </button>
+      </div>
+
+      {/* ── Active filter chips ── */}
       {hasActiveFilters && (
-        <div className="flex-shrink-0 flex items-center gap-2 px-4 py-2 border-b border-zinc-800/40 bg-zinc-950 overflow-x-auto scrollbar-none">
-          <button
-            onClick={openSearchDrawer}
-            className="shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-800 border border-zinc-700 hover:border-zinc-600 text-[11px] font-medium text-zinc-300 transition-colors"
-          >
-            <SlidersHorizontal size={11} />
-            Search
-          </button>
+        <div className="flex-shrink-0 flex items-center gap-2 px-4 pb-2 overflow-x-auto scrollbar-none">
           {activeCategory && (
             <span className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/25 text-[11px] font-medium text-indigo-300">
               {CATEGORY_LABELS[activeCategory] || activeCategory}
@@ -405,13 +397,8 @@ export default function ProductList() {
             </span>
           )}
           <div className="flex items-center gap-3 ml-auto shrink-0">
-            <span className="text-[11px] text-zinc-600 tabular-nums whitespace-nowrap">
-              {filtered.length.toLocaleString()} results
-            </span>
-            <button
-              onClick={clearAllFilters}
-              className="text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors whitespace-nowrap min-h-[44px] md:min-h-0 px-1"
-            >
+            <span className="text-[11px] text-zinc-600 tabular-nums whitespace-nowrap">{filtered.length.toLocaleString()} results</span>
+            <button onClick={clearAllFilters} className="text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors whitespace-nowrap min-h-[44px] md:min-h-0 px-1">
               Clear all
             </button>
           </div>
@@ -421,7 +408,7 @@ export default function ProductList() {
       {/* ── Content ─────────────────────────────────────────────────── */}
       <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-6 bg-black">
         {!hasActiveFilters ? (
-          <HomePage products={products} setActiveCategory={setActiveCategory} openSearchDrawer={openSearchDrawer} activeFilterCount={activeFilterCount} />
+          <HomePage products={products} setActiveCategory={setActiveCategory} />
         ) : (
           <>
             {filtered.length === 0 ? (

@@ -10,7 +10,6 @@ export default function DashboardGrid() {
   const { searchDrawerOpen, closeSearchDrawer, searchQuery, setSearchQuery } = useStore()
   const filteredCount = useStore(s => s.getFilteredProducts().length)
 
-  // Clean up drawer state when this component unmounts (user navigated away)
   useEffect(() => {
     return () => closeSearchDrawer()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -18,67 +17,62 @@ export default function DashboardGrid() {
   return (
     <div className="h-full flex flex-col overflow-hidden bg-zinc-950">
 
-      {/* Search drawer */}
+      {/* ── Full-page search overlay ── */}
       {searchDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-            onClick={closeSearchDrawer}
-          />
+        <div className="fixed inset-0 z-50 bg-zinc-950 flex flex-col">
 
-          {/* Panel — slides in from right */}
-          <div className="relative flex flex-col w-80 max-w-[90vw] h-full bg-zinc-950 border-l border-zinc-800 shadow-2xl overflow-hidden">
+          {/* Header */}
+          <div className="flex-shrink-0 flex items-center gap-3 px-4 pt-5 pb-3">
+            <h2 className="text-[16px] font-bold text-white tracking-tight">Search Criteria</h2>
+            <button
+              onClick={closeSearchDrawer}
+              aria-label="Close"
+              className="ml-auto flex items-center justify-center w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"
+            >
+              <X size={15} />
+            </button>
+          </div>
 
-            {/* Drawer header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800 flex-shrink-0">
-              <span className="text-[12px] font-bold text-zinc-200 tracking-wide">Search Criteria</span>
-              <button
-                onClick={closeSearchDrawer}
-                aria-label="Close"
-                className="w-7 h-7 flex items-center justify-center rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
-              >
-                <X size={14} />
-              </button>
-            </div>
-
-            {/* Search input */}
-            <div className="flex-shrink-0 px-4 py-3 border-b border-zinc-800">
-              <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 focus-within:border-zinc-600 transition-colors">
-                <Search size={14} className="text-zinc-600 shrink-0" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search gear..."
-                  className="flex-1 bg-transparent text-[13px] text-zinc-200 placeholder-zinc-600 outline-none"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="text-zinc-600 hover:text-zinc-400 transition-colors"
-                  >
-                    <X size={12} />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Filter content — scrollable */}
-            <div className="flex-1 overflow-y-auto overscroll-contain">
-              <FilterSidebar />
-            </div>
-
-            {/* Sticky "Show results" button */}
-            <div className="flex-shrink-0 p-3 border-t border-zinc-800 bg-zinc-950">
-              <button
-                onClick={closeSearchDrawer}
-                className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-[13px] font-semibold transition-colors"
-              >
-                Show {filteredCount.toLocaleString()} result{filteredCount !== 1 ? 's' : ''}
-              </button>
+          {/* Search input */}
+          <div className="flex-shrink-0 px-4 pb-4">
+            <div className="flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 focus-within:border-zinc-600 transition-colors">
+              <Search size={16} className="text-zinc-500 shrink-0" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search cameras, lenses, lighting..."
+                className="flex-1 bg-transparent text-[14px] text-zinc-200 placeholder-zinc-600 outline-none"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="text-zinc-600 hover:text-zinc-400 transition-colors"
+                >
+                  <X size={14} />
+                </button>
+              )}
             </div>
           </div>
+
+          {/* Divider */}
+          <div className="flex-shrink-0 h-px bg-zinc-800/60 mx-4" />
+
+          {/* Filter content */}
+          <div className="flex-1 overflow-y-auto overscroll-contain">
+            <FilterSidebar />
+          </div>
+
+          {/* Show results CTA */}
+          <div className="flex-shrink-0 px-4 py-4 border-t border-zinc-800/50 bg-zinc-950">
+            <button
+              onClick={closeSearchDrawer}
+              className="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white text-[15px] font-semibold tracking-tight transition-colors"
+            >
+              Show {filteredCount.toLocaleString()} result{filteredCount !== 1 ? 's' : ''}
+            </button>
+          </div>
+
         </div>
       )}
 
