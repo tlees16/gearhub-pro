@@ -305,12 +305,6 @@ function HomePage({ products, setActiveCategory }) {
 
 // ─── Main export ─────────────────────────────────────────────────────────────
 
-// Labels for active category chips
-const CATEGORY_LABELS = {
-  cameras: 'Cameras', lenses: 'Lenses', lighting: 'Lighting',
-  drones: 'Drones', gimbals: 'Gimbals', accessories: 'Accessories',
-}
-
 export default function ProductList() {
   const {
     loading, error, getFilteredProducts, products,
@@ -362,51 +356,31 @@ export default function ProductList() {
   return (
     <div className="flex-1 min-h-0 flex flex-col overflow-hidden bg-zinc-950">
 
-      {/* ── Search row — always visible, no border, centered pill ── */}
-      <div className="flex-shrink-0 flex items-center justify-center px-4 py-2.5 bg-zinc-950">
+      {/* ── Floating search button ── */}
+      <div className="fixed bottom-20 md:bottom-8 left-1/2 -translate-x-1/2 z-30">
         <button
           onClick={openSearchDrawer}
-          className="group flex items-center gap-2 px-7 py-2 rounded-full bg-zinc-900 border border-zinc-700/60 shadow-[0_2px_14px_rgba(0,0,0,0.55)] hover:border-zinc-600 hover:bg-zinc-800/80 transition-all duration-200"
+          className="group relative flex items-center gap-2.5 px-6 py-3.5 rounded-full
+            bg-zinc-950/95 backdrop-blur-xl
+            border border-zinc-700/50
+            shadow-[0_4px_24px_rgba(0,0,0,0.8),0_1px_0_rgba(255,255,255,0.04)_inset]
+            hover:bg-zinc-900/95 hover:border-zinc-600/60
+            hover:shadow-[0_4px_32px_rgba(0,0,0,0.9),0_0_40px_rgba(255,255,255,0.03)]
+            active:scale-[0.96]
+            transition-all duration-200"
         >
-          <Search size={13} className="text-zinc-500 group-hover:text-zinc-400 transition-colors" />
-          <span className="text-[13px] font-bold text-white tracking-tight">Search</span>
+          <Search size={14} className="text-zinc-400 group-hover:text-zinc-200 transition-colors shrink-0" />
+          <span className="text-[14px] font-bold text-white tracking-tight">Search</span>
           {activeFilterCount > 0 && (
-            <span className="w-4 h-4 flex items-center justify-center bg-indigo-600 text-white text-[8px] font-bold rounded-full tabular-nums ml-0.5">
-              {activeFilterCount}
+            <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-indigo-600 text-white text-[9px] font-bold rounded-full tabular-nums">
+              {activeFilterCount > 9 ? '9+' : activeFilterCount}
             </span>
           )}
         </button>
       </div>
 
-      {/* ── Active filter chips ── */}
-      {hasActiveFilters && (
-        <div className="flex-shrink-0 flex items-center gap-2 px-4 pb-2 overflow-x-auto scrollbar-none">
-          {activeCategory && (
-            <span className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/25 text-[11px] font-medium text-indigo-300">
-              {CATEGORY_LABELS[activeCategory] || activeCategory}
-            </span>
-          )}
-          {selectedBrands.slice(0, 3).map(b => (
-            <span key={b} className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full bg-zinc-800 border border-zinc-700 text-[11px] text-zinc-400">
-              {b}
-            </span>
-          ))}
-          {selectedBrands.length > 3 && (
-            <span className="shrink-0 flex items-center px-2 py-1 rounded-full bg-zinc-800 text-[11px] text-zinc-500">
-              +{selectedBrands.length - 3}
-            </span>
-          )}
-          <div className="flex items-center gap-3 ml-auto shrink-0">
-            <span className="text-[11px] text-zinc-600 tabular-nums whitespace-nowrap">{filtered.length.toLocaleString()} results</span>
-            <button onClick={clearAllFilters} className="text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors whitespace-nowrap min-h-[44px] md:min-h-0 px-1">
-              Clear all
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* ── Content ─────────────────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-6 bg-black">
+      <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-6 pb-28 md:pb-20 bg-black">
         {!hasActiveFilters ? (
           <HomePage products={products} setActiveCategory={setActiveCategory} />
         ) : (

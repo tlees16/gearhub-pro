@@ -11,7 +11,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Unified dual-thumb range slider ── */
+/* ── Unified dual-thumb range slider — bigger, more responsive ── */
 .range-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -26,41 +26,41 @@ body {
   -webkit-appearance: none;
   appearance: none;
   pointer-events: all;
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: #6366f1;
+  background: #e4e4e7;
   cursor: grab;
-  border: 2px solid #020617;
-  box-shadow: 0 0 6px rgba(99, 102, 241, 0.4);
-  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  border: 2px solid #18181b;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.06), 0 2px 8px rgba(0,0,0,0.6);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .range-thumb::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.12), 0 2px 12px rgba(0,0,0,0.7);
   transform: scale(1.15);
 }
 
 .range-thumb::-webkit-slider-thumb:active {
   cursor: grabbing;
-  box-shadow: 0 0 14px rgba(99, 102, 241, 0.7);
   transform: scale(1.2);
 }
 
 .range-thumb::-moz-range-thumb {
   pointer-events: all;
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: #6366f1;
+  background: #e4e4e7;
   cursor: grab;
-  border: 2px solid #020617;
-  box-shadow: 0 0 6px rgba(99, 102, 241, 0.4);
-  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  border: 2px solid #18181b;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.06), 0 2px 8px rgba(0,0,0,0.6);
+  transition: transform 0.15s ease;
 }
 
 .range-thumb::-moz-range-thumb:hover {
-  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+  background: #ffffff;
   transform: scale(1.15);
 }
 
