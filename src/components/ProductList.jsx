@@ -369,7 +369,7 @@ export default function ProductList() {
           className="group flex items-center gap-2 px-7 py-2 rounded-full bg-zinc-900 border border-zinc-700/60 shadow-[0_2px_14px_rgba(0,0,0,0.55)] hover:border-zinc-600 hover:bg-zinc-800/80 transition-all duration-200"
         >
           <Search size={13} className="text-zinc-500 group-hover:text-zinc-400 transition-colors" />
-          <span className="text-[13px] font-semibold text-zinc-300 group-hover:text-white transition-colors tracking-tight">Search</span>
+          <span className="text-[13px] font-bold text-white tracking-tight">Search</span>
           {activeFilterCount > 0 && (
             <span className="w-4 h-4 flex items-center justify-center bg-indigo-600 text-white text-[8px] font-bold rounded-full tabular-nums ml-0.5">
               {activeFilterCount}
