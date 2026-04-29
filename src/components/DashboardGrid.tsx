@@ -20,15 +20,15 @@ export default function DashboardGrid() {
 
       {/* Search drawer */}
       {searchDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex">
+        <div className="fixed inset-0 z-50 flex justify-end">
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={closeSearchDrawer}
           />
 
-          {/* Panel */}
-          <div className="relative flex flex-col w-80 max-w-[90vw] h-full bg-zinc-950 border-r border-zinc-800 shadow-2xl overflow-hidden">
+          {/* Panel — slides in from right */}
+          <div className="relative flex flex-col w-80 max-w-[90vw] h-full bg-zinc-950 border-l border-zinc-800 shadow-2xl overflow-hidden">
 
             {/* Drawer header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800 flex-shrink-0">
@@ -51,7 +51,6 @@ export default function DashboardGrid() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search gear..."
-                  autoFocus
                   className="flex-1 bg-transparent text-[13px] text-zinc-200 placeholder-zinc-600 outline-none"
                 />
                 {searchQuery && (

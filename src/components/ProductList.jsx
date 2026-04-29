@@ -271,22 +271,19 @@ function HomePage({ products, setActiveCategory, openSearchDrawer, activeFilterC
           setActiveCategory={setActiveCategory} />
       </div>
 
-      {/* ── Floating search button ────────────────────────────────── */}
+      {/* ── Search button ─────────────────────────────────────────── */}
       <div className="flex justify-center mb-10">
         <button
           onClick={openSearchDrawer}
-          className="group relative flex items-center gap-3 w-full max-w-sm px-5 py-3.5 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900 transition-all duration-200 shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)]"
+          className="group flex items-center gap-2.5 px-7 py-3 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/80 transition-all duration-200 shadow-[0_4px_24px_rgba(0,0,0,0.5)]"
         >
-          <Search size={15} className="text-zinc-500 group-hover:text-zinc-400 transition-colors shrink-0" />
-          <span className="text-[13px] text-zinc-500 font-light group-hover:text-zinc-400 transition-colors">
-            Search gear...
+          <Search size={14} className="text-zinc-500 group-hover:text-zinc-400 transition-colors" />
+          <span className="text-[14px] font-semibold text-zinc-300 group-hover:text-white transition-colors tracking-tight">
+            Search
           </span>
           {activeFilterCount > 0 && (
-            <span className="ml-auto flex items-center gap-1 text-[10px] font-semibold text-indigo-400 tabular-nums">
-              <span className="w-4 h-4 flex items-center justify-center bg-indigo-600 text-white text-[8px] font-bold rounded-full">
-                {activeFilterCount}
-              </span>
-              active
+            <span className="w-4 h-4 flex items-center justify-center bg-indigo-600 text-white text-[8px] font-bold rounded-full tabular-nums">
+              {activeFilterCount}
             </span>
           )}
         </button>
