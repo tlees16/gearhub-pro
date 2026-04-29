@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
   ChevronRight,
-  ChevronDown,
   ChevronLeft,
   Package,
   Clock,
@@ -303,10 +302,16 @@ export default async function ProductPage({ productId }: { productId: string }) 
 
                 {/* product info */}
                 <div className="flex-1 min-w-0 pt-0 sm:pt-2">
-                  <div className="flex items-center gap-2 mb-2.5">
-                    {CatIcon && <CatIcon size={13} className="text-indigo-400" />}
-                    <span className="text-[10px] uppercase tracking-widest text-indigo-400/70 font-semibold">
-                      {rawProduct.brand}
+
+                  {/* Brand — prominent, above the title */}
+                  <p className="text-base font-semibold text-slate-100 mb-1 tracking-tight">
+                    {rawProduct.brand}
+                  </p>
+
+                  <div className="flex items-center gap-2 mb-2">
+                    {CatIcon && <CatIcon size={12} className="text-indigo-400/70" />}
+                    <span className="text-[10px] uppercase tracking-widest text-indigo-400/60 font-semibold">
+                      {categoryLabel(category)}
                     </span>
                     {rawProduct.subcategory && (
                       <>
@@ -325,10 +330,8 @@ export default async function ProductPage({ productId }: { productId: string }) 
                   <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-50 leading-tight">
                     {baseModel || rawProduct.name}
                   </h1>
-                  {configLabel ? (
+                  {configLabel && (
                     <p className="text-[13px] text-slate-500 font-mono mt-1 tracking-tight">{configLabel}</p>
-                  ) : (
-                    <p className="text-base text-slate-500 font-light mt-0.5">{rawProduct.brand}</p>
                   )}
 
                   {/* MSRP */}
@@ -459,27 +462,28 @@ export default async function ProductPage({ productId }: { productId: string }) 
             </div>
 
             {/* ── FULL SPECIFICATIONS ─────────────────────────────────────── */}
-            <details className="group bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden lg:col-start-1">
-              <summary className="flex items-center justify-between px-5 sm:px-6 py-4 cursor-pointer list-none select-none hover:bg-slate-800/20 transition-colors duration-200">
-                <span className="text-sm font-bold text-slate-100 tracking-tight">Full Specifications</span>
-                <ChevronDown className="w-4 h-4 text-slate-500 transition-transform group-open:rotate-180" />
-              </summary>
-              <div className="border-t border-slate-800/25 px-5 sm:px-6 pb-5 sm:pb-6 pt-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 sm:gap-x-12">
-                  {displaySpecs.map(([key, val]) => {
-                    const label = SPEC_LABEL_OVERRIDES[key] ?? key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-                    const strVal = String(val)
-                    const isLong = strVal.length > 50
-                    return (
-                      <div key={key} className={`flex gap-4 border-b border-slate-800/25 py-2.5 ${isLong ? 'flex-col sm:col-span-2' : 'items-start justify-between'}`}>
-                        <span className="text-[11px] text-slate-500 font-light shrink-0">{label}</span>
-                        <span className={`text-[11px] text-slate-300 ${isLong ? 'leading-relaxed' : 'text-right'}`}>{strVal}</span>
-                      </div>
-                    )
-                  })}
+            {displaySpecs.length > 0 && (
+              <div className="bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden lg:col-start-1">
+                <div className="px-5 sm:px-6 py-4 border-b border-slate-800/25">
+                  <span className="text-sm font-bold text-slate-100 tracking-tight">Full Specifications</span>
+                </div>
+                <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 sm:gap-x-12">
+                    {displaySpecs.map(([key, val]) => {
+                      const label = SPEC_LABEL_OVERRIDES[key] ?? key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                      const strVal = String(val)
+                      const isLong = strVal.length > 50
+                      return (
+                        <div key={key} className={`flex gap-4 border-b border-slate-800/25 py-2.5 ${isLong ? 'flex-col sm:col-span-2' : 'items-start justify-between'}`}>
+                          <span className="text-[11px] text-slate-500 font-light shrink-0">{label}</span>
+                          <span className={`text-[11px] text-slate-300 ${isLong ? 'leading-relaxed' : 'text-right'}`}>{strVal}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
               </div>
-            </details>
+            )}
 
           </div>
 
