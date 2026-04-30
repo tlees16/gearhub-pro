@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import {
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
   Package,
   Clock,
   Camera,
@@ -465,11 +466,12 @@ export default async function ProductPage({ productId }: { productId: string }) 
 
             {/* ── FULL SPECIFICATIONS ─────────────────────────────────────── */}
             {displaySpecs.length > 0 && (
-              <div className="bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden lg:col-start-1">
-                <div className="px-5 sm:px-6 py-4 border-b border-slate-800/25">
+              <details className="group bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden lg:col-start-1">
+                <summary className="flex items-center justify-between px-5 sm:px-6 py-4 cursor-pointer list-none select-none">
                   <span className="text-sm font-bold text-slate-100 tracking-tight">Full Specifications</span>
-                </div>
-                <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-4">
+                  <ChevronDown size={14} className="text-slate-500 transition-transform duration-200 group-open:rotate-180" />
+                </summary>
+                <div className="border-t border-slate-800/25 px-5 sm:px-6 pb-5 sm:pb-6 pt-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 sm:gap-x-12">
                     {displaySpecs.map(([key, val]) => {
                       const label = SPEC_LABEL_OVERRIDES[key] ?? key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
@@ -484,7 +486,7 @@ export default async function ProductPage({ productId }: { productId: string }) 
                     })}
                   </div>
                 </div>
-              </div>
+              </details>
             )}
 
           </div>
