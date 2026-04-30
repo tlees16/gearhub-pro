@@ -29,7 +29,12 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 
 sb = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_ROLE_KEY"])
 
-FUZZY_THRESHOLD = 78   # token_set_ratio cutoff (0–100); tune up if too many false matches
+FUZZY_THRESHOLD = 82   # token_set_ratio cutoff — raised from 78 to reduce false positives
+
+# Price-ratio guards: scraped price must be at least this fraction of catalogue MSRP.
+# Catches accessories ($50 eyepiece matched to $4k camera) that slip past the name filter.
+PRICE_RATIO_MIN_NEW  = 0.35   # new items: must be ≥35% of MSRP
+PRICE_RATIO_MIN_USED = 0.15   # used items: legitimately cheaper, but not < 15%
 
 # ─── Model-ID guard ───────────────────────────────────────────────────────────
 # Prevents "Canon EOS R5" from matching "Canon EOS R50", etc.
@@ -47,24 +52,45 @@ _ROMAN_RE    = re.compile(r"\b(II|III|IV|VI|VII|VIII|IX|XI|XII|V)\b")
 # Camera mount designators — order matters: longer tokens before shorter prefixes
 _MOUNT_RE    = re.compile(r"\b(EF-S|EF-M|EF|RF|PL|L-Mount|MFT|M43|Z|XF|GF|FE|E-Mount|F-Mount|SA)\b", re.I)
 
-# Products that are accessories / accessories-for-cameras, not cameras themselves
+# Products that are accessories / accessories-for-cameras, not cameras themselves.
+# Add keywords liberally — a false negative (missed accessory) pollutes market_data;
+# the price-ratio guard is the backstop for anything that slips through.
 _ACCESSORY_RE = re.compile(
     r"\bcage\b|\bring\b|\brig\b|\bhandle\b|\bbase\s*plate\b|\btop\s*plate\b"
     r"|\bhollow\b|\bbattery\s*grip\b|\bstrap\b|\bhood\b|\bfilter\b|\bprotector\b"
-    r"|\bbag\b|\bcase\b|\bstorage\b|\bcharger\b|\badapter\b|\bconverter\b"
-    r"|\bextender\b|\bteleconverter\b|\bflash\b|\btrigger\b|\btripod\b|\bhead\b"
+    r"|\bbag\b|\bcase\b|\bpouch\b|\bsleeve\b|\bstorage\b|\bcharger\b"
+    r"|\badapter\b|\bconverter\b|\bextender\b|\bteleconverter\b"
+    r"|\bflash\b|\btrigger\b|\btripod\b|\bmonopod\b|\bhead\b"
     r"|\bfocus\s*puller\b|\bfollow\s*focus\b|\brecorder\b|\bmonitor\b"
     r"|\bstabilizer\b|\bgimbal\b|\bmatte\s*box\b|\bsupport\b|\brail\b"
     r"|\bsmallrig\b|\batom\s*os\b|\bnitze\b|\bz\s*cam\b(?!\s+e2)"
     r"|\bviewfinder\b|\bhotshoe\b|\bhot\s*shoe\b|\bbracket\b|\bplate\b"
     r"|\bscreen\s*shield\b|\bscreen\s*protector\b|\btouch\s*screen\s*shield\b"
-    r"|\bpromaster\b|\btiffen\b|\bhoya\b|\bsandisk\b|\blexar\b|\bcleaning\b",
+    r"|\bpromaster\b|\btiffen\b|\bhoya\b|\bsandisk\b|\blexar\b|\bcleaning\b"
+    # Optics / eyepieces
+    r"|\beyepiece\b|\beye\s*piece\b|\beye\s*cup\b|\bdiopter\b|\bmagnifier\b"
+    # Rain / weather protection
+    r"|\brain\s*cover\b|\brain\s*coat\b|\bhydrophobia\b|\brain\s*sleeve\b"
+    # Cables, connectors, power
+    r"|\bcable\b|\bcord\b|\btether\b|\bpower\s*supply\b|\bac\s*adapter\b"
+    r"|\bd-tap\b|\bdtap\b|\bnp-f\b|\blp-e\b|\bpetrol\b"
+    # Grips, clamps, mounts
+    r"|\bpistol\s*grip\b|\bclamp\b|\bquick\s*release\b|\bshoe\s*mount\b"
+    # Books / media
+    r"|\bbook\b|\bguide\b|\bmanual\b|\bdvd\b|\bcourse\b"
+    # Audio
+    r"|\bmicrophone\b|\bmic\b|\baudio\b|\bwindscreen\b|\bdeadcat\b"
+    # Lens caps, caps, covers
+    r"|\blens\s*cap\b|\bbody\s*cap\b|\brear\s*cap\b|\bfront\s*cap\b|\bport\s*cover\b"
+    # Accessory brands that never make cameras/lenses/lights
+    r"|\bthink\s*tank\b|\bpeak\s*design\b|\bspiderpro\b|\bkondor\b|\bdeity\b"
+    r"|\bsyrp\b|\bkessler\b|\bninja\b|\bvideo\s*assist\b",
     re.I,
 )
 
 
 def _model_id(name: str) -> Optional[str]:
-    """Extract the most-discriminating token from a product name (e.g. 'R5', 'FX3')."""
+    """Extract the most-discriminating token from a product name (e.g. 'R5', 'FX3', 'fp')."""
     candidates = []
     for t in _TOKEN_RE.findall(name or ""):
         if t.upper() in _SKIP:
@@ -72,6 +98,8 @@ def _model_id(name: str) -> Optional[str]:
         if re.search(r"\d", t):
             candidates.append(t)
         elif 2 <= len(t) <= 5 and t.isupper():
+            candidates.append(t)
+        elif 2 <= len(t) <= 3 and t.islower():   # short lowercase model codes like "fp", "bm"
             candidates.append(t)
     return candidates[-1] if candidates else None
 
@@ -100,7 +128,7 @@ def _mount(text: str) -> Optional[str]:
 def load_catalogue() -> list[dict]:
     catalogue = []
     for table in ("cameras", "lenses", "lighting"):
-        rows = sb.table(table).select("id, name, brand").execute().data or []
+        rows = sb.table(table).select("id, name, brand, price").execute().data or []
         for r in rows:
             r["product_table"] = table
             r["_key"] = f"{r.get('brand', '')} {r.get('name', '')}".strip()
@@ -112,7 +140,7 @@ def load_catalogue() -> list[dict]:
 # ─── Fuzzy matching ───────────────────────────────────────────────────────────
 
 
-def fuzzy_match(raw_name: str, raw_sku: Optional[str], catalogue: list[dict]) -> Optional[dict]:
+def fuzzy_match(raw_name: str, raw_sku: Optional[str], raw_price: float, raw_condition: str, catalogue: list[dict]) -> Optional[dict]:
     # Reject accessories up front — a cage is not the camera it's made for
     if _ACCESSORY_RE.search(raw_name):
         return None
@@ -137,8 +165,9 @@ def fuzzy_match(raw_name: str, raw_sku: Optional[str], catalogue: list[dict]) ->
     matched = catalogue[keys.index(best[0])]
 
     # Model-ID guard: key discriminator (e.g. "R5") must appear in raw_name
+    # Uses word boundary so "A7" doesn't match inside "A7R IV".
     mid = _model_id(matched.get("name", ""))
-    if mid and mid.upper() not in raw_name.upper():
+    if mid and not re.search(r'\b' + re.escape(mid) + r'\b', raw_name, re.I):
         return None
 
     # Focal-length guard: if both sides name focal lengths they must share at least one
@@ -164,6 +193,15 @@ def fuzzy_match(raw_name: str, raw_sku: Optional[str], catalogue: list[dict]) ->
     cat_mount = _mount(matched["_key"])
     if raw_mount and cat_mount and raw_mount != cat_mount:
         return None
+
+    # Price-ratio guard: catches accessories that slip past the name filter.
+    # e.g. $50 eyepiece matched to $4,000 camera → reject.
+    cat_price = matched.get("price")
+    if cat_price and cat_price > 0 and raw_price and raw_price > 0:
+        ratio = raw_price / cat_price
+        min_ratio = PRICE_RATIO_MIN_USED if (raw_condition or "").lower() == "used" else PRICE_RATIO_MIN_NEW
+        if ratio < min_ratio:
+            return None
 
     return matched
 
@@ -243,7 +281,7 @@ def main():
             skipped_ct += 1
             continue
 
-        product = fuzzy_match(raw["name"], raw.get("sku"), catalogue)
+        product = fuzzy_match(raw["name"], raw.get("sku"), raw["price"], raw.get("condition", "New"), catalogue)
         if product is None:
             unmatched_ct += 1
             continue
