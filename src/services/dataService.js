@@ -420,6 +420,33 @@ export async function fetchLowestUsedPrices() {
   return map
 }
 
+// ─── Retailer counts per product (for homepage ≥3-retailer filter) ──
+// Returns { [productKey]: distinctRetailerCount } where productKey = `${table}-${id}`
+export async function fetchRetailerCounts() {
+  const PAGE = 1000
+  let rows = []
+  let offset = 0
+  while (true) {
+    const { data, error } = await supabase
+      .from('market_data')
+      .select('product_table, product_id, retailer_id')
+      .range(offset, offset + PAGE - 1)
+    if (error) return {}
+    rows = rows.concat(data || [])
+    if (!data || data.length < PAGE) break
+    offset += PAGE
+  }
+  const sets = {}
+  for (const row of rows) {
+    const key = `${row.product_table}-${row.product_id}`
+    if (!sets[key]) sets[key] = new Set()
+    sets[key].add(row.retailer_id)
+  }
+  const result = {}
+  for (const [key, s] of Object.entries(sets)) result[key] = s.size
+  return result
+}
+
 // ─── Lowest rental rates by currency (for ProductCard "rent $X/day") ─
 // currency param matches rental_entries.currency (USD / GBP / AUD / etc.)
 export async function fetchLowestRentalRates(currency = 'USD') {

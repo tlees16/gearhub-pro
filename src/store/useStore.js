@@ -8,7 +8,7 @@ const ssrSafeStorage = createJSONStorage(() =>
     ? localStorage
     : { getItem: () => null, setItem: () => undefined, removeItem: () => undefined }
 )
-import { fetchAllProducts, fetchLowestRetailPrices, fetchLowestUsedPrices, fetchLowestRentalRates, isNumericSpec, isBooleanSpec, getSpecColumns } from '../services/dataService'
+import { fetchAllProducts, fetchLowestRetailPrices, fetchLowestUsedPrices, fetchLowestRentalRates, fetchRetailerCounts, isNumericSpec, isBooleanSpec, getSpecColumns } from '../services/dataService'
 import { onAuthStateChange, signOut as authSignOut } from '../services/auth'
 
 // Maps nav category keys to the DB table names they include.
@@ -128,6 +128,7 @@ const useStore = create(
       lowestPrices: {},       // { [productKey]: lowestRetailPrice }
       lowestUsedPrices: {},   // { [productKey]: lowestUsedPrice }
       lowestRentalRates: {},  // { [productKey]: lowestDailyRate } — for user's currency
+      retailerCounts: {},     // { [productKey]: distinctRetailerCount } from market_data
       userCountry: null,      // ISO country code from IP geo
       loading: true,
       error: null,
@@ -158,7 +159,7 @@ const useStore = create(
       // Actions — Data
       // ══════════════════════════════════════
       loadProducts: async () => {
-        const CACHE_KEY = 'gearhub_products_v2'
+        const CACHE_KEY = 'gearhub_products_v3'
         const CACHE_TTL = 10 * 60 * 1000 // 10 minutes
         const COUNTRY_TO_CURRENCY = { US:'USD', GB:'GBP', AU:'AUD', IN:'INR', CA:'CAD', NZ:'NZD' }
 
@@ -166,15 +167,16 @@ const useStore = create(
         const fetchFresh = async ({ showLoading = true } = {}) => {
           if (showLoading) set({ loading: true, error: null })
           try {
-            const [products, lowestPrices, lowestUsedPrices] = await Promise.all([
+            const [products, lowestPrices, lowestUsedPrices, retailerCounts] = await Promise.all([
               fetchAllProducts(),
               fetchLowestRetailPrices(),
               fetchLowestUsedPrices(),
+              fetchRetailerCounts(),
             ])
             try {
-              localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products, lowestPrices, lowestUsedPrices }))
+              localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), products, lowestPrices, lowestUsedPrices, retailerCounts }))
             } catch (_) {} // quota exceeded — silently skip caching
-            set({ products, lowestPrices, lowestUsedPrices, loading: false })
+            set({ products, lowestPrices, lowestUsedPrices, retailerCounts, loading: false })
           } catch (err) {
             if (showLoading) set({ error: err.message, loading: false })
           }
@@ -196,7 +198,7 @@ const useStore = create(
         try {
           const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null')
           if (cached && Date.now() - cached.ts < CACHE_TTL) {
-            set({ products: cached.products, lowestPrices: cached.lowestPrices, lowestUsedPrices: cached.lowestUsedPrices, loading: false })
+            set({ products: cached.products, lowestPrices: cached.lowestPrices, lowestUsedPrices: cached.lowestUsedPrices, retailerCounts: cached.retailerCounts || {}, loading: false })
             // Refresh in background — user sees content immediately
             fetchFresh({ showLoading: false })
             return

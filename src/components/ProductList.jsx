@@ -180,7 +180,7 @@ function CategoryCarouselRow({ icon: Icon, iconColor, label, products, onViewAll
     <div className="mb-7 last:mb-0">
       <div className="flex items-center justify-between mb-2.5 pr-1">
         <div className="flex items-center gap-1.5">
-          <Icon size={11} className={iconColor} />
+          {Icon && <Icon size={11} className={iconColor} />}
           <span className="text-[11px] font-semibold text-slate-400 tracking-tight">{label}</span>
           <span className="text-[10px] text-slate-700 tabular-nums">{products.length}</span>
         </div>
@@ -196,25 +196,53 @@ function CategoryCarouselRow({ icon: Icon, iconColor, label, products, onViewAll
   )
 }
 
+const MIN_BRAND_RETAILERS = 3
+const MAX_BRANDS_SHOWN = 12
+
 function HomePage({ products, setActiveCategory }) {
   const router = useRouter()
-  const { comparisonIds } = useStore()
+  const { comparisonIds, retailerCounts } = useStore()
 
   const cameraCount   = useMemo(() => products.filter(p => p.category === 'cameras').length,  [products])
   const lensCount     = useMemo(() => products.filter(p => p.category === 'lenses').length,   [products])
   const lightingCount = useMemo(() => products.filter(p => p.category === 'lighting').length, [products])
 
-  // New by category
-  const newCameras  = useMemo(() => products.filter(p => p.category === 'cameras'  && isNew(p) && hasValidImage(p)), [products])
-  const newLenses   = useMemo(() => products.filter(p => p.category === 'lenses'   && isNew(p) && hasValidImage(p)), [products])
-  const newLighting = useMemo(() => products.filter(p => p.category === 'lighting' && isNew(p) && hasValidImage(p)), [products])
-  const hasNew = newCameras.length > 0 || newLenses.length > 0 || newLighting.length > 0
+  // Group well-covered products by brand (≥3 retailers, valid image)
+  const hotBrands = useMemo(() => {
+    const qualified = products.filter(p =>
+      (retailerCounts[p.id] || 0) >= MIN_BRAND_RETAILERS && hasValidImage(p)
+    )
+    const byBrand = {}
+    for (const p of qualified) {
+      if (!byBrand[p.brand]) byBrand[p.brand] = []
+      byBrand[p.brand].push(p)
+    }
+    return Object.entries(byBrand)
+      .sort(([, a], [, b]) => b.length - a.length)
+      .slice(0, MAX_BRANDS_SHOWN)
+      .map(([brand, prods]) => ({
+        brand,
+        // Trending products first, then new, then by price desc
+        products: [...prods].sort((a, b) => {
+          if (isTrending(b) !== isTrending(a)) return isTrending(b) ? 1 : -1
+          if (isNew(b) !== isNew(a)) return isNew(b) ? 1 : -1
+          return (b.price || 0) - (a.price || 0)
+        }),
+      }))
+  }, [products, retailerCounts])
 
-  // Hot by category
-  const hotCameras  = useMemo(() => products.filter(p => p.category === 'cameras'  && isTrending(p) && hasValidImage(p)), [products])
-  const hotLenses   = useMemo(() => products.filter(p => p.category === 'lenses'   && isTrending(p) && hasValidImage(p)), [products])
-  const hotLighting = useMemo(() => products.filter(p => p.category === 'lighting' && isTrending(p) && hasValidImage(p)), [products])
-  const hasHot = hotCameras.length > 0 || hotLenses.length > 0 || hotLighting.length > 0
+  const viewBrand = (brand) => {
+    useStore.setState({
+      activeCategory: null,
+      activeSubcategory: null,
+      selectedBrands: [brand],
+      searchQuery: '',
+      specFilters: {},
+      rangeFilters: {},
+      booleanFilters: {},
+      priceRange: null,
+    })
+  }
 
   return (
     <div>
@@ -259,7 +287,7 @@ function HomePage({ products, setActiveCategory }) {
       )}
 
       {/* ── Category tiles ────────────────────────────────────────── */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-8">
         <CategoryTile catKey="cameras" label="Cameras" icon={Camera} count={cameraCount}
           subs="Cinema · Mirrorless · DSLR" accentText="text-blue-400" accentBg="bg-blue-500/10"
           setActiveCategory={setActiveCategory} />
@@ -271,32 +299,24 @@ function HomePage({ products, setActiveCategory }) {
           setActiveCategory={setActiveCategory} />
       </div>
 
-
-      {/* ── Just Released ─────────────────────────────────────────── */}
-      {hasNew && (
-        <div className="mb-12">
-          <div className="flex items-center gap-2 mb-5">
-            <span className="text-[8px] font-bold tracking-widest uppercase px-1.5 py-0.5 rounded-md bg-emerald-500 text-white leading-tight">NEW</span>
-            <h2 className="text-[15px] font-bold tracking-tight text-white">Just Released</h2>
-          </div>
-          <CategoryCarouselRow icon={Camera}  iconColor="text-blue-400"   label="Cameras"  products={newCameras}  onViewAll={() => setActiveCategory('cameras')} />
-          <CategoryCarouselRow icon={Aperture} iconColor="text-violet-400" label="Lenses"   products={newLenses}   onViewAll={() => setActiveCategory('lenses')} />
-          <CategoryCarouselRow icon={Zap}     iconColor="text-amber-400"  label="Lighting" products={newLighting} onViewAll={() => setActiveCategory('lighting')} />
-        </div>
-      )}
-
-      {/* ── Hot Right Now ─────────────────────────────────────────── */}
-      {hasHot && (
+      {/* ── Hot Brands ────────────────────────────────────────────── */}
+      {hotBrands.length > 0 && (
         <div className="mb-16">
-          <div className="flex items-center gap-2 mb-5">
-            <span className="flex items-center gap-0.5 text-[8px] font-bold tracking-widest uppercase px-1.5 py-0.5 rounded-md bg-amber-400 text-black leading-tight">
-              <Flame size={7} />HOT
+          <div className="flex items-center gap-2.5 mb-5">
+            <Flame size={13} className="text-amber-400" />
+            <h2 className="text-[15px] font-bold tracking-tight text-white">Hot Brands</h2>
+            <span className="text-[10px] text-slate-600 font-light">
+              · prices from {MIN_BRAND_RETAILERS}+ retailers
             </span>
-            <h2 className="text-[15px] font-bold tracking-tight text-white">Hot Right Now</h2>
           </div>
-          <CategoryCarouselRow icon={Camera}  iconColor="text-blue-400"   label="Cameras"  products={hotCameras}  onViewAll={() => setActiveCategory('cameras')} />
-          <CategoryCarouselRow icon={Aperture} iconColor="text-violet-400" label="Lenses"   products={hotLenses}   onViewAll={() => setActiveCategory('lenses')} />
-          <CategoryCarouselRow icon={Zap}     iconColor="text-amber-400"  label="Lighting" products={hotLighting} onViewAll={() => setActiveCategory('lighting')} />
+          {hotBrands.map(({ brand, products: brandProds }) => (
+            <CategoryCarouselRow
+              key={brand}
+              label={brand}
+              products={brandProds}
+              onViewAll={() => viewBrand(brand)}
+            />
+          ))}
         </div>
       )}
     </div>
