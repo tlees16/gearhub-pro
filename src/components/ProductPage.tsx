@@ -392,6 +392,31 @@ export default async function ProductPage({ productId }: { productId: string }) 
               className="lg:col-start-1"
             />
 
+            {/* ── FULL SPECIFICATIONS ─────────────────────────────────────── */}
+            {displaySpecs.length > 0 && (
+              <details className="group bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden lg:col-start-1">
+                <summary className="flex items-center justify-between px-5 sm:px-6 py-4 cursor-pointer list-none select-none hover:bg-slate-800/20 transition-colors duration-200">
+                  <span className="text-sm font-bold text-slate-100 tracking-tight">Full Specifications</span>
+                  <ChevronDown size={14} className="text-slate-500 transition-transform duration-200 group-open:rotate-180" />
+                </summary>
+                <div className="border-t border-slate-800/25 px-5 sm:px-6 pb-5 sm:pb-6 pt-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 sm:gap-x-12">
+                    {displaySpecs.map(([key, val]) => {
+                      const label = SPEC_LABEL_OVERRIDES[key] ?? key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                      const strVal = String(val)
+                      const isLong = strVal.length > 50
+                      return (
+                        <div key={key} className={`flex gap-4 border-b border-slate-800/25 py-2.5 ${isLong ? 'flex-col sm:col-span-2' : 'items-start justify-between'}`}>
+                          <span className="text-[11px] text-slate-500 font-light shrink-0">{label}</span>
+                          <span className={`text-[11px] text-slate-300 ${isLong ? 'leading-relaxed' : 'text-right'}`}>{strVal}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </details>
+            )}
+
             {/* ── PRICES ASIDE — col-2 on desktop, inline after expert analysis on mobile ── */}
             <aside className="space-y-4 lg:col-start-2 lg:row-start-1 lg:row-span-3">
               <div className="lg:sticky lg:top-[49px] space-y-4">
@@ -463,31 +488,6 @@ export default async function ProductPage({ productId }: { productId: string }) 
             <div className="lg:col-start-1">
               <PhotometricTable product={{ category, allSpecs: specsForClient }} />
             </div>
-
-            {/* ── FULL SPECIFICATIONS ─────────────────────────────────────── */}
-            {displaySpecs.length > 0 && (
-              <details className="group bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden lg:col-start-1">
-                <summary className="flex items-center justify-between px-5 sm:px-6 py-4 cursor-pointer list-none select-none">
-                  <span className="text-sm font-bold text-slate-100 tracking-tight">Full Specifications</span>
-                  <ChevronDown size={14} className="text-slate-500 transition-transform duration-200 group-open:rotate-180" />
-                </summary>
-                <div className="border-t border-slate-800/25 px-5 sm:px-6 pb-5 sm:pb-6 pt-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 sm:gap-x-12">
-                    {displaySpecs.map(([key, val]) => {
-                      const label = SPEC_LABEL_OVERRIDES[key] ?? key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-                      const strVal = String(val)
-                      const isLong = strVal.length > 50
-                      return (
-                        <div key={key} className={`flex gap-4 border-b border-slate-800/25 py-2.5 ${isLong ? 'flex-col sm:col-span-2' : 'items-start justify-between'}`}>
-                          <span className="text-[11px] text-slate-500 font-light shrink-0">{label}</span>
-                          <span className={`text-[11px] text-slate-300 ${isLong ? 'leading-relaxed' : 'text-right'}`}>{strVal}</span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              </details>
-            )}
 
           </div>
 

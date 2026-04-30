@@ -82,7 +82,7 @@ export default function ExpertAnalysisSection({
   }
 
   return (
-    <details className={`group bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden ${className ?? ''}`} open>
+    <details className={`group bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden ${className ?? ''}`}>
       <summary className="flex items-center justify-between px-5 sm:px-6 py-4 cursor-pointer list-none select-none hover:bg-slate-800/20 transition-colors duration-200">
         <div className="flex items-center gap-2.5">
           <Sparkles size={15} className="text-indigo-400" />
