@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Sparkles, ThumbsUp, ThumbsDown, Award, Star, ChevronDown } from 'lucide-react'
 import { getExpertAnalysis } from '../services/expertAnalysis'
+import type { StoredAnalysis } from '@/lib/supabase-server'
 
 function VerdictRing({ score }: { score: number }) {
   const circumference = 2 * Math.PI * 36
@@ -52,15 +53,19 @@ interface Props {
   subcategory: string | null
   price: number
   allSpecs: Record<string, unknown>
+  storedAnalysis?: StoredAnalysis | null
   className?: string
 }
 
 export default function ExpertAnalysisSection({
-  productId, productName, brand, category, subcategory, price, allSpecs, className,
+  productId, productName, brand, category, subcategory, price, allSpecs, storedAnalysis, className,
 }: Props) {
-  const [analysis, setAnalysis] = useState<Analysis | null>(null)
+  const [analysis, setAnalysis] = useState<Analysis | null>(
+    storedAnalysis ? { ...storedAnalysis, loading: false } : null
+  )
 
   useEffect(() => {
+    if (storedAnalysis) return  // DB has it — no API call needed
     const product = { id: productId, name: productName, brand, category, subcategory, price, allSpecs }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const initial = getExpertAnalysis(product as any, setAnalysis)

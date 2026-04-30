@@ -40,13 +40,8 @@ export async function fetchPrices(
 ): Promise<{ retail: RetailPrice[]; used: UsedPrice[] }> {
   const db = getClient()
 
-  const [retailResult, usedResult, urlResult] = await Promise.all([
-    db
-      .from('retail_prices')
-      .select('retailer, price, currency, in_stock, scraped_at')
-      .eq('product_table', category)
-      .eq('product_id', dbId)
-      .order('price', { ascending: true }),
+  const [usedAggResult, marketResult] = await Promise.all([
+    // Aggregate used-market stats (KEH, MPB, etc. — separate scraper)
     db
       .from('used_prices')
       .select(
@@ -55,27 +50,17 @@ export async function fetchPrices(
       .eq('product_table', category)
       .eq('product_id', dbId)
       .order('price_avg', { ascending: true }),
+    // Per-retailer market data with live URLs
     db
-      .from('retailer_urls')
-      .select('retailer, url')
+      .from('market_data')
+      .select('url, price_usd, currency, in_stock, condition, last_checked, retailers(Retailer_Name)')
       .eq('product_table', category)
-      .eq('product_id', dbId),
+      .eq('product_id', dbId)
+      .order('price_usd', { ascending: true }),
   ])
 
-  const urlMap = new Map<string, string>(
-    (urlResult.data ?? []).map((r: { retailer: string; url: string }) => [r.retailer, r.url]),
-  )
-
-  const retail: RetailPrice[] = (retailResult.data ?? []).map((r: Record<string, unknown>) => ({
-    retailer: r.retailer as string,
-    price: r.price as number,
-    currency: (r.currency as string) ?? 'USD',
-    inStock: (r.in_stock as boolean) ?? false,
-    url: urlMap.get(r.retailer as string),
-    scraped_at: r.scraped_at as string | undefined,
-  }))
-
-  const used: UsedPrice[] = (usedResult.data ?? []).map((r: Record<string, unknown>) => ({
+  const retail: RetailPrice[] = []
+  const used: UsedPrice[] = (usedAggResult.data ?? []).map((r: Record<string, unknown>) => ({
     platform: r.platform as string,
     condition: r.condition as UsedPrice['condition'],
     price_avg: r.price_avg as number,
@@ -86,6 +71,35 @@ export async function fetchPrices(
     listing_count: (r.listing_count as number) ?? 0,
     scraped_at: r.scraped_at as string | undefined,
   }))
+
+  for (const row of (marketResult.data ?? []) as Record<string, unknown>[]) {
+    const retailerName =
+      (row.retailers as { Retailer_Name?: string } | null)?.Retailer_Name ?? 'Unknown'
+    const isNew = (row.condition as string) === 'New'
+    if (isNew) {
+      retail.push({
+        retailer: retailerName,
+        price: row.price_usd as number,
+        currency: (row.currency as string) ?? 'USD',
+        inStock: (row.in_stock as boolean) ?? false,
+        url: row.url as string | undefined,
+        scraped_at: row.last_checked as string | undefined,
+      })
+    } else {
+      used.push({
+        platform: retailerName,
+        condition: row.condition as UsedPrice['condition'],
+        price_avg: row.price_usd as number,
+        currency: (row.currency as string) ?? 'USD',
+        listing_count: 1,
+        url: row.url as string | undefined,
+        scraped_at: row.last_checked as string | undefined,
+      })
+    }
+  }
+
+  // retail is already sorted by price_usd ASC from the DB; used aggregates come first then individual used listings
+  used.sort((a, b) => a.price_avg - b.price_avg)
 
   return { retail, used }
 }
@@ -173,6 +187,35 @@ export async function fetchVariantGroup(
   })
 
   return { variants, bestPhotometrics }
+}
+
+export interface StoredAnalysis {
+  description: string
+  pros: string[]
+  cons: string[]
+  communityVoice: string | null
+  verdict: number
+}
+
+export async function fetchAnalysis(
+  category: string,
+  dbId: number,
+): Promise<StoredAnalysis | null> {
+  const { data } = await getClient()
+    .from('product_analysis')
+    .select('geo_optimized_verdict, pros, cons, community_insights, gearhub_score')
+    .eq('product_table', category)
+    .eq('product_id', dbId)
+    .maybeSingle()
+
+  if (!data) return null
+  return {
+    description:    data.geo_optimized_verdict as string,
+    pros:           (data.pros as string[]) ?? [],
+    cons:           (data.cons as string[]) ?? [],
+    communityVoice: (data.community_insights as string) || null,
+    verdict:        (data.gearhub_score as number) ?? 75,
+  }
 }
 
 export async function fetchRentals(

@@ -158,7 +158,7 @@ const useStore = create(
       // Actions — Data
       // ══════════════════════════════════════
       loadProducts: async () => {
-        const CACHE_KEY = 'gearhub_products_v1'
+        const CACHE_KEY = 'gearhub_products_v2'
         const CACHE_TTL = 10 * 60 * 1000 // 10 minutes
         const COUNTRY_TO_CURRENCY = { US:'USD', GB:'GBP', AU:'AUD', IN:'INR', CA:'CAD', NZ:'NZD' }
 

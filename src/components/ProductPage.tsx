@@ -11,7 +11,7 @@ import {
   Zap,
 } from 'lucide-react'
 
-import { fetchProductById, fetchPrices, fetchVariantGroup } from '@/lib/supabase-server'
+import { fetchProductById, fetchPrices, fetchVariantGroup, fetchAnalysis } from '@/lib/supabase-server'
 import type { RetailPrice } from '@/types/gear'
 import { stripProductVariant } from '@/lib/variant'
 import PriceTable from './PriceTable'
@@ -118,9 +118,10 @@ export default async function ProductPage({ productId }: { productId: string }) 
 
   const { baseModel, configLabel } = stripProductVariant(rawProduct.name, category)
 
-  const [{ retail, used }, { variants, bestPhotometrics }] = await Promise.all([
+  const [{ retail, used }, { variants, bestPhotometrics }, storedAnalysis] = await Promise.all([
     fetchPrices(category, dbId),
     fetchVariantGroup(category, baseModel, (rawProduct.brand as string) ?? '', dbId),
+    fetchAnalysis(category, dbId),
   ])
 
   const specsJson: Record<string, unknown> =
@@ -386,6 +387,7 @@ export default async function ProductPage({ productId }: { productId: string }) 
               subcategory={rawProduct.subcategory ?? null}
               price={msrp}
               allSpecs={specsForClient}
+              storedAnalysis={storedAnalysis}
               className="lg:col-start-1"
             />
 

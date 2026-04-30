@@ -226,14 +226,23 @@ function normalizeProduct(row, category) {
 
 // ─── Fetch from Supabase ─────────────────────────────────────────
 async function fetchTable(table) {
-  const { data, error } = await supabase
-    .from(table)
-    .select('*')
-    .order('brand')
-    .order('name')
+  const PAGE = 1000
+  let rows = []
+  let offset = 0
+  while (true) {
+    const { data, error } = await supabase
+      .from(table)
+      .select('*')
+      .order('brand')
+      .order('name')
+      .range(offset, offset + PAGE - 1)
 
-  if (error) throw new Error(`Failed to fetch ${table}: ${error.message}`)
-  return data || []
+    if (error) throw new Error(`Failed to fetch ${table}: ${error.message}`)
+    rows = rows.concat(data || [])
+    if (!data || data.length < PAGE) break
+    offset += PAGE
+  }
+  return rows
 }
 
 const ALL_TABLES = ['cameras', 'lenses', 'lighting']
