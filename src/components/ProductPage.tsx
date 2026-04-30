@@ -5,6 +5,7 @@ import {
   ChevronRight,
   ChevronLeft,
   ChevronDown,
+  SlidersHorizontal,
   Package,
   Clock,
   Camera,
@@ -396,7 +397,10 @@ export default async function ProductPage({ productId }: { productId: string }) 
             {displaySpecs.length > 0 && (
               <details className="group bg-slate-900/30 border border-slate-800/25 rounded-2xl overflow-hidden lg:col-start-1">
                 <summary className="flex items-center justify-between px-5 sm:px-6 py-4 cursor-pointer list-none select-none hover:bg-slate-800/20 transition-colors duration-200">
-                  <span className="text-sm font-bold text-slate-100 tracking-tight">Full Specifications</span>
+                  <div className="flex items-center gap-2.5">
+                    <SlidersHorizontal size={15} className="text-slate-500" />
+                    <span className="text-sm font-bold text-slate-100 tracking-tight">Full Specifications</span>
+                  </div>
                   <ChevronDown size={14} className="text-slate-500 transition-transform duration-200 group-open:rotate-180" />
                 </summary>
                 <div className="border-t border-slate-800/25 px-5 sm:px-6 pb-5 sm:pb-6 pt-4">

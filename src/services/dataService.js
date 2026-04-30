@@ -383,39 +383,63 @@ export async function fetchRentalEntries(category, dbId) {
   return data || []
 }
 
-// ─── Lowest retail prices (for ProductCard "from $X" badge) ──────
-// Returns a map of { [productKey]: lowestPrice } where productKey = `${table}-${id}`
+// ─── Lowest retail prices (for ProductCard "New $X" badge) ───────
+// Reads scraped new prices from market_data, with retail_prices as fallback.
 export async function fetchLowestRetailPrices() {
-  const { data, error } = await supabase
+  const map = {}
+  const PAGE = 1000
+  let offset = 0
+
+  // Scraped new prices from market_data (primary source)
+  while (true) {
+    const { data, error } = await supabase
+      .from('market_data')
+      .select('product_table, product_id, price_usd')
+      .eq('condition', 'New')
+      .range(offset, offset + PAGE - 1)
+    if (error) break
+    for (const row of data || []) {
+      if (row.price_usd == null) continue
+      const key = `${row.product_table}-${row.product_id}`
+      if (map[key] == null || row.price_usd < map[key]) map[key] = row.price_usd
+    }
+    if (!data || data.length < PAGE) break
+    offset += PAGE
+  }
+
+  // Legacy retail_prices (B&H seeded data) — fill gaps not in market_data
+  const { data: legacy } = await supabase
     .from('retail_prices')
     .select('product_table, product_id, price')
-
-  if (error) return {}
-  const map = {}
-  for (const row of data || []) {
+  for (const row of legacy || []) {
     if (row.price == null) continue
     const key = `${row.product_table}-${row.product_id}`
-    if (map[key] == null || row.price < map[key]) {
-      map[key] = row.price
-    }
+    if (map[key] == null || row.price < map[key]) map[key] = row.price
   }
+
   return map
 }
 
-// ─── Lowest used prices (for ProductCard "used ~$X" badge) ───────
+// ─── Lowest used prices (for ProductCard "Used $X" badge) ────────
+// Reads from market_data where condition = 'Used' (KEH, MPB, etc.)
 export async function fetchLowestUsedPrices() {
-  const { data, error } = await supabase
-    .from('used_prices')
-    .select('product_table, product_id, price_avg')
-
-  if (error) return {}
   const map = {}
-  for (const row of data || []) {
-    if (row.price_avg == null) continue
-    const key = `${row.product_table}-${row.product_id}`
-    if (map[key] == null || row.price_avg < map[key]) {
-      map[key] = row.price_avg
+  const PAGE = 1000
+  let offset = 0
+  while (true) {
+    const { data, error } = await supabase
+      .from('market_data')
+      .select('product_table, product_id, price_usd')
+      .eq('condition', 'Used')
+      .range(offset, offset + PAGE - 1)
+    if (error) return map
+    for (const row of data || []) {
+      if (row.price_usd == null) continue
+      const key = `${row.product_table}-${row.product_id}`
+      if (map[key] == null || row.price_usd < map[key]) map[key] = row.price_usd
     }
+    if (!data || data.length < PAGE) break
+    offset += PAGE
   }
   return map
 }
