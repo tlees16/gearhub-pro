@@ -22,6 +22,7 @@ import ExpertAnalysisSection from './ExpertAnalysisSection'
 import ProductActions from './ProductActions'
 import CommunityHub from './CommunityHub'
 import PhotometricTable from './PhotometricTable'
+import AsSeenOn from './AsSeenOn'
 
 // ─── hero spec whitelist ──────────────────────────────────────────────────────
 
@@ -146,7 +147,7 @@ export default async function ProductPage({ productId }: { productId: string }) 
   const FULL_SPEC_EXCLUDE = new Set([
     'id', 'specs_json', 'scraped_at', 'bhphoto_url', 'image_url',
     'name', 'brand', 'price', 'category', 'subcategory', 'form_factor',
-    'bhphoto_sku', 'created_at',
+    'bhphoto_sku', 'created_at', 'productions_json',
     // photometrics shown in dedicated Photometrics section
     'photometrics', 'photometrics_at_3_3_1_m', 'output_lux', 'beam_angle',
     'cri', 'tlci', 'lumens', 'lumen_output', 'color_accuracy_standard',
@@ -390,6 +391,12 @@ export default async function ProductPage({ productId }: { productId: string }) 
               price={msrp}
               allSpecs={specsForClient}
               storedAnalysis={storedAnalysis}
+              className="lg:col-start-1"
+            />
+
+            {/* ── AS SEEN ON ──────────────────────────────────────────────── */}
+            <AsSeenOn
+              productionsJson={rawProduct.productions_json as { productions: { title: string; year: number; dop?: string | null; type: 'Feature' | 'Series' }[]; industryNote?: string | null } | null}
               className="lg:col-start-1"
             />
 
