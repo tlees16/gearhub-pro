@@ -420,7 +420,7 @@ export default function FilterSidebar() {
       {/* ── Price + Brand (always first) ───────────────────────────────────── */}
       <div className="space-y-0">
         {priceMinMax && (
-          <Section title="Price" defaultOpen={!!activeCategory} active={!!priceRange}>
+          <Section title="Price" defaultOpen={false} active={!!priceRange}>
             <RangeSlider
               min={Math.floor(priceMinMax[0])} max={Math.ceil(priceMinMax[1])}
               value={priceRange} onChange={setPriceRange}
