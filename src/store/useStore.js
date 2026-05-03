@@ -54,10 +54,12 @@ function buildFilteredPool(state, skip = new Set()) {
   }
 
   if (!skip.has('search') && searchQuery?.trim()) {
-    const q = searchQuery.toLowerCase()
-    filtered = filtered.filter(p =>
-      p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q)
-    )
+    // Multi-word AND search: each space-separated token must match somewhere
+    const tokens = searchQuery.toLowerCase().trim().split(/\s+/).filter(Boolean)
+    filtered = filtered.filter(p => {
+      const haystack = `${p.name} ${p.brand} ${p.subcategory || ''} ${p.category || ''}`.toLowerCase()
+      return tokens.every(tok => haystack.includes(tok))
+    })
   }
 
   if (!skip.has('brands') && selectedBrands.length > 0) {

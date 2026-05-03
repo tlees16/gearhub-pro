@@ -38,21 +38,28 @@ export default function DashboardGrid() {
       <aside className="hidden md:flex flex-col w-72 shrink-0 border-r border-zinc-800/60 overflow-y-auto bg-zinc-950">
         {/* Search input */}
         <div className="flex-shrink-0 px-4 pt-4 pb-3">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-zinc-900/80 border border-zinc-800/60 focus-within:border-zinc-600/80 transition-colors">
-            <Search size={14} className="text-zinc-600 shrink-0" />
+          <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-zinc-900/80 border border-zinc-800/60 focus-within:border-zinc-600/60 focus-within:bg-zinc-900 transition-all">
+            <Search size={13} className="text-zinc-600 shrink-0" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search cameras, lenses…"
-              className="flex-1 bg-transparent text-[13px] text-zinc-100 placeholder-zinc-700 outline-none"
+              placeholder="Search by name, brand, type…"
+              className="flex-1 bg-transparent text-[13px] text-zinc-100 placeholder-zinc-700 outline-none min-w-0"
             />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery('')} className="text-zinc-600 hover:text-zinc-400 transition-colors">
-                <X size={12} />
+            {searchQuery ? (
+              <button onClick={() => setSearchQuery('')} className="shrink-0 text-zinc-500 hover:text-zinc-300 transition-colors">
+                <X size={11} />
               </button>
+            ) : (
+              <span className="shrink-0 text-[10px] text-zinc-800 font-mono hidden lg:block">/</span>
             )}
           </div>
+          {searchQuery && (
+            <p className="text-[10px] text-zinc-600 tabular-nums mt-1.5 px-1">
+              {filteredCount.toLocaleString()} result{filteredCount !== 1 ? 's' : ''}
+            </p>
+          )}
         </div>
         {/* Reset row */}
         {activeFilterCount > 0 && (
