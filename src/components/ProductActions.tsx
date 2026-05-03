@@ -17,18 +17,18 @@ export default function ProductActions({ productId }: Props) {
   const inComparison = comparisonIds?.includes(productId)
 
   return (
-    <div className="flex items-center gap-3 mt-6 sm:mt-8 flex-wrap">
+    <div className="flex items-center gap-2.5 mt-6 sm:mt-8 flex-wrap">
       <div className="relative">
         <button
           onClick={() => { if (!user) { openAuthModal?.(); return } setShowPicker(v => !v) }}
-          className={`inline-flex items-center gap-2 min-h-[44px] md:min-h-0 text-[12px] font-medium rounded-xl px-5 py-2.5 transition-all duration-300 ${
+          className={`inline-flex items-center gap-2 min-h-[44px] md:min-h-0 text-[12px] font-semibold rounded-xl px-4 py-2 transition-all duration-200 ${
             inAnyList
-              ? 'text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/15'
-              : 'text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/15'
+              ? 'text-emerald-300 bg-emerald-500/12 border border-emerald-500/25 shadow-[0_0_10px_rgba(52,211,153,0.12)] hover:bg-emerald-500/18'
+              : 'text-slate-200 bg-slate-800/80 border border-slate-700/60 hover:bg-slate-800 hover:border-slate-600 hover:text-white'
           }`}
         >
-          {inAnyList ? <Check size={14} /> : <Plus size={14} />}
-          {inAnyList ? 'In List' : 'Add to List'}
+          {inAnyList ? <Check size={13} /> : <Plus size={13} />}
+          {inAnyList ? 'In List' : 'Save to List'}
         </button>
         {showPicker && (
           <ListPicker productId={productId} onClose={() => setShowPicker(false)} align="left" />
@@ -37,13 +37,13 @@ export default function ProductActions({ productId }: Props) {
 
       <button
         onClick={() => toggleComparison?.(productId)}
-        className={`inline-flex items-center gap-2 min-h-[44px] md:min-h-0 text-[12px] font-medium rounded-xl px-5 py-2.5 transition-all duration-300 ${
+        className={`inline-flex items-center gap-2 min-h-[44px] md:min-h-0 text-[12px] font-semibold rounded-xl px-4 py-2 transition-all duration-200 ${
           inComparison
-            ? 'text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/15'
-            : 'text-zinc-400 bg-zinc-800/50 border border-zinc-700/40 hover:bg-zinc-800 hover:text-zinc-200'
+            ? 'text-indigo-300 bg-indigo-500/12 border border-indigo-500/25 shadow-[0_0_10px_rgba(99,102,241,0.15)] hover:bg-indigo-500/18'
+            : 'text-slate-400 bg-slate-900/60 border border-slate-800/60 hover:bg-slate-800/80 hover:text-slate-200 hover:border-slate-700'
         }`}
       >
-        <GitCompareArrows size={14} />
+        <GitCompareArrows size={13} />
         {inComparison ? 'In Compare' : 'Compare'}
       </button>
     </div>

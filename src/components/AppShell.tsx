@@ -47,10 +47,10 @@ function Header() {
         <button
           onClick={toggleConcierge}
           aria-label="AI Concierge"
-          className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] font-medium rounded-md transition-colors ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-semibold rounded-xl transition-all duration-200 ${
             conciergeOpen
-              ? 'bg-indigo-600 text-white border border-indigo-500'
-              : 'text-zinc-400 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700'
+              ? 'bg-indigo-600 text-white shadow-[0_0_12px_rgba(99,102,241,0.4)]'
+              : 'text-indigo-300/80 bg-indigo-500/10 border border-indigo-500/25 hover:bg-indigo-500/20 hover:text-indigo-200 hover:border-indigo-400/40'
           }`}
         >
           <Sparkles className="w-3.5 h-3.5" />
@@ -60,16 +60,16 @@ function Header() {
         {/* Compare — desktop only, always visible */}
         <button
           onClick={() => router.push('/compare')}
-          className={`relative hidden md:flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] font-medium rounded-md transition-colors border ${
+          className={`relative hidden md:flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium rounded-xl transition-all duration-200 border ${
             comparisonIds.length > 0
-              ? 'text-zinc-300 hover:text-white bg-zinc-900 hover:bg-zinc-800 border-zinc-800 hover:border-zinc-700'
-              : 'text-zinc-600 bg-zinc-900/50 border-zinc-800/50 cursor-default'
+              ? 'text-zinc-200 bg-zinc-800/80 border-zinc-700/60 hover:bg-zinc-800 hover:border-zinc-600 hover:text-white'
+              : 'text-zinc-600 bg-zinc-900/40 border-zinc-800/40 cursor-default'
           }`}
         >
           <GitCompareArrows className="w-3.5 h-3.5" />
           Compare
           {comparisonIds.length > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 bg-indigo-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1 tabular-nums">
+            <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 bg-indigo-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1 tabular-nums leading-none">
               {comparisonIds.length}
             </span>
           )}
@@ -78,12 +78,12 @@ function Header() {
         {/* My Lists — desktop only */}
         <button
           onClick={() => router.push('/projects')}
-          className="relative hidden md:flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] font-medium text-zinc-400 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 rounded-md transition-colors"
+          className="relative hidden md:flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium text-zinc-400 hover:text-white bg-zinc-900/40 hover:bg-zinc-800/80 border border-zinc-800/60 hover:border-zinc-700 rounded-xl transition-all duration-200"
         >
           <List className="w-3.5 h-3.5" />
           Lists
           {totalItems > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 bg-zinc-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1 tabular-nums">
+            <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 bg-emerald-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1 tabular-nums leading-none">
               {totalItems}
             </span>
           )}
