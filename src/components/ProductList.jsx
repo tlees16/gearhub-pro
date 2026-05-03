@@ -387,7 +387,7 @@ export default function ProductList() {
     clearAllFilters, openSearchDrawer,
   } = useStore()
 
-  const filtered = useMemo(() => sortProducts(getFilteredProducts(), sortKey), [sortKey, getFilteredProducts])
+  const filtered = sortProducts(getFilteredProducts(), sortKey)
 
   const hasActiveFilters = !!(
     activeCategory || searchQuery.trim() || selectedBrands.length > 0 ||
