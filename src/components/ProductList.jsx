@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useMemo, useState } from 'react'
+import { useRef, useMemo, useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import useStore from '../store/useStore'
 import ProductCard, { isTrending, isNew } from './ProductCard'
@@ -378,14 +378,34 @@ function sortProducts(products, sortKey) {
 
 // ─── Main export ─────────────────────────────────────────────────────────────
 
+const SCROLL_KEY = 'gearhub_list_scroll'
+
 export default function ProductList() {
   const [sortKey, setSortKey] = useState('default')
+  const scrollContainerRef = useRef(null)
   const {
     loading, error, getFilteredProducts, products,
     activeCategory, searchQuery, selectedBrands, priceRange,
     specFilters, rangeFilters, booleanFilters, setActiveCategory,
     clearAllFilters, openSearchDrawer,
   } = useStore()
+
+  // Restore scroll position when returning from a product page
+  useEffect(() => {
+    const saved = sessionStorage.getItem(SCROLL_KEY)
+    if (saved && scrollContainerRef.current) {
+      const pos = parseInt(saved, 10)
+      scrollContainerRef.current.scrollTop = pos
+      sessionStorage.removeItem(SCROLL_KEY)
+    }
+  }, [])
+
+  // Save scroll position continuously (throttled via requestAnimationFrame)
+  const saveScroll = useCallback(() => {
+    if (scrollContainerRef.current) {
+      sessionStorage.setItem(SCROLL_KEY, String(scrollContainerRef.current.scrollTop))
+    }
+  }, [])
 
   const filtered = sortProducts(getFilteredProducts(), sortKey)
 
@@ -446,7 +466,7 @@ export default function ProductList() {
       )}
 
       {/* ── Content ─────────────────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-6 pb-28 md:pb-20 bg-black">
+      <div ref={scrollContainerRef} onScroll={saveScroll} className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-6 pb-28 md:pb-20 bg-black">
         {!hasActiveFilters ? (
           <HomePage products={products} setActiveCategory={setActiveCategory} openSearchDrawer={openSearchDrawer} />
         ) : (

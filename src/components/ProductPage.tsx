@@ -13,7 +13,7 @@ import {
   Zap,
 } from 'lucide-react'
 
-import { fetchProductById, fetchPrices, fetchVariantGroup, fetchAnalysis } from '@/lib/supabase-server'
+import { fetchProductById, fetchPrices, fetchVariantGroup, fetchAnalysis, fetchRentals } from '@/lib/supabase-server'
 import type { RetailPrice } from '@/types/gear'
 import { stripProductVariant } from '@/lib/variant'
 import PriceTable from './PriceTable'
@@ -23,6 +23,7 @@ import ProductActions from './ProductActions'
 import CommunityHub from './CommunityHub'
 import PhotometricTable from './PhotometricTable'
 import AsSeenOn from './AsSeenOn'
+import RentalSection from './RentalSection'
 
 // ─── hero spec whitelist ──────────────────────────────────────────────────────
 
@@ -121,10 +122,11 @@ export default async function ProductPage({ productId }: { productId: string }) 
 
   const { baseModel, configLabel } = stripProductVariant(rawProduct.name, category)
 
-  const [{ retail, used }, { variants, bestPhotometrics }, storedAnalysis] = await Promise.all([
+  const [{ retail, used }, { variants, bestPhotometrics }, storedAnalysis, rentals] = await Promise.all([
     fetchPrices(category, dbId),
     fetchVariantGroup(category, baseModel, (rawProduct.brand as string) ?? '', dbId),
     fetchAnalysis(category, dbId),
+    fetchRentals(category, dbId),
   ])
 
   const specsJson: Record<string, unknown> =
@@ -463,6 +465,9 @@ export default async function ProductPage({ productId }: { productId: string }) 
               </div>
             </aside>
 
+            {/* ── RENTALS ─────────────────────────────────────────────────── */}
+            <RentalSection rentals={rentals} className="lg:col-start-1" />
+
             {/* ── PHOTOMETRICS (lighting only) ────────────────────────────── */}
             <div className="lg:col-start-1">
               <PhotometricTable product={{ category, allSpecs: specsForClient }} />
@@ -481,27 +486,3 @@ export default async function ProductPage({ productId }: { productId: string }) 
   )
 }
 
-// ─── sub-components ───────────────────────────────────────────────────────────
-
-function ContextRow({
-  label, value, delta, positive,
-}: {
-  label: string
-  value: string
-  delta?: string
-  positive?: boolean
-}) {
-  return (
-    <div className="flex items-center justify-between px-4 py-2">
-      <dt className="text-[11px] text-slate-500">{label}</dt>
-      <dd className="flex items-center gap-2 tabular-nums">
-        <span className="text-[12px] font-semibold text-slate-200">{value}</span>
-        {delta && (
-          <span className={`text-[10px] font-medium ${positive ? 'text-emerald-400' : 'text-red-400'}`}>
-            {delta}
-          </span>
-        )}
-      </dd>
-    </div>
-  )
-}

@@ -66,6 +66,12 @@ const PRIMARY_SPECS = {
   lighting: new Set(['power_draw_w', 'battery_option']),
 }
 
+// Hard-coded slider max overrides — ensures slider ceiling reflects real-world product range
+// even if the current catalogue subset doesn't include the largest products.
+const RANGE_MAX_OVERRIDES = {
+  power_draw_w: 18000, // ARRI Arrimax 18/12kW is the largest light in the catalogue
+}
+
 // ─── Checkbox filter ───────────────────────────────────────────────────────────
 function CheckRow({ label, checked, onChange, count }) {
   return (
@@ -301,10 +307,11 @@ export default function FilterSidebar() {
 
       if (numeric[col] !== undefined) {
         const [smin, smax] = numeric[col]
+        const effectiveMax = Math.max(Math.ceil(smax), RANGE_MAX_OVERRIDES[col] ?? 0)
         bucket.push(
           <Section key={col} title={getSpecLabelForCategory(col, activeCategory)} defaultOpen={isPrimary} active={!!rangeFilters[col]}>
             <RangeSlider
-              min={Math.floor(smin)} max={Math.ceil(smax)}
+              min={Math.floor(smin)} max={effectiveMax}
               value={rangeFilters[col] || null}
               onChange={r => setRangeFilter(col, r)}
               unit={getSpecUnit(col)}
@@ -410,22 +417,22 @@ export default function FilterSidebar() {
         </div>
       )}
 
-      {/* ── Brand + Price (always first) ───────────────────────────────────── */}
+      {/* ── Price + Brand (always first) ───────────────────────────────────── */}
       <div className="space-y-0">
-        {brands.length > 0 && (
-          <BrandSection
-            brands={brands} selected={selectedBrands}
-            onToggle={toggleBrand} counts={brandCounts}
-          />
-        )}
         {priceMinMax && (
-          <Section title="Price" defaultOpen={false} active={!!priceRange}>
+          <Section title="Price" defaultOpen={!!activeCategory} active={!!priceRange}>
             <RangeSlider
               min={Math.floor(priceMinMax[0])} max={Math.ceil(priceMinMax[1])}
               value={priceRange} onChange={setPriceRange}
               fmt={v => `$${v.toLocaleString()}`}
             />
           </Section>
+        )}
+        {brands.length > 0 && (
+          <BrandSection
+            brands={brands} selected={selectedBrands}
+            onToggle={toggleBrand} counts={brandCounts}
+          />
         )}
       </div>
 

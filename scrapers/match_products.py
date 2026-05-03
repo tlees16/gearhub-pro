@@ -87,7 +87,10 @@ _ACCESSORY_RE = re.compile(
     r"|\bthink\s*tank\b|\bpeak\s*design\b|\bspiderpro\b|\bkondor\b|\bdeity\b"
     r"|\bsyrp\b|\bkessler\b|\bninja\b|\bvideo\s*assist\b"
     # Motorized accessories and yokes
-    r"|\byoke\b|\bmotorized\s*yoke\b|\bmotor\s*drive\b",
+    r"|\byoke\b|\bmotorized\s*yoke\b|\bmotor\s*drive\b"
+    # Webcams and video-conferencing peripherals — never a cinema/photo product
+    r"|\bwebcam\b|\bweb\s*cam\b|\bstreaming\s*camera\b|\busb\s*camera\b"
+    r"|\bvideo\s*conferencing\b|\bconferencing\s*camera\b",
     re.I,
 )
 
