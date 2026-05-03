@@ -283,7 +283,7 @@ def check_spec_completeness() -> QAResult:
     KEY_SPECS = {
         "cameras":  ["sensor_size", "max_video_resolution", "dynamic_range_stops"],
         "lenses":   ["focal_length", "aperture"],
-        "lighting": ["wattage", "color_temperature"],
+        "lighting": ["power_draw_w", "color_temperature"],
     }
 
     for table, specs in KEY_SPECS.items():
