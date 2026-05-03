@@ -57,19 +57,23 @@ function Header() {
           <span className="hidden sm:inline">AI</span>
         </button>
 
-        {/* Compare — desktop only */}
-        {comparisonIds.length > 0 && (
-          <button
-            onClick={() => router.push('/compare')}
-            className="relative hidden md:flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] font-medium text-zinc-300 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 rounded-md transition-colors"
-          >
-            <GitCompareArrows className="w-3.5 h-3.5" />
-            Compare
+        {/* Compare — desktop only, always visible */}
+        <button
+          onClick={() => router.push('/compare')}
+          className={`relative hidden md:flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] font-medium rounded-md transition-colors border ${
+            comparisonIds.length > 0
+              ? 'text-zinc-300 hover:text-white bg-zinc-900 hover:bg-zinc-800 border-zinc-800 hover:border-zinc-700'
+              : 'text-zinc-600 bg-zinc-900/50 border-zinc-800/50 cursor-default'
+          }`}
+        >
+          <GitCompareArrows className="w-3.5 h-3.5" />
+          Compare
+          {comparisonIds.length > 0 && (
             <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 bg-indigo-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1 tabular-nums">
               {comparisonIds.length}
             </span>
-          </button>
-        )}
+          )}
+        </button>
 
         {/* My Lists — desktop only */}
         <button

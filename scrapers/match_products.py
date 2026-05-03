@@ -35,6 +35,7 @@ FUZZY_THRESHOLD = 82   # token_set_ratio cutoff — raised from 78 to reduce fal
 # Catches accessories ($50 eyepiece matched to $4k camera) that slip past the name filter.
 PRICE_RATIO_MIN_NEW  = 0.35   # new items: must be ≥35% of MSRP
 PRICE_RATIO_MIN_USED = 0.15   # used items: legitimately cheaper, but not < 15%
+PRICE_RATIO_MAX      = 5.0    # any item: reject if > 5× catalogue price (catches currency inflation bugs)
 
 # ─── Model-ID guard ───────────────────────────────────────────────────────────
 # Prevents "Canon EOS R5" from matching "Canon EOS R50", etc.
@@ -84,7 +85,9 @@ _ACCESSORY_RE = re.compile(
     r"|\blens\s*cap\b|\bbody\s*cap\b|\brear\s*cap\b|\bfront\s*cap\b|\bport\s*cover\b"
     # Accessory brands that never make cameras/lenses/lights
     r"|\bthink\s*tank\b|\bpeak\s*design\b|\bspiderpro\b|\bkondor\b|\bdeity\b"
-    r"|\bsyrp\b|\bkessler\b|\bninja\b|\bvideo\s*assist\b",
+    r"|\bsyrp\b|\bkessler\b|\bninja\b|\bvideo\s*assist\b"
+    # Motorized accessories and yokes
+    r"|\byoke\b|\bmotorized\s*yoke\b|\bmotor\s*drive\b",
     re.I,
 )
 
@@ -194,13 +197,12 @@ def fuzzy_match(raw_name: str, raw_sku: Optional[str], raw_price: float, raw_con
     if raw_mount and cat_mount and raw_mount != cat_mount:
         return None
 
-    # Price-ratio guard: catches accessories that slip past the name filter.
-    # e.g. $50 eyepiece matched to $4,000 camera → reject.
+    # Price-ratio guard: catches accessories (too cheap) and currency-inflated prices (too expensive).
     cat_price = matched.get("price")
     if cat_price and cat_price > 0 and raw_price and raw_price > 0:
         ratio = raw_price / cat_price
         min_ratio = PRICE_RATIO_MIN_USED if (raw_condition or "").lower() == "used" else PRICE_RATIO_MIN_NEW
-        if ratio < min_ratio:
+        if ratio < min_ratio or ratio > PRICE_RATIO_MAX:
             return None
 
     return matched

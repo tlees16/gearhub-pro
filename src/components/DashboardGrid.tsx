@@ -32,10 +32,51 @@ export default function DashboardGrid() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="h-full flex flex-col overflow-hidden bg-zinc-950">
+    <div className="h-full flex overflow-hidden bg-zinc-950">
 
+      {/* ── Desktop left sidebar ─────────────────────────────────────────── */}
+      <aside className="hidden md:flex flex-col w-72 shrink-0 border-r border-zinc-800/60 overflow-y-auto bg-zinc-950">
+        {/* Search input */}
+        <div className="flex-shrink-0 px-4 pt-4 pb-3">
+          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-zinc-900/80 border border-zinc-800/60 focus-within:border-zinc-600/80 transition-colors">
+            <Search size={14} className="text-zinc-600 shrink-0" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search cameras, lenses…"
+              className="flex-1 bg-transparent text-[13px] text-zinc-100 placeholder-zinc-700 outline-none"
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery('')} className="text-zinc-600 hover:text-zinc-400 transition-colors">
+                <X size={12} />
+              </button>
+            )}
+          </div>
+        </div>
+        {/* Reset row */}
+        {activeFilterCount > 0 && (
+          <div className="flex-shrink-0 flex items-center justify-between px-4 pb-2">
+            <span className="text-[10px] text-zinc-600 tabular-nums">{activeFilterCount} filter{activeFilterCount !== 1 ? 's' : ''} active</span>
+            <button
+              onClick={clearAllFilters}
+              className="flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-medium text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all"
+            >
+              <RotateCcw size={9} />
+              Reset
+            </button>
+          </div>
+        )}
+        <div className="flex-shrink-0 h-px bg-zinc-800/60 mx-4 mb-1" />
+        {/* Filter content */}
+        <div className="flex-1 overflow-y-auto overscroll-contain">
+          <FilterSidebar />
+        </div>
+      </aside>
+
+      {/* ── Mobile search drawer overlay ─────────────────────────────────── */}
       {searchDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col" style={{ background: '#080c14' }}>
+        <div className="fixed inset-0 z-50 flex flex-col md:hidden" style={{ background: '#080c14' }}>
 
           {/* Header */}
           <div className="flex-shrink-0 flex items-center gap-3 px-4 pt-5 pb-4">
@@ -107,7 +148,10 @@ export default function DashboardGrid() {
         </div>
       )}
 
-      <ProductList />
+      {/* ── Main content ─────────────────────────────────────────────────── */}
+      <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
+        <ProductList />
+      </div>
     </div>
   )
 }

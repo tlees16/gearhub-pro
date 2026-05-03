@@ -67,7 +67,7 @@ log = logging.getLogger("gearhub")
 # None = auto-fingerprint on first run (costs 1 Scrapfly credit).
 
 RETAILERS: list[dict] = [
-    # ── Shopify (confirmed) ───────────────────────────────────────────────────
+    # ── Shopify (confirmed working) ───────────────────────────────────────────
     {"name": "District Camera",    "domain": "www.districtcamera.com",        "platform": "shopify"},
     {"name": "Pixel Connection",   "domain": "www.thepixelconnection.com",    "platform": "shopify"},
     {"name": "Pro Photo Supply",   "domain": "www.prophotosupply.com",        "platform": "shopify"},
@@ -75,40 +75,76 @@ RETAILERS: list[dict] = [
     {"name": "Pictureline",        "domain": "www.pictureline.com",           "platform": "shopify"},
     {"name": "ProCam",             "domain": "www.procam.com",                "platform": "shopify"},
     {"name": "K&M Camera",         "domain": "www.kmcamera.com",              "platform": "shopify"},
-    {"name": "Milford Photo",      "domain": "www.milfordphoto.com",          "platform": "shopify"},
+    # Milford Photo removed — Duda CMS, no product API (products.json returns 404)
     {"name": "Hot Rod Cameras",    "domain": "hotrodcameras.com",             "platform": "shopify"},
     {"name": "Helix Camera",       "domain": "www.helixcamera.com",           "platform": "shopify"},
     {"name": "Focus Camera",       "domain": "www.focuscamera.com",           "platform": "shopify"},
     {"name": "AVC Store",          "domain": "avcstore.com",                  "platform": "shopify"},
 
-    # ── BigCommerce (confirmed) ───────────────────────────────────────────────
-    {"name": "Kenmore Camera",     "domain": "www.kenmorecamera.com",         "platform": "bigcommerce"},
-    {"name": "Omega Broadcast",    "domain": "omegabroadcast.com",            "platform": "bigcommerce"},
-    {"name": "Precision Camera",   "domain": "www.precision-camera.com",      "platform": "bigcommerce"},
+    # ── BigCommerce — HTML scraping (GraphQL requires merchant token) ─────────
+    {
+        "name":       "Kenmore Camera",
+        "domain":     "www.kenmorecamera.com",
+        "platform":   "bc_html",
+        "categories": [
+            "/cameras/",
+            "/digital-cameras/mirrorless-digital-cameras-1/",
+            "/lenses/prime-lenses/",
+            "/lenses/zoom-lenses/",
+            "/lenses/macro-lenses/",
+            "/on-camera-flash-units/",
+            "/lighting-accessories/",
+        ],
+    },
+    {
+        "name":       "Omega Broadcast",
+        "domain":     "omegabroadcast.com",
+        "platform":   "bc_html",
+        "categories": [
+            "/sales/sales-catalog/cameras/",
+            "/sales/sales-catalog/cameras/camera-accessories/",
+            "/sales/sales-catalog/lighting/",
+            "/lenses-lens-accessories/",
+            "/lenses/",
+            "/sales/used-catalog/used-cameras-accessories/",
+            "/used-lenses-lens-accessories/",
+        ],
+    },
 
-    # ── Magento — auth-gated REST (401 on all); no guest API access ──────────
-    # {"name": "Dodd Camera",    "domain": "doddcamera.com",    "platform": "magento"},  # 401
-    # {"name": "Roberts Camera", "domain": "robertscamera.com", "platform": "magento"},  # 401
-    # {"name": "Band Pro",       "domain": "www.bandpro.com",   "platform": "magento"},  # 401
-    # {"name": "Studio Depot",   "domain": "www.studiodepot.com","platform": "magento"}, # 401
-    # {"name": "Filmtools",      "domain": "www.filmtools.com",  "platform": "magento"},  # 401
+    # ── Magento — HTML scraping (REST API 401, but category pages are public) ─
+    # Filmtools blocked — WAF returns 405 on all category listing pages even with ASP
+    # {"name": "Filmtools", "domain": "www.filmtools.com"},
+    {"name": "Dodd Camera",  "domain": "doddcamera.com",      "platform": "html_sitemap", "sitemap_seed": True,
+     "gear_hint": r"camera|lens|light|photo|video"},
+    {"name": "Band Pro",     "domain": "www.bandpro.com",     "platform": "html_sitemap", "sitemap_seed": True,
+     "gear_hint": r"camera|lens|light|cine|monitor|recorder"},
+    {"name": "Studio Depot", "domain": "www.studiodepot.com", "platform": "html_sitemap", "sitemap_seed": True,
+     "gear_hint": r"camera|lens|light|studio|grip"},
+    {"name": "Roberts Camera","domain": "robertscamera.com",  "platform": "html_sitemap", "sitemap_seed": True,
+     "gear_hint": r"camera|lens|light|photo|video"},
 
-    # ── Custom / unknown platforms — no public product API found ─────────────
-    # {"name": "AbelCine",           "domain": "www.abelcine.com"},           # custom
-    # {"name": "Foto Care",          "domain": "fotocare.com"},               # custom, 403
-    # {"name": "Samy's Camera",      "domain": "www.samys.com"},              # not Shopify, 403
-    # {"name": "Hunt's Photo",       "domain": "www.huntsphotoandvideo.com"}, # custom, 403
-    # {"name": "Texas Media Systems","domain": "texasmediasystems.com"},      # custom
-    # {"name": "Pitman Photo",       "domain": "pitmanphotosupply.com"},      # custom
-    # {"name": "Milford Photo",      "domain": "www.milfordphoto.com"},       # 404 on products.json
+    # ── Custom platforms — sitemap discovery + generic HTML extraction ─────────
+    {"name": "Samy's Camera",       "domain": "www.samys.com",              "platform": "html_sitemap", "sitemap_seed": True,
+     "gear_hint": r"camera|lens|light|photo|video|cine"},
+    {"name": "Texas Media Systems", "domain": "texasmediasystems.com",      "platform": "html_sitemap", "sitemap_seed": True,
+     "gear_hint": r"camera|lens|light|cine|broadcast"},
+    {"name": "Foto Care",           "domain": "fotocare.com",               "platform": "html_sitemap", "sitemap_seed": True,
+     "gear_hint": r"camera|lens|light|cine|photo"},
+    {"name": "AbelCine",            "domain": "www.abelcine.com",           "platform": "html_sitemap", "sitemap_seed": True,
+     "gear_hint": r"camera|lens|light|cine|monitor|recorder"},
+    {"name": "Hunt's Photo",        "domain": "www.huntsphotoandvideo.com", "platform": "html_sitemap", "sitemap_seed": True,
+     "gear_hint": r"camera|lens|light|photo|video"},
+    {"name": "Pitman Photo",        "domain": "pitmanphotosupply.com",      "platform": "html_sitemap", "sitemap_seed": True,
+     "gear_hint": r"camera|lens|light|photo|video"},
 
-    # ── Used gear — pending affiliate deals (need render_js or auth) ─────────
-    # KEH Camera    — Magento + Bloomreach, client-side rendered
-    # MPB           — React SPA, client-side rendered
-    # Adorama Used  — Next.js, pagination client-side (24 items per category without JS)
-    # B&H Used      — handled per-product by used_price_scraper.cjs
+    # ── BigCommerce JS-rendered — requires render_js (expensive, skip for now) ─
+    # {"name": "Precision Camera", "domain": "www.precision-camera.com"},
 
-    # skip: LensRentals / ShareGrid — rental pipelines, not for sale
+    # ── Affiliate deals pending ────────────────────────────────────────────────
+    # B&H Photo Video / KEH Camera / MPB / Adorama
+
+    # ── Rental only — not for sale ────────────────────────────────────────────
+    # LensRentals / ShareGrid
 ]
 
 # ── Platform fingerprint signatures ──────────────────────────────────────────
@@ -130,7 +166,7 @@ _SIGS: dict[str, list[re.Pattern]] = {
 
 _USED_RE = re.compile(
     r"\bused\b|\bpre[- ]?owned\b|\brefurbished\b|\bex[- ]?demo\b"
-    r"|\bopen[- ]?box\b|\bgrade\s*[a-e]\b",
+    r"|\bopen[- ]?box\b|\bgrade\s*[a-e]\b|\badorama\s*used\b",
     re.I,
 )
 
@@ -618,6 +654,352 @@ def _extract_microdata(html: str) -> list[dict]:
     return results
 
 
+_DEFAULT_GEAR_RE = re.compile(
+    r"\b(camera|lens|lenses|light|lighting|video|cinema|cine|photo|"
+    r"photography|monitor|recorder|grip|flash|strobe|tripod|broadcast)\b",
+    re.I,
+)
+
+_PRICE_AMOUNT_RE = re.compile(r'data-price-amount=["\']([0-9.]+)["\']')
+_SCHEMA_PRICE_RE = re.compile(r'"price"\s*:\s*"?([0-9]+\.?[0-9]*)"?')
+
+def _extract_products_from_html(html: str, base: str) -> list[dict]:
+    """
+    Multi-strategy product extractor. Tries in priority order:
+      1. Schema.org JSON-LD (most reliable, universal)
+      2. Magento Luma: product-item-link class
+      3. Generic: any <a> element adjacent to a $ price
+    """
+    items: list[dict] = []
+
+    # ── Strategy 1: Schema.org JSON-LD ──────────────────────────────────────
+    for m in re.finditer(
+        r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
+        html, re.S
+    ):
+        try:
+            ld = json.loads(m.group(1))
+        except (json.JSONDecodeError, ValueError):
+            continue
+        nodes = []
+        if isinstance(ld, list):
+            nodes = ld
+        elif ld.get("@type") == "ItemList":
+            nodes = [e.get("item", e) for e in ld.get("itemListElement", [])]
+        elif ld.get("@type") in ("Product", "Offer"):
+            nodes = [ld]
+        for node in nodes:
+            if node.get("@type") not in ("Product", "Offer", None):
+                continue
+            name = node.get("name") or node.get("title") or ""
+            if not name:
+                continue
+            offer = node.get("offers") or {}
+            if isinstance(offer, list):
+                offer = offer[0] if offer else {}
+            try:
+                price = float(offer.get("price") or offer.get("lowPrice") or 0) or None
+            except (TypeError, ValueError):
+                price = None
+            url_p = offer.get("url") or node.get("url") or ""
+            if url_p and not url_p.startswith("http"):
+                url_p = base + url_p
+            items.append({"name": name.strip(), "price": price, "url": url_p or base})
+
+    if items:
+        return items
+
+    # ── Strategy 2: Magento Luma product-item-link ───────────────────────────
+    mag_re = re.compile(
+        r'class=["\']product-item-link["\'][^>]*href=["\']([^"\']+)["\'][^>]*>\s*([^<]{3,120})',
+        re.S,
+    )
+    for m in mag_re.finditer(html):
+        url_p = m.group(1).strip()
+        if not url_p.startswith("http"):
+            url_p = base + url_p
+        title = re.sub(r"\s+", " ", m.group(2)).strip()
+        if title and url_p:
+            items.append({"name": title, "price": None, "url": url_p})
+
+    # Pair Magento prices ($data-price-amount) with items in order
+    if items:
+        amounts = [float(x) for x in _PRICE_AMOUNT_RE.findall(html) if x.replace(".", "").isdigit()]
+        for i, item in enumerate(items):
+            if i < len(amounts) and amounts[i] > 0:
+                item["price"] = amounts[i]
+        return items
+
+    # ── Strategy 3: Generic heuristic — any <a> near a dollar price ──────────
+    # Split HTML into ~500-char windows; if window has a URL and a price, emit it
+    for chunk in re.finditer(
+        r'href=["\']([^"\']{10,200})["\'][^>]*>([^<]{5,120})</a>'
+        r'(?:[^$]{0,300})\$([\d,]{2,10}(?:\.\d{2})?)',
+        html, re.S,
+    ):
+        url_p = chunk.group(1).strip()
+        title = re.sub(r"\s+", " ", chunk.group(2)).strip()
+        try:
+            price = float(chunk.group(3).replace(",", ""))
+        except ValueError:
+            price = None
+        if not url_p.startswith("http"):
+            url_p = base + url_p
+        # Skip nav/footer links
+        if any(x in url_p for x in ("cart", "account", "login", "search", "wishlist", "compare")):
+            continue
+        if title and price and price > 9:
+            items.append({"name": title, "price": price, "url": url_p})
+
+    return items
+
+
+async def _fetch_text(
+    url: str, session: aiohttp.ClientSession, sem: asyncio.Semaphore,
+    asp: bool = False,
+) -> Optional[str]:
+    """Fetch a URL as plain text. Direct first (free), Scrapfly fallback."""
+    try:
+        async with session.get(
+            url,
+            headers={"User-Agent": _BROWSER_HEADERS["User-Agent"], "Accept": "*/*"},
+            timeout=aiohttp.ClientTimeout(total=20),
+        ) as r:
+            if r.status == 200:
+                return await r.text(errors="replace")
+    except Exception:
+        pass
+    return await sf_get(sem, url, asp=asp)
+
+
+async def _sitemap_category_urls(
+    name: str, domain: str, gear_hint: str, sem: asyncio.Semaphore,
+    session: aiohttp.ClientSession,
+) -> list[str]:
+    """
+    Fetch sitemap.xml and return category-level URLs matching gear keywords.
+    Falls back to homepage nav links if no sitemap found.
+    Credit-efficient: direct HTTP first, Scrapfly ASP only as last resort.
+    """
+    base = f"https://{domain}"
+    gear_re = re.compile(gear_hint or _DEFAULT_GEAR_RE.pattern, re.I)
+    cats: list[str] = []
+
+    for sitemap_path in ("/sitemap.xml", "/sitemap_index.xml", "/sitemap/sitemap.xml"):
+        content = await _fetch_text(base + sitemap_path, session, sem, asp=False)
+        if not content or "<loc>" not in content:
+            continue
+
+        all_locs = re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", content)
+
+        # Expand sitemap index (child sitemaps listed as .xml URLs)
+        child_maps = [u for u in all_locs if re.search(r"sitemap.*\.xml", u, re.I)]
+        for child_url in child_maps[:6]:
+            child = await _fetch_text(child_url, session, sem, asp=False)
+            if child and "<loc>" in child:
+                all_locs += re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", child)
+
+        for loc in all_locs:
+            loc = loc.strip()
+            if not gear_re.search(loc):
+                continue
+            path = loc.replace(base, "").split("?")[0]
+            segments = [s for s in path.split("/") if s]
+            # Only top-level and one-deep categories (e.g. /cameras/ or /cameras/mirrorless/)
+            # Deeper paths are sub-subcategories with minimal new products
+            if len(segments) > 2:
+                continue
+            # Skip promotional, brand-partnership, or portal pages
+            if any(x in path.lower() for x in ("promo", "rebate", "portal", "sale", "deal", "event")):
+                continue
+            if re.search(r"\d{5,}", segments[-1] if segments else ""):
+                continue
+            cats.append(loc)
+
+        if cats:
+            log.info("[%s] Sitemap: %d gear-relevant categories", name, len(cats))
+            return list(dict.fromkeys(cats))[:20]  # cap at 20 top-level categories
+
+    # No sitemap — extract nav links from homepage
+    log.info("[%s] No sitemap; falling back to nav links", name)
+    html = await _fetch_text(base, session, sem, asp=True)
+    if html:
+        nav_links = re.findall(
+            r'href=["\'](' + re.escape(base) + r'/[a-z0-9][a-z0-9/-]{2,60})["\']',
+            html, re.I,
+        )
+        cats = [
+            u for u in dict.fromkeys(nav_links)
+            if gear_re.search(u) and not any(
+                x in u for x in ("cart", "account", "blog", "login", "search", "checkout")
+            )
+        ][:30]
+        log.info("[%s] Nav fallback: %d gear links", name, len(cats))
+    return cats
+
+
+async def handle_html_sitemap(
+    name: str, domain: str, retailer: dict,
+    session: aiohttp.ClientSession, sem: asyncio.Semaphore,
+) -> list[dict]:
+    """
+    Universal HTML scraper:
+      1. Discovers category URLs via sitemap.xml (or homepage nav as fallback)
+      2. Paginates each category (tries ?page=N, ?p=N, ?pg=N)
+      3. Extracts products via Schema.org JSON-LD → Magento selectors → generic heuristic
+    Credit strategy: direct HTTP first → asp=False → asp=True.
+    """
+    base = f"https://{domain}"
+    gear_hint = retailer.get("gear_hint", _DEFAULT_GEAR_RE.pattern)
+    categories = retailer.get("categories") or await _sitemap_category_urls(
+        name, domain, gear_hint, sem, session
+    )
+
+    if not categories:
+        log.warning("[%s] No category URLs found — skipping", name)
+        return []
+
+    results: list[dict] = []
+    seen_urls: set[str] = set()
+
+    for cat in categories:
+        cat_url = cat if cat.startswith("http") else f"{base}{cat}"
+        page = 1
+
+        while page <= 20:
+            # Build paginated URL — try the three most common pagination params
+            if page == 1:
+                url = cat_url
+            else:
+                sep = "&" if "?" in cat_url else "?"
+                # Try ?page= first; if that yields nothing we try ?p= below
+                url = f"{cat_url}{sep}page={page}"
+
+            # Credit-efficient fetch: direct HTTP → Scrapfly no-ASP → Scrapfly ASP
+            html = await _fetch_text(url, session, sem, asp=False)
+            if not html or len(html) < 2000:
+                html = await sf_get(sem, url, asp=True)
+            if not html or len(html) < 2000:
+                # Try Magento-style ?p= pagination as fallback on page > 1
+                if page > 1:
+                    url2 = re.sub(r"[?&]page=\d+", "", url) + (
+                        "&" if "?" in cat_url else "?"
+                    ) + f"p={page}"
+                    html = await sf_get(sem, url2, asp=True)
+            if not html:
+                break
+
+            items = _extract_products_from_html(html, base)
+            new_items = [
+                i for i in items
+                if i.get("name") and i.get("url") not in seen_urls
+            ]
+            if not new_items:
+                break
+
+            for item in new_items:
+                seen_urls.add(item["url"])
+                title = item["name"]
+                results.append({
+                    "name":      title,
+                    "brand":     item.get("brand"),
+                    "sku":       item.get("sku"),
+                    "price":     item.get("price"),
+                    "in_stock":  True,
+                    "condition": detect_condition(title, item["url"]),
+                    "url":       item["url"],
+                })
+
+            log.info(
+                "[%s] html_sitemap %s page %d: %d new items (total %d)",
+                name, cat.rstrip("/").rsplit("/", 1)[-1], page, len(new_items), len(results),
+            )
+            if len(new_items) < 5:
+                break
+            page += 1
+            await asyncio.sleep(0.6)
+
+    return results
+
+
+async def handle_bc_html(name: str, domain: str, categories: list[str],
+                        sem: asyncio.Semaphore) -> list[dict]:
+    """
+    BigCommerce HTML scraper for stores where the GraphQL API requires a
+    merchant-issued token. Parses the standard Stencil theme card markup:
+      <article class="card…"> with card-title, brand, sku-value, price--withoutTax
+    Paginates with ?page=N until no new cards are found.
+    """
+    base = f"https://{domain}"
+    results: list[dict] = []
+    seen_urls: set[str] = set()
+
+    _title_re = re.compile(r'class="card-title"[^>]*>\s*<a[^>]*href="([^"]+)"[^>]*>([^<]+)<', re.S)
+    _brand_re  = re.compile(r'data-test-info-type="brandName"[^>]*>\s*<a[^>]*>([^<]+)<')
+    _sku_re    = re.compile(r'data-product-sku[^>]*>\s*([^<\s]+)\s*<')
+    _price_re  = re.compile(r'data-product-price-without-tax[^>]*class="price price--withoutTax">\s*\$([\d,]+\.?\d*)')
+
+    for cat_path in categories:
+        page = 1
+        cat_seen: set[str] = set()
+        while page <= 20:
+            url = f"{base}{cat_path}?page={page}"
+            html = await sf_get(sem, url, asp=True)
+            if not html:
+                break
+
+            raw_cards = re.findall(r'<article[^>]*card[^>]*>(.*?)</article>', html, re.S)
+            if not raw_cards:
+                break
+
+            new_on_page = 0
+            for card in raw_cards:
+                title_m = _title_re.search(card)
+                if not title_m:
+                    continue
+                product_url = title_m.group(1).strip()
+                if not product_url.startswith("http"):
+                    product_url = base + product_url
+                if product_url in seen_urls or product_url in cat_seen:
+                    continue
+                cat_seen.add(product_url)
+
+                title  = title_m.group(2).strip()
+                brand  = (_brand_re.search(card) or [None, None])[1]
+                brand  = brand.strip() if brand else None
+                sku    = (_sku_re.search(card) or [None, None])[1]
+                sku    = sku.strip() if sku else None
+                price_m = _price_re.search(card)
+                price: Optional[float] = None
+                if price_m:
+                    try:
+                        price = float(price_m.group(1).replace(",", ""))
+                    except (TypeError, ValueError):
+                        pass
+
+                seen_urls.add(product_url)
+                results.append({
+                    "name":      title,
+                    "brand":     brand,
+                    "sku":       sku,
+                    "price":     price,
+                    "in_stock":  True,
+                    "condition": detect_condition(title, product_url),
+                    "url":       product_url,
+                })
+                new_on_page += 1
+
+            log.info("[%s] bc_html %s page %d: %d new items (total %d)",
+                     name, cat_path, page, new_on_page, len(results))
+
+            if new_on_page == 0 or len(raw_cards) < 12:
+                break
+            page += 1
+            await asyncio.sleep(0.5)
+
+    return results
+
+
 async def handle_used_catalog(name: str, domain: str, categories: list[str],
                               sem: asyncio.Semaphore) -> list[dict]:
     base = f"https://{domain}"
@@ -736,7 +1118,7 @@ async def scrape_retailer(retailer: dict,
     # Auto-fingerprint if platform unknown
     if platform is None:
         platform = await fingerprint(name, domain, session, sem)
-        if platform not in ("shopify", "woocommerce", "bigcommerce", "magento"):
+        if platform not in ("shopify", "woocommerce", "bigcommerce", "magento", "bc_html", "html_sitemap"):
             log.warning("[%s] Unsupported platform '%s' — skipping", name, platform)
             return name, 0, 0
 
@@ -746,6 +1128,11 @@ async def scrape_retailer(retailer: dict,
         products = await handle_shopify(name, domain, session, sem)
     elif platform == "bigcommerce":
         products = await handle_bigcommerce(name, domain, sem)
+    elif platform == "bc_html":
+        products = await handle_bc_html(name, domain,
+                                        retailer.get("categories", []), sem)
+    elif platform == "html_sitemap":
+        products = await handle_html_sitemap(name, domain, retailer, session, sem)
     elif platform == "woocommerce":
         products = await handle_woocommerce(name, domain, session, sem)
     elif platform == "magento":

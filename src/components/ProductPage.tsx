@@ -447,38 +447,6 @@ export default async function ProductPage({ productId }: { productId: string }) 
                   variantGroups={variants.length > 1 ? variants : undefined}
                 />
 
-                {/* market context */}
-                {(allRetail.length > 0 || used.length > 0) && (
-                  <div className="border border-slate-800/25 rounded-2xl bg-slate-900/30 overflow-hidden">
-                    <div className="px-4 py-3 border-b border-slate-800/30">
-                      <span className="text-[10px] font-semibold tracking-widest text-slate-500 uppercase">
-                        Market Context
-                      </span>
-                    </div>
-                    <dl className="divide-y divide-slate-800/30">
-                      {lowestNew < msrp && (
-                        <ContextRow
-                          label="Best New Price"
-                          value={fmtPrice(lowestNew)}
-                          delta={`-${Math.round(((msrp - lowestNew) / msrp) * 100)}% vs MSRP`}
-                          positive
-                        />
-                      )}
-                      {lowestUsed !== undefined && (
-                        <ContextRow
-                          label="Best Used Price"
-                          value={fmtPrice(lowestUsed)}
-                          delta={`-${Math.round(((msrp - lowestUsed) / msrp) * 100)}% vs MSRP`}
-                          positive
-                        />
-                      )}
-                      {used.length > 0 && (
-                        <ContextRow label="Used Platforms" value={String(used.length)} />
-                      )}
-                    </dl>
-                  </div>
-                )}
-
                 <div className="flex items-center gap-1.5 px-1">
                   <Clock className="w-3 h-3 text-slate-700" />
                   <span className="text-[10px] text-slate-700">

@@ -410,49 +410,30 @@ export default function FilterSidebar() {
         </div>
       )}
 
+      {/* ── Brand + Price (always first) ───────────────────────────────────── */}
+      <div className="space-y-0">
+        {brands.length > 0 && (
+          <BrandSection
+            brands={brands} selected={selectedBrands}
+            onToggle={toggleBrand} counts={brandCounts}
+          />
+        )}
+        {priceMinMax && (
+          <Section title="Price" defaultOpen={false} active={!!priceRange}>
+            <RangeSlider
+              min={Math.floor(priceMinMax[0])} max={Math.ceil(priceMinMax[1])}
+              value={priceRange} onChange={setPriceRange}
+              fmt={v => `$${v.toLocaleString()}`}
+            />
+          </Section>
+        )}
+      </div>
+
       {/* ── Spec filters ─────────────────────────────────────────────────── */}
-      {activeCategory ? (
+      {activeCategory && (
         <div className="space-y-0">
           {primaryFilters}
           {secondaryFilters}
-
-          {/* Brand */}
-          {brands.length > 0 && (
-            <BrandSection
-              brands={brands} selected={selectedBrands}
-              onToggle={toggleBrand} counts={brandCounts}
-            />
-          )}
-
-          {/* Price */}
-          {priceMinMax && (
-            <Section title="Price" defaultOpen={false} active={!!priceRange}>
-              <RangeSlider
-                min={Math.floor(priceMinMax[0])} max={Math.ceil(priceMinMax[1])}
-                value={priceRange} onChange={setPriceRange}
-                fmt={v => `$${v.toLocaleString()}`}
-              />
-            </Section>
-          )}
-        </div>
-      ) : (
-        /* No category selected — show brand + price for all products */
-        <div className="space-y-0">
-          {brands.length > 0 && (
-            <BrandSection
-              brands={brands} selected={selectedBrands}
-              onToggle={toggleBrand} counts={brandCounts}
-            />
-          )}
-          {priceMinMax && (
-            <Section title="Price" defaultOpen={false} active={!!priceRange}>
-              <RangeSlider
-                min={Math.floor(priceMinMax[0])} max={Math.ceil(priceMinMax[1])}
-                value={priceRange} onChange={setPriceRange}
-                fmt={v => `$${v.toLocaleString()}`}
-              />
-            </Section>
-          )}
         </div>
       )}
     </div>

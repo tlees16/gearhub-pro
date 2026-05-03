@@ -67,10 +67,31 @@ function hasValidImage(product) {
 function Carousel({ products: rawProducts, cardWidth = 200 }) {
   const products = rawProducts.filter(hasValidImage)
   const scrollRef = useRef(null)
+  const touchStartX = useRef(0)
+  const isDragging = useRef(false)
 
   const scroll = (dir) => {
     if (!scrollRef.current) return
     scrollRef.current.scrollBy({ left: dir * (cardWidth + 16) * 3, behavior: 'smooth' })
+  }
+
+  const onTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX
+    isDragging.current = false
+  }
+
+  const onTouchMove = (e) => {
+    if (Math.abs(e.touches[0].clientX - touchStartX.current) > 5) {
+      isDragging.current = true
+    }
+  }
+
+  const onClickCapture = (e) => {
+    if (isDragging.current) {
+      e.stopPropagation()
+      e.preventDefault()
+      isDragging.current = false
+    }
   }
 
   if (products.length === 0) return null
@@ -93,6 +114,9 @@ function Carousel({ products: rawProducts, cardWidth = 200 }) {
         ref={scrollRef}
         className="flex gap-3.5 overflow-x-auto scrollbar-none pb-1 snap-x snap-mandatory"
         style={{ scrollPaddingLeft: 4 }}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onClickCapture={onClickCapture}
       >
         {products.map(product => (
           <div key={product.id} className="snap-start shrink-0 w-36 sm:w-44 md:w-[200px]">
@@ -199,7 +223,7 @@ function CategoryCarouselRow({ icon: Icon, iconColor, label, products, onViewAll
 const MIN_BRAND_RETAILERS = 3
 const MAX_BRANDS_SHOWN = 12
 
-function HomePage({ products, setActiveCategory }) {
+function HomePage({ products, setActiveCategory, openSearchDrawer }) {
   const router = useRouter()
   const { comparisonIds, retailerCounts } = useStore()
 
@@ -250,10 +274,10 @@ function HomePage({ products, setActiveCategory }) {
       <div className="mb-8 pt-2">
         <p className="text-[10px] font-semibold tracking-widest text-indigo-400/60 uppercase mb-2">GearHub Pro</p>
         <h1 className="text-2xl sm:text-[28px] font-bold text-white tracking-tight leading-snug">
-          Creative &amp; Production Gear Database &amp; Online Community
+          The Professional Camera, Lens &amp; Lighting Database
         </h1>
         <p className="text-[13px] text-slate-500 font-light mt-2 leading-relaxed max-w-lg">
-          Discover, compare and discuss professional gear — with live pricing across new, used and rental markets.
+          Compare specs, prices and expert analysis across cameras, lenses and lighting — all in one place.
         </p>
         <div className="flex flex-wrap items-center gap-2 mt-4">
           <span className="inline-flex items-center gap-1.5 text-[11px] px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/40 text-slate-400">
@@ -287,7 +311,7 @@ function HomePage({ products, setActiveCategory }) {
       )}
 
       {/* ── Category tiles ────────────────────────────────────────── */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-8">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
         <CategoryTile catKey="cameras" label="Cameras" icon={Camera} count={cameraCount}
           subs="Cinema · Mirrorless · DSLR" accentText="text-blue-400" accentBg="bg-blue-500/10"
           setActiveCategory={setActiveCategory} />
@@ -298,6 +322,21 @@ function HomePage({ products, setActiveCategory }) {
           subs="Panels · Monolights · Fresnels" accentText="text-amber-400" accentBg="bg-amber-500/10"
           setActiveCategory={setActiveCategory} />
       </div>
+
+      {/* ── Refine button (below category tiles, hidden on desktop where sidebar is shown) ── */}
+      {openSearchDrawer && (
+        <div className="mb-8 md:hidden">
+          <button
+            onClick={openSearchDrawer}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl
+              bg-slate-900/60 border border-slate-700/50 hover:bg-slate-900/80 hover:border-slate-600/60
+              text-[13px] font-semibold text-slate-200 transition-all duration-200"
+          >
+            <Search size={14} className="text-slate-400 shrink-0" />
+            Refine &amp; Filter
+          </button>
+        </div>
+      )}
 
       {/* ── Hot Brands ────────────────────────────────────────────── */}
       {hotBrands.length > 0 && (
@@ -376,34 +415,44 @@ export default function ProductList() {
   return (
     <div className="flex-1 min-h-0 flex flex-col overflow-hidden bg-zinc-950">
 
-      {/* ── Floating search button ── */}
-      <div className="fixed bottom-20 md:bottom-8 left-1/2 -translate-x-1/2 z-30">
-        <button
-          onClick={openSearchDrawer}
-          className="group relative flex items-center gap-2.5 px-6 py-3.5 rounded-full
-            bg-white
-            shadow-[0_4px_28px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.15),0_1px_60px_rgba(255,255,255,0.12)]
-            hover:bg-zinc-100
-            hover:shadow-[0_6px_36px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.2),0_1px_80px_rgba(255,255,255,0.16)]
-            active:scale-[0.96]
-            transition-all duration-200"
-        >
-          <Search size={14} className="text-zinc-700 shrink-0" />
-          <span className="text-[14px] font-bold text-zinc-900 tracking-tight">Search</span>
-          {activeFilterCount > 0 && (
-            <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-zinc-800 text-white text-[9px] font-bold rounded-full tabular-nums">
-              {activeFilterCount > 9 ? '9+' : activeFilterCount}
-            </span>
-          )}
-        </button>
-      </div>
+      {/* ── Floating "Clear filters" pill (mobile only, when filters active) ── */}
+      {hasActiveFilters && (
+        <div className="md:hidden fixed bottom-16 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+          <button
+            onClick={clearAllFilters}
+            className="pointer-events-auto flex items-center gap-2 px-5 py-2.5 rounded-full
+              bg-white text-zinc-900 text-[12px] font-semibold
+              shadow-[0_4px_20px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.15)]
+              hover:bg-zinc-100 active:scale-[0.97] transition-all duration-200"
+          >
+            Clear filters
+          </button>
+        </div>
+      )}
 
       {/* ── Content ─────────────────────────────────────────────────── */}
       <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-6 pb-28 md:pb-20 bg-black">
         {!hasActiveFilters ? (
-          <HomePage products={products} setActiveCategory={setActiveCategory} />
+          <HomePage products={products} setActiveCategory={setActiveCategory} openSearchDrawer={openSearchDrawer} />
         ) : (
           <>
+            {/* Refine button at top of results (mobile only, hidden on desktop where sidebar is visible) */}
+            <div className="mb-4 md:hidden">
+              <button
+                onClick={openSearchDrawer}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl
+                  bg-slate-900/60 border border-slate-700/50 hover:bg-slate-900/80 hover:border-slate-600/60
+                  text-[13px] font-semibold text-slate-200 transition-all duration-200"
+              >
+                <Search size={14} className="text-slate-400 shrink-0" />
+                Refine
+                {activeFilterCount > 0 && (
+                  <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-indigo-600 text-white text-[9px] font-bold rounded-full tabular-nums">
+                    {activeFilterCount > 9 ? '9+' : activeFilterCount}
+                  </span>
+                )}
+              </button>
+            </div>
             {filtered.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-64">
                 <Package size={22} className="text-zinc-800 mx-auto mb-2" />

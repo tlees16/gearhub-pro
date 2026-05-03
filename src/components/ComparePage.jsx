@@ -15,26 +15,45 @@ const CATEGORY_LABELS = {
   tripods: 'Tripods', lighting_accessories: 'Lighting Accessories',
 }
 
+const SKIP_ALLSPECS_KEYS = new Set([
+  'id', 'name', 'brand', 'price', 'category', 'subcategory', 'specs_json',
+  'scraped_at', 'bhphoto_url', 'image_url', 'bhphoto_sku', 'created_at',
+  'photometrics', 'photometrics_at_3_3_1_m', 'Photometrics',
+])
+
 function getComparisonRows(products, category) {
-  if (SPEC_COLUMNS[category]) {
-    return SPEC_COLUMNS[category].map(([col, label]) => ({
-      col, label,
-      values: products.map(p => {
-        const spec = p.specs[col]
-        return (!spec || spec.raw === 'N/A') ? null : spec.raw
-      }),
-    }))
+  const specColDefs = SPEC_COLUMNS[category] || []
+  const specColKeys = new Set(specColDefs.map(([col]) => col))
+
+  // Primary rows: SPEC_COLUMNS with allSpecs fallback
+  const primaryRows = specColDefs.map(([col, label]) => ({
+    col, label,
+    values: products.map(p => {
+      const spec = p.specs?.[col]
+      if (spec && spec.raw !== 'N/A') return spec.raw
+      // fall back to allSpecs
+      const v = p.allSpecs?.[col]
+      return v != null && v !== '' && v !== 'N/A' ? String(v) : null
+    }),
+  }))
+
+  // Extra rows: allSpecs keys not already in SPEC_COLUMNS
+  const extraKeySet = new Set()
+  for (const p of products) {
+    for (const k of Object.keys(p.allSpecs || {})) {
+      if (!specColKeys.has(k) && !SKIP_ALLSPECS_KEYS.has(k)) extraKeySet.add(k)
+    }
   }
-  const keySet = new Set()
-  for (const p of products) Object.keys(p.allSpecs || {}).forEach(k => keySet.add(k))
-  return [...keySet].map(col => ({
+  const extraRows = [...extraKeySet].map(col => ({
     col,
     label: col.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
     values: products.map(p => {
       const v = p.allSpecs?.[col]
-      return v && v !== 'N/A' ? String(v) : null
+      return v != null && v !== '' && v !== 'N/A' ? String(v) : null
     }),
   }))
+
+  return [...primaryRows, ...extraRows]
 }
 
 function isDiff(values) {
