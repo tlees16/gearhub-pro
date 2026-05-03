@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import useStore from '../store/useStore'
 import ProductCard, { isTrending, isNew } from './ProductCard'
@@ -362,9 +362,24 @@ function HomePage({ products, setActiveCategory, openSearchDrawer }) {
   )
 }
 
+const SORT_OPTIONS = [
+  { key: 'default',   label: 'Relevance' },
+  { key: 'price_asc', label: 'Price: Low → High' },
+  { key: 'price_desc',label: 'Price: High → Low' },
+  { key: 'name',      label: 'Name A–Z' },
+]
+
+function sortProducts(products, sortKey) {
+  if (sortKey === 'price_asc')  return [...products].sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity))
+  if (sortKey === 'price_desc') return [...products].sort((a, b) => (b.price ?? 0) - (a.price ?? 0))
+  if (sortKey === 'name')       return [...products].sort((a, b) => a.name.localeCompare(b.name))
+  return products
+}
+
 // ─── Main export ─────────────────────────────────────────────────────────────
 
 export default function ProductList() {
+  const [sortKey, setSortKey] = useState('default')
   const {
     loading, error, getFilteredProducts, products,
     activeCategory, searchQuery, selectedBrands, priceRange,
@@ -372,7 +387,7 @@ export default function ProductList() {
     clearAllFilters, openSearchDrawer,
   } = useStore()
 
-  const filtered = getFilteredProducts()
+  const filtered = useMemo(() => sortProducts(getFilteredProducts(), sortKey), [sortKey, getFilteredProducts])
 
   const hasActiveFilters = !!(
     activeCategory || searchQuery.trim() || selectedBrands.length > 0 ||
@@ -462,11 +477,28 @@ export default function ProductList() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-                {filtered.map(product => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
+              <>
+                {/* Result count + sort */}
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[11px] text-zinc-600 tabular-nums">
+                    {filtered.length.toLocaleString()} result{filtered.length !== 1 ? 's' : ''}
+                  </span>
+                  <select
+                    value={sortKey}
+                    onChange={e => setSortKey(e.target.value)}
+                    className="text-[11px] text-zinc-400 bg-zinc-900/60 border border-zinc-800/60 rounded-lg px-2 py-1 outline-none hover:border-zinc-700 focus:border-zinc-600 transition-colors cursor-pointer"
+                  >
+                    {SORT_OPTIONS.map(o => (
+                      <option key={o.key} value={o.key}>{o.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+                  {filtered.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              </>
             )}
           </>
         )}
