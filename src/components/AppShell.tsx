@@ -184,7 +184,7 @@ function BottomNav() {
         <div className="relative">
           {icon}
           {badge != null && badge > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 min-w-[14px] h-3.5 bg-indigo-600 text-white text-[8px] font-bold rounded-full flex items-center justify-center px-0.5 tabular-nums">
+            <span className={`absolute -top-1.5 -right-1.5 min-w-[14px] h-3.5 text-white text-[8px] font-bold rounded-full flex items-center justify-center px-0.5 tabular-nums ${label === 'Lists' ? 'bg-emerald-600' : 'bg-indigo-600'}`}>
               {badge}
             </span>
           )}
