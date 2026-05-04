@@ -41,6 +41,7 @@ interface PriceRowData {
   isBest?: boolean
   scraped_at?: string
   listing_count?: number
+  configLabel?: string
 }
 
 export interface PriceTableProps {
@@ -184,55 +185,99 @@ export default function PriceTable({ retail, used, msrp, className = '', variant
         </div>
       </div>
 
-      {/* New — grouped by variant */}
-      {groups.some((v) => v.retail.length > 0) && (
-        <>
-          <div className="px-4 py-1.5 bg-slate-800/20 border-b border-slate-800/20">
-            <span className="text-[10px] font-semibold tracking-widest text-slate-500 uppercase">
-              New — {groups.length} configurations
-            </span>
-          </div>
-          {groups.map((vg) => {
-            const sortedRetail = [...vg.retail].sort((a, b) => a.price - b.price)
-            const cheapest = sortedRetail[0]?.price
-            return (
-              <div key={vg.id}>
-                <div className="px-4 py-1.5 flex items-center justify-between bg-slate-900/40 border-b border-slate-800/15">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-mono text-slate-300 tracking-tight">
-                      {vg.configLabel}
-                    </span>
-                    {vg.isCurrent && (
-                      <span className="text-[9px] text-indigo-400/70 border border-indigo-500/20 rounded px-1 py-px font-mono uppercase tracking-wide leading-none">
-                        viewing
+      {/* New — grouped by retailer, variants nested underneath */}
+      {groups.some((v) => v.retail.length > 0) && (() => {
+        // Collect all retailers across all variants
+        const retailerMap = new Map<string, Array<{ configLabel: string; price: number; currency: string; inStock: boolean; url?: string; scraped_at?: string; isCurrent: boolean }>>()
+        for (const vg of groups) {
+          for (const r of vg.retail) {
+            if (!retailerMap.has(r.retailer)) retailerMap.set(r.retailer, [])
+            retailerMap.get(r.retailer)!.push({
+              configLabel: vg.configLabel,
+              price: r.price,
+              currency: r.currency,
+              inStock: r.inStock,
+              url: r.url,
+              scraped_at: r.scraped_at,
+              isCurrent: vg.isCurrent,
+            })
+          }
+        }
+        // Sort retailers by their cheapest variant price
+        const retailerEntries = Array.from(retailerMap.entries()).sort((a, b) => {
+          const minA = Math.min(...a[1].map(v => v.price))
+          const minB = Math.min(...b[1].map(v => v.price))
+          return minA - minB
+        })
+        const totalRetailers = retailerEntries.length
+
+        return (
+          <>
+            <div className="px-4 py-1.5 bg-slate-800/20 border-b border-slate-800/20">
+              <span className="text-[10px] font-semibold tracking-widest text-slate-500 uppercase">
+                New — {totalRetailers} retailer{totalRetailers !== 1 ? 's' : ''} · {groups.length} configurations
+              </span>
+            </div>
+            {retailerEntries.map(([retailerName, variants]) => {
+              const sortedVariants = [...variants].sort((a, b) => a.price - b.price)
+              const cheapest = sortedVariants[0]?.price
+              const singleVariant = sortedVariants.length === 1
+
+              if (singleVariant) {
+                // Only one config at this retailer — flat row with config label as subtitle
+                const v = sortedVariants[0]
+                const row: PriceRowData = {
+                  retailer: retailerName,
+                  condition: 'New',
+                  inStock: v.inStock,
+                  stockLabel: v.inStock ? 'In Stock' : 'Out of Stock',
+                  price: v.price,
+                  currency: v.currency,
+                  url: v.url,
+                  scraped_at: v.scraped_at,
+                  isBest: v.price === globalLowest,
+                  configLabel: v.configLabel,
+                }
+                return <PriceRow key={retailerName} row={row} showDelta={showDelta} msrp={msrp} />
+              }
+
+              // Multiple configs — show retailer header with nested variant rows
+              return (
+                <div key={retailerName}>
+                  <div className="px-4 py-2 flex items-center justify-between bg-slate-900/50 border-b border-slate-800/15">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-slate-800/60 flex items-center justify-center text-[8px] font-bold text-slate-400 shrink-0">
+                        {retailerName.slice(0, 3).toUpperCase()}
+                      </div>
+                      <span className="text-[12px] font-medium text-slate-200">{retailerName}</span>
+                      <span className="text-[9px] text-slate-600">{sortedVariants.length} configs</span>
+                    </div>
+                    {cheapest !== undefined && (
+                      <span className="text-[11px] font-semibold text-slate-400 tabular-nums">
+                        from {fmtPrice(cheapest)}
                       </span>
                     )}
                   </div>
-                  {cheapest !== undefined && (
-                    <span className="text-[10px] text-slate-500 tabular-nums">
-                      from {fmtPrice(cheapest)}
-                    </span>
-                  )}
+                  {sortedVariants.map((v, i) => (
+                    <VariantRow
+                      key={i}
+                      configLabel={v.configLabel}
+                      price={v.price}
+                      currency={v.currency}
+                      inStock={v.inStock}
+                      url={v.url}
+                      isBest={v.price === globalLowest}
+                      isCurrent={v.isCurrent}
+                      showDelta={showDelta}
+                      msrp={msrp}
+                    />
+                  ))}
                 </div>
-                {sortedRetail.map((r, i) => {
-                  const row: PriceRowData = {
-                    retailer: r.retailer,
-                    condition: 'New',
-                    inStock: r.inStock,
-                    stockLabel: r.inStock ? 'In Stock' : 'Out of Stock',
-                    price: r.price,
-                    currency: r.currency,
-                    url: r.url,
-                    scraped_at: r.scraped_at,
-                    isBest: r.price === globalLowest,
-                  }
-                  return <PriceRow key={`vg-${vg.id}-${i}`} row={row} showDelta={showDelta} msrp={msrp} />
-                })}
-              </div>
-            )
-          })}
-        </>
-      )}
+              )
+            })}
+          </>
+        )
+      })()}
 
       {/* Used */}
       {usedRows.length > 0 && (
@@ -286,13 +331,16 @@ function PriceRow({ row, showDelta, msrp }: { row: PriceRowData; showDelta: bool
             {nameEl}
           </a>
         ) : nameEl}
-        <div className="flex items-center gap-1.5 mt-0.5">
+        <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
           <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium border leading-none ${condStyle}`}>
             {row.condition}
           </span>
           <span className={`text-[10px] ${row.inStock ? 'text-emerald-500' : 'text-slate-600'}`}>
             {row.stockLabel}
           </span>
+          {row.configLabel && (
+            <span className="text-[10px] text-slate-500 truncate">{row.configLabel}</span>
+          )}
         </div>
       </div>
 
@@ -308,4 +356,54 @@ function PriceRow({ row, showDelta, msrp }: { row: PriceRowData; showDelta: bool
       </div>
     </div>
   )
+}
+
+interface VariantRowProps {
+  configLabel: string
+  price: number
+  currency: string
+  inStock: boolean
+  url?: string
+  isBest: boolean
+  isCurrent: boolean
+  showDelta: boolean
+  msrp?: number
+}
+
+function VariantRow({ configLabel, price, currency, inStock, url, isBest, showDelta, msrp }: VariantRowProps) {
+  const inner = (
+    <div className={`flex items-center gap-2 pl-10 pr-4 py-2 border-b border-slate-800/10 last:border-0 ${isBest ? 'bg-emerald-950/15' : 'hover:bg-slate-800/15'} transition-colors`}>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5 min-w-0">
+          {isBest && (
+            <span className="shrink-0 inline-flex items-center gap-0.5 px-1 py-px rounded bg-emerald-600 text-[9px] font-bold tracking-wider text-white uppercase leading-none">
+              <TrendingDown className="w-2.5 h-2.5" />
+              BEST
+            </span>
+          )}
+          <span className={`text-[11px] truncate ${isBest ? 'text-slate-100' : 'text-slate-400'}`}>{configLabel}</span>
+          {url && <ExternalLink className="w-2.5 h-2.5 text-slate-600 shrink-0" />}
+        </div>
+        <span className={`text-[10px] ${inStock ? 'text-emerald-500' : 'text-slate-600'}`}>
+          {inStock ? 'In Stock' : 'Out of Stock'}
+        </span>
+      </div>
+      <div className="text-right shrink-0">
+        <div className={`tabular-nums text-[13px] font-semibold ${isBest ? 'text-emerald-400' : 'text-slate-200'}`}>
+          {fmtPrice(price, currency)}
+        </div>
+        {showDelta && msrp !== undefined && price !== msrp && (
+          <div className={`text-[10px] font-medium tabular-nums ${price < msrp ? 'text-emerald-500' : 'text-red-400'}`}>
+            {fmtDelta(price, msrp)} vs MSRP
+          </div>
+        )}
+      </div>
+    </div>
+  )
+
+  return url ? (
+    <a href={url} target="_blank" rel="noopener noreferrer" className="block hover:opacity-90 transition-opacity">
+      {inner}
+    </a>
+  ) : inner
 }

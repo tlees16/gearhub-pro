@@ -165,13 +165,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.name}
         </Link>
 
-        {/* Variant label — e.g. "Lamp Head", "Mat Only", "With 400W Controller" */}
-        {product.variantLabel && (
-          <span className="mt-0.5 inline-block text-[9px] font-medium px-1.5 py-0.5 rounded-full bg-slate-700/60 text-slate-400 leading-none">
-            {product.variantLabel}
-          </span>
-        )}
-
         {/* Spec chips */}
         {chips.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2">
