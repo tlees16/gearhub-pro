@@ -30,6 +30,8 @@ export interface Product {
   allSpecs: Record<string, unknown>
   baseModel?: string
   configLabel?: string
+  variantLabel?: string | null
+  variantGroup?: string | null
 }
 
 export interface RetailPrice {
@@ -82,4 +84,29 @@ export interface ProductPrices {
   retail: RetailPrice[]
   used: UsedPrice[]
   rental: RentalEntry[]
+}
+
+export interface CompatibleLens {
+  id: string           // `lenses-${dbId}`
+  dbId: number
+  name: string
+  brand: string
+  msrp: number | null
+  lowestPrice: number | null
+  imageUrl: string | null
+  lensMount: string | null
+  focalLength: string | null
+  maxAperture: string | null
+  formatCoverage: string | null
+}
+
+export interface CompatibleLight {
+  id: string           // `lighting-${dbId}`
+  dbId: number
+  name: string
+  brand: string
+  msrp: number | null
+  lowestPrice: number | null
+  imageUrl: string | null
+  formFactor: string | null
 }

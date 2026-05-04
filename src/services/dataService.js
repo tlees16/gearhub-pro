@@ -128,6 +128,11 @@ const SPEC_COLUMNS = {
     ['front_accessory_mount',   'Accessory Mount', 'categorical'],
     ['cooling',                 'Cooling',         'categorical'],
   ],
+  lighting_accessories: [
+    ['subcategory',        'Type',          'categorical'],
+    ['light_compatibility','Compatible With','categorical'],
+    ['accessory_mount',    'Mount',         'categorical'],
+  ],
 }
 
 // ─── Spec display labels ─────────────────────────────────────────
@@ -209,9 +214,11 @@ function normalizeProduct(row, category) {
     id: `${category}-${row.id}`,
     dbId: row.id,
     category,
-    name: row.name || '',
+    name: row.clean_name || row.name || '',
     brand: row.brand || '',
     subcategory: row.subcategory || '',
+    variantLabel: row.variant_label || null,
+    variantGroup: row.variant_group || null,
     priceRaw: row.price ? `$${Number(row.price).toLocaleString()}` : '',
     price: row.price ? Number(row.price) : null,
     url: row.bhphoto_url || '',
@@ -245,7 +252,7 @@ async function fetchTable(table) {
   return rows
 }
 
-const ALL_TABLES = ['cameras', 'lenses', 'lighting']
+const ALL_TABLES = ['cameras', 'lenses', 'lighting', 'lighting_accessories']
 
 export async function fetchAllProducts() {
   const results = await Promise.allSettled(ALL_TABLES.map(t => fetchTable(t)))

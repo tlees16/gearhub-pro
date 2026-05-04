@@ -23,13 +23,16 @@ const STATIC_SUBS = {
     { key: 'Photo',  label: 'Photo'   },
   ],
   lighting: [
-    { key: 'LED Panel',    label: 'LED Panels'  },
-    { key: 'LED Monolight',label: 'Monolights'  },
-    { key: 'Fresnel',      label: 'Fresnels'    },
-    { key: 'LED Tube',     label: 'LED Tubes'   },
-    { key: 'LED Mat',      label: 'LED Mats'    },
-    { key: 'Ring Light',   label: 'Ring Lights' },
-    { key: 'HMI',          label: 'HMI'         },
+    { key: 'LED Panel',    label: 'LED Panels'   },
+    { key: 'LED Monolight',label: 'Monolights'   },
+    { key: 'LED Compact',  label: 'LED Compact'  },
+    { key: 'LED Mat',      label: 'LED Mats'     },
+    { key: 'LED Tube',     label: 'LED Tubes'    },
+    { key: 'Fresnel',      label: 'Fresnels'     },
+    { key: 'Ellipsoidal',  label: 'Ellipsoidals' },
+    { key: 'HMI',          label: 'HMI'          },
+    { key: 'LED Globe',    label: 'LED Globes'   },
+    { key: 'Accessories',  label: 'Accessories'  },
   ],
 }
 
@@ -50,8 +53,18 @@ function buildSubcategories(catKey, pool, allProducts) {
     const counts = {}
     catPool.forEach(p => { if (p.subcategory) counts[p.subcategory] = (counts[p.subcategory] || 0) + 1 })
     return staticDefs
-      .map(s => ({ ...s, count: counts[s.key] || 0 }))
-      .filter(s => allProducts.some(p => p.category === catKey && p.subcategory === s.key))
+      .map(s => {
+        if (s.key === 'Accessories' && catKey === 'lighting') {
+          return { ...s, count: pool.filter(p => p.category === 'lighting_accessories').length }
+        }
+        return { ...s, count: counts[s.key] || 0 }
+      })
+      .filter(s => {
+        if (s.key === 'Accessories' && catKey === 'lighting') {
+          return allProducts.some(p => p.category === 'lighting_accessories')
+        }
+        return allProducts.some(p => p.category === catKey && p.subcategory === s.key)
+      })
   }
 
   const counts = {}
