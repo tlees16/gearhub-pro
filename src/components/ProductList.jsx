@@ -231,28 +231,61 @@ function HomePage({ products, setActiveCategory, openSearchDrawer }) {
   const lensCount     = useMemo(() => products.filter(p => p.category === 'lenses').length,   [products])
   const lightingCount = useMemo(() => products.filter(p => p.category === 'lighting').length, [products])
 
-  // Group well-covered products by brand (≥3 retailers, valid image)
+  // Group well-covered products by brand (≥3 retailers, valid image),
+  // then interleave across cameras / lighting / lenses so lighting brands
+  // appear throughout the page rather than bunched at the bottom.
   const hotBrands = useMemo(() => {
     const qualified = products.filter(p =>
       (retailerCounts[p.id] || 0) >= MIN_BRAND_RETAILERS && hasValidImage(p)
     )
+
+    // Accumulate products per brand + category counts
     const byBrand = {}
     for (const p of qualified) {
-      if (!byBrand[p.brand]) byBrand[p.brand] = []
-      byBrand[p.brand].push(p)
+      if (!byBrand[p.brand]) byBrand[p.brand] = { products: [], catCounts: {} }
+      byBrand[p.brand].products.push(p)
+      byBrand[p.brand].catCounts[p.category] = (byBrand[p.brand].catCounts[p.category] || 0) + 1
     }
-    return Object.entries(byBrand)
-      .sort(([, a], [, b]) => b.length - a.length)
-      .slice(0, MAX_BRANDS_SHOWN)
-      .map(([brand, prods]) => ({
-        brand,
-        // Trending products first, then new, then by price desc
-        products: [...prods].sort((a, b) => {
-          if (isTrending(b) !== isTrending(a)) return isTrending(b) ? 1 : -1
-          if (isNew(b) !== isNew(a)) return isNew(b) ? 1 : -1
-          return (b.price || 0) - (a.price || 0)
-        }),
-      }))
+
+    const sortProds = (prods) => [...prods].sort((a, b) => {
+      if (isTrending(b) !== isTrending(a)) return isTrending(b) ? 1 : -1
+      if (isNew(b) !== isNew(a)) return isNew(b) ? 1 : -1
+      return (b.price || 0) - (a.price || 0)
+    })
+
+    // Assign each brand to its dominant category bucket
+    const buckets = { cameras: [], lighting: [], lenses: [] }
+    for (const [brand, { products: prods, catCounts }] of Object.entries(byBrand)) {
+      const dominant = Object.entries(catCounts).sort(([, a], [, b]) => b - a)[0][0]
+      const bucket = dominant === 'lighting' ? 'lighting'
+        : dominant === 'lenses' ? 'lenses'
+        : 'cameras'
+      buckets[bucket].push({ brand, products: sortProds(prods) })
+    }
+
+    // Sort each bucket by product count desc
+    for (const list of Object.values(buckets)) {
+      list.sort((a, b) => b.products.length - a.products.length)
+    }
+
+    // Interleave: camera → lighting → lens → camera → lighting → lens …
+    const order = ['cameras', 'lighting', 'lenses']
+    const result = []
+    const indices = { cameras: 0, lighting: 0, lenses: 0 }
+    while (result.length < MAX_BRANDS_SHOWN) {
+      let added = false
+      for (const cat of order) {
+        if (result.length >= MAX_BRANDS_SHOWN) break
+        const list = buckets[cat]
+        if (indices[cat] < list.length) {
+          result.push({ ...list[indices[cat]], category: cat })
+          indices[cat]++
+          added = true
+        }
+      }
+      if (!added) break
+    }
+    return result
   }, [products, retailerCounts])
 
   const viewBrand = (brand) => {
@@ -348,14 +381,19 @@ function HomePage({ products, setActiveCategory, openSearchDrawer }) {
               · prices from {MIN_BRAND_RETAILERS}+ retailers
             </span>
           </div>
-          {hotBrands.map(({ brand, products: brandProds }) => (
-            <CategoryCarouselRow
-              key={brand}
-              label={brand}
-              products={brandProds}
-              onViewAll={() => viewBrand(brand)}
-            />
-          ))}
+          {hotBrands.map(({ brand, products: brandProds, category }) => {
+            const meta = CATEGORY_META[category]
+            return (
+              <CategoryCarouselRow
+                key={brand}
+                label={brand}
+                icon={meta?.icon}
+                iconColor={meta?.color}
+                products={brandProds}
+                onViewAll={() => viewBrand(brand)}
+              />
+            )
+          })}
         </div>
       )}
     </div>

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { Sparkles, ThumbsUp, ThumbsDown, Award, Star, ChevronDown } from 'lucide-react'
 import { getExpertAnalysis } from '../services/expertAnalysis'
-import type { StoredAnalysis } from '@/lib/supabase-server'
 
 function VerdictRing({ score }: { score: number }) {
   const circumference = 2 * Math.PI * 36
@@ -40,7 +39,7 @@ interface Analysis {
   description: string
   pros: string[]
   cons: string[]
-  communityVoice: string | null
+  industryContext: string | null
   verdict: number
   loading?: boolean
 }
@@ -53,19 +52,15 @@ interface Props {
   subcategory: string | null
   price: number
   allSpecs: Record<string, unknown>
-  storedAnalysis?: StoredAnalysis | null
   className?: string
 }
 
 export default function ExpertAnalysisSection({
-  productId, productName, brand, category, subcategory, price, allSpecs, storedAnalysis, className,
+  productId, productName, brand, category, subcategory, price, allSpecs, className,
 }: Props) {
-  const [analysis, setAnalysis] = useState<Analysis | null>(
-    storedAnalysis ? { ...storedAnalysis, loading: false } : null
-  )
+  const [analysis, setAnalysis] = useState<Analysis | null>(null)
 
   useEffect(() => {
-    if (storedAnalysis) return  // DB has it — no API call needed
     const product = { id: productId, name: productName, brand, category, subcategory, price, allSpecs }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const initial = getExpertAnalysis(product as any, setAnalysis)
@@ -76,7 +71,7 @@ export default function ExpertAnalysisSection({
     description: 'Generating analysis…',
     pros: ['…'],
     cons: ['…'],
-    communityVoice: null,
+    industryContext: null,
     verdict: 75,
     loading: true,
   }
@@ -134,14 +129,14 @@ export default function ExpertAnalysisSection({
               </div>
             </div>
 
-            {a.communityVoice && (
+            {a.industryContext && (
               <div className="border-t border-slate-800/30 pt-4">
                 <div className="flex items-center gap-1.5 mb-2">
                   <Star size={11} className="text-slate-500" />
-                  <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">On Set &amp; In The Field</span>
+                  <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">Industry Context</span>
                 </div>
-                <p className="text-[12px] text-slate-500 font-light leading-relaxed italic">
-                  &ldquo;{a.communityVoice}&rdquo;
+                <p className="text-[12px] text-slate-500 font-light leading-relaxed">
+                  {a.industryContext}
                 </p>
               </div>
             )}

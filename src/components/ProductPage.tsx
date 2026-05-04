@@ -13,8 +13,11 @@ import {
   Zap,
 } from 'lucide-react'
 
-import { fetchProductById, fetchPrices, fetchVariantGroup, fetchAnalysis, fetchRentals } from '@/lib/supabase-server'
+import { fetchProductById, fetchPrices, fetchVariantGroup, fetchRentals, fetchCompatibleLenses, fetchCompatibleLights } from '@/lib/supabase-server'
 import type { RetailPrice } from '@/types/gear'
+import CompatibleLenses from './CompatibleLenses'
+import AccessoryCompatibility from './AccessoryCompatibility'
+import ProductScrollContainer from './ProductScrollContainer'
 import { stripProductVariant } from '@/lib/variant'
 import PriceTable from './PriceTable'
 import CategoryLink from './CategoryLink'
@@ -41,6 +44,10 @@ const HERO_SPEC_KEYS: Record<string, string[]> = {
     'item_type', 'power_draw_w', 'color_type', 'cri', 'output_lux',
     'beam_angle', 'color_temp_range', 'weight_g', 'cooling', 'battery_option',
   ],
+  lighting_accessories: [
+    'subcategory', 'light_compatibility', 'accessory_mount',
+    'maximum_wattage', 'interior_color', 'materials',
+  ],
 }
 
 const SPEC_LABEL_OVERRIDES: Record<string, string> = {
@@ -60,6 +67,10 @@ const SPEC_LABEL_OVERRIDES: Record<string, string> = {
   lumen_output:    'Lumen Output',
   photometrics:    'Photometrics',
   photometrics_at_3_3_1_m: 'Photometrics (3.3m / 1m)',
+  light_compatibility: 'Compatible With',
+  accessory_mount:     'Mount',
+  maximum_wattage:     'Max Wattage',
+  interior_color:      'Interior Color',
 }
 
 
@@ -92,6 +103,7 @@ const CATEGORY_ICON: Record<string, React.ComponentType<{ size?: number; classNa
   cameras: Camera,
   lenses: Aperture,
   lighting: Zap,
+  lighting_accessories: Zap,
 }
 
 // ─── metadata ────────────────────────────────────────────────────────────────
@@ -112,8 +124,9 @@ export async function generateProductMetadata(productId: string) {
 // ─── component ───────────────────────────────────────────────────────────────
 
 export default async function ProductPage({ productId }: { productId: string }) {
-  const [category, rawDbId] = productId.split('-')
-  const dbId = Number(rawDbId)
+  const splitIdx = productId.lastIndexOf('-')
+  const category = productId.slice(0, splitIdx)
+  const dbId = Number(productId.slice(splitIdx + 1))
 
   if (!category || isNaN(dbId)) notFound()
 
@@ -122,11 +135,16 @@ export default async function ProductPage({ productId }: { productId: string }) 
 
   const { baseModel, configLabel } = stripProductVariant(rawProduct.name, category)
 
-  const [{ retail, used }, { variants, bestPhotometrics }, storedAnalysis, rentals] = await Promise.all([
+  const [{ retail, used }, { variants, bestPhotometrics }, rentals, { lenses: compatibleLenses, totalCount: compatibleLensCount, nativeMounts: compatibleLensMounts }, { lights: compatibleLights, totalCount: compatibleLightCount }] = await Promise.all([
     fetchPrices(category, dbId),
     fetchVariantGroup(category, baseModel, (rawProduct.brand as string) ?? '', dbId),
-    fetchAnalysis(category, dbId),
     fetchRentals(category, dbId),
+    category === 'cameras' && rawProduct.lens_mount
+      ? fetchCompatibleLenses(rawProduct.lens_mount as string, (rawProduct.sensor_size as string) ?? null)
+      : Promise.resolve({ lenses: [], totalCount: 0, nativeMounts: [] }),
+    category === 'lighting_accessories' && rawProduct.light_compatibility
+      ? fetchCompatibleLights(rawProduct.light_compatibility as string)
+      : Promise.resolve({ lights: [], totalCount: 0 }),
   ])
 
   const specsJson: Record<string, unknown> =
@@ -182,6 +200,9 @@ export default async function ProductPage({ productId }: { productId: string }) 
 
   const lowestNew = allRetail.length > 0 ? Math.min(...allRetail.map((r) => r.price)) : msrp
   const lowestUsed = used.length > 0 ? Math.min(...used.map((u) => u.price_avg)) : undefined
+  const lowestRentalUSD = rentals.filter(r => r.currency === 'USD').reduce<number | undefined>(
+    (min, r) => (min === undefined || r.daily_rate < min ? r.daily_rate : min), undefined
+  )
 
   // Key specs for hero grid — whitelist-driven, max 6
   const heroSpecKeys = HERO_SPEC_KEYS[category] ?? []
@@ -235,7 +256,7 @@ export default async function ProductPage({ productId }: { productId: string }) 
         }}
       />
 
-      <div className="h-full overflow-y-auto bg-slate-950 text-slate-100 pb-10">
+      <ProductScrollContainer productId={productId}>
 
         {/* ── breadcrumb nav ─────────────────────────────────────────────── */}
         <nav
@@ -358,6 +379,12 @@ export default async function ProductPage({ productId }: { productId: string }) 
                         <span className="text-amber-400 font-medium">{fmtPrice(lowestUsed)}</span>
                       </p>
                     )}
+                    {lowestRentalUSD !== undefined && (
+                      <p className="text-[12px] text-slate-500 font-light">
+                        Rent from{' '}
+                        <span className="text-indigo-400 font-medium">{fmtPrice(lowestRentalUSD)}/day</span>
+                      </p>
+                    )}
                   </div>
 
                   {/* Key specs */}
@@ -392,7 +419,6 @@ export default async function ProductPage({ productId }: { productId: string }) 
               subcategory={rawProduct.subcategory ?? null}
               price={msrp}
               allSpecs={specsForClient}
-              storedAnalysis={storedAnalysis}
               className="lg:col-start-1"
             />
 
@@ -401,6 +427,9 @@ export default async function ProductPage({ productId }: { productId: string }) 
               productionsJson={rawProduct.productions_json as { productions: { title: string; year: number; dop?: string | null; type: 'Feature' | 'Series' }[]; industryNote?: string | null } | null}
               className="lg:col-start-1"
             />
+
+            {/* ── RENTALS ─────────────────────────────────────────────────── */}
+            <RentalSection rentals={rentals} className="lg:col-start-1" />
 
             {/* ── FULL SPECIFICATIONS ─────────────────────────────────────── */}
             {displaySpecs.length > 0 && (
@@ -441,9 +470,15 @@ export default async function ProductPage({ productId }: { productId: string }) 
                     <span className="text-xl font-bold tabular-nums text-emerald-400">{fmtPrice(lowestNew)}</span>
                   </div>
                   {lowestUsed !== undefined && (
-                    <div className="px-5 py-3 flex items-baseline justify-between">
+                    <div className="px-5 py-3 flex items-baseline justify-between border-b border-slate-800/25">
                       <span className="text-[10px] font-semibold tracking-widest text-slate-500 uppercase">Lowest Used</span>
                       <span className="text-xl font-bold tabular-nums text-amber-400">{fmtPrice(lowestUsed)}</span>
+                    </div>
+                  )}
+                  {lowestRentalUSD !== undefined && (
+                    <div className="px-5 py-3 flex items-baseline justify-between">
+                      <span className="text-[10px] font-semibold tracking-widest text-slate-500 uppercase">Rent / Day</span>
+                      <span className="text-xl font-bold tabular-nums text-indigo-400">{fmtPrice(lowestRentalUSD)}</span>
                     </div>
                   )}
                 </div>
@@ -465,9 +500,6 @@ export default async function ProductPage({ productId }: { productId: string }) 
               </div>
             </aside>
 
-            {/* ── RENTALS ─────────────────────────────────────────────────── */}
-            <RentalSection rentals={rentals} className="lg:col-start-1" />
-
             {/* ── PHOTOMETRICS (lighting only) ────────────────────────────── */}
             <div className="lg:col-start-1">
               <PhotometricTable product={{ category, allSpecs: specsForClient }} />
@@ -475,12 +507,34 @@ export default async function ProductPage({ productId }: { productId: string }) 
 
           </div>
 
+          {/* ── COMPATIBLE LENSES — cameras only, full width ────────────── */}
+          {compatibleLenses.length > 0 && (
+            <div className="mt-5 sm:mt-6">
+              <CompatibleLenses
+                lenses={compatibleLenses}
+                totalCount={compatibleLensCount}
+                nativeMounts={compatibleLensMounts}
+                mount={rawProduct.lens_mount as string}
+              />
+            </div>
+          )}
+
+          {/* ── COMPATIBLE LIGHTS — lighting accessories only, full width ── */}
+          {compatibleLights.length > 0 && (
+            <div className="mt-5 sm:mt-6">
+              <AccessoryCompatibility
+                lights={compatibleLights}
+                totalCount={compatibleLightCount}
+              />
+            </div>
+          )}
+
           {/* ── COMMUNITY HUB — full width below grid ──────────────────── */}
           <div className="mt-5 sm:mt-6">
             <CommunityHub productId={productId} productName={rawProduct.name} />
           </div>
         </div>
-      </div>
+      </ProductScrollContainer>
 
     </>
   )
