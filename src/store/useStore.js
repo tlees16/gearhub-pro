@@ -16,7 +16,7 @@ import { onAuthStateChange, signOut as authSignOut } from '../services/auth'
 const CATEGORY_TABLES = {
   cameras:     ['cameras'],
   lenses:      ['lenses'],
-  lighting:    ['lighting'],
+  lighting:    ['lighting', 'lighting_accessories'],
   drones:      ['drones'],
   gimbals:     ['gimbals'],
   accessories: ['sd_cards', 'tripods', 'lighting_accessories'],
@@ -39,11 +39,17 @@ function buildFilteredPool(state, skip = new Set()) {
 
   if (!skip.has('category') && activeCategory) {
     filtered = filtered.filter(p => getCategoryTables(activeCategory).includes(p.category))
+    // Default lighting view (no subcategory) shows only fixtures, not accessories
+    if (activeCategory === 'lighting' && !activeSubcategory && !skip.has('subcategory')) {
+      filtered = filtered.filter(p => p.category === 'lighting')
+    }
   }
 
   if (!skip.has('subcategory') && activeSubcategory) {
     if (activeCategory === 'accessories') {
       filtered = filtered.filter(p => p.category === activeSubcategory)
+    } else if (activeCategory === 'lighting' && activeSubcategory === 'Accessories') {
+      filtered = filtered.filter(p => p.category === 'lighting_accessories')
     } else if (activeCategory === 'lenses' && activeSubcategory === 'Cinema') {
       filtered = filtered.filter(p => CINEMA_LENS_RE.test(p.name))
     } else if (activeCategory === 'lenses' && activeSubcategory === 'Photo') {
@@ -161,7 +167,7 @@ const useStore = create(
       // Actions — Data
       // ══════════════════════════════════════
       loadProducts: async () => {
-        const CACHE_KEY = 'gearhub_products_v4'
+        const CACHE_KEY = 'gearhub_products_v5'
         const CACHE_TTL = 10 * 60 * 1000 // 10 minutes
         const COUNTRY_TO_CURRENCY = { US:'USD', GB:'GBP', AU:'AUD', IN:'INR', CA:'CAD', NZ:'NZD' }
 
