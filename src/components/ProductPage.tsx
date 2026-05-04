@@ -71,6 +71,31 @@ const SPEC_LABEL_OVERRIDES: Record<string, string> = {
   accessory_mount:     'Mount',
   maximum_wattage:     'Max Wattage',
   interior_color:      'Interior Color',
+  // Manufacturer spec keys (from specs_json mfg_ prefix)
+  mfg_cct:                    'CCT',
+  mfg_cri:                    'CRI',
+  mfg_tlci:                   'TLCI',
+  mfg_cqs:                    'CQS',
+  mfg_ssi_d56:                'SSI D56',
+  mfg_ssi_tungsten:           'SSI Tungsten',
+  mfg_tm_30_rf_average:       'TM-30 Rf',
+  mfg_tm_30_rg_average:       'TM-30 Rg',
+  mfg_max_power_output:       'Max Power Output',
+  mfg_max_power_consumption:  'Max Power Consumption',
+  mfg_operating_voltage_ac:   'Operating Voltage (AC)',
+  mfg_operating_voltage_dc1_dc2: 'Operating Voltage (DC)',
+  mfg_operating_temperature:  'Operating Temperature',
+  mfg_storage_temperature:    'Storage Temperature',
+  mfg_beam_angle_no_reflector:'Beam Angle (No Reflector)',
+  mfg_lamp_head_w_o_yoke:     'Lamp Head Weight (w/o Yoke)',
+  mfg_weather_resistance_rating: 'Weather Resistance',
+  mfg_wireless_range_bluetooth_crmx: 'Wireless Range (BT/CRMX)',
+  mfg_compatible_aputure_mount_reflectors: 'Compatible Reflectors',
+  mfg_aputure_mount_20_reflector: '20° Reflector Output',
+  mfg_aputure_mount_35_reflector: '35° Reflector Output',
+  mfg_aputure_mount_50_reflector: '50° Reflector Output',
+  mfg_barn_doors_for_aputure_mount_reflectors_35_50: 'Barn Doors (35°/50°)',
+  mfg_barn_doors_for_aputure_mount_reflectors_35_50_closed: 'Barn Doors Closed (35°/50°)',
 }
 
 
@@ -171,10 +196,22 @@ export default async function ProductPage({ productId }: { productId: string }) 
     // photometrics shown in dedicated Photometrics section
     'photometrics', 'photometrics_at_3_3_1_m', 'output_lux', 'beam_angle',
     'cri', 'tlci', 'lumens', 'lumen_output', 'color_accuracy_standard',
+    // variant metadata
+    'clean_name', 'variant_label', 'variant_group',
   ])
   const displaySpecs: Array<[string, string | number | boolean]> = []
   for (const [k, v] of Object.entries(rawProduct)) {
     if (FULL_SPEC_EXCLUDE.has(k)) continue
+    if (v === null || v === undefined || v === '' || String(v).trim() === 'N/A') continue
+    if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
+      displaySpecs.push([k, v])
+    }
+  }
+  // Append manufacturer specs from specs_json (mfg_* keys only — PascalCase keys duplicate direct columns)
+  const MFG_SPEC_SKIP = new Set(['mfg_photometrics'])
+  for (const [k, v] of Object.entries(specsJson)) {
+    if (!k.startsWith('mfg_') || k.startsWith('_')) continue
+    if (MFG_SPEC_SKIP.has(k)) continue
     if (v === null || v === undefined || v === '' || String(v).trim() === 'N/A') continue
     if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
       displaySpecs.push([k, v])
@@ -444,7 +481,10 @@ export default async function ProductPage({ productId }: { productId: string }) 
                 <div className="border-t border-slate-800/25 px-5 sm:px-6 pb-5 sm:pb-6 pt-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 sm:gap-x-12">
                     {displaySpecs.map(([key, val]) => {
-                      const label = SPEC_LABEL_OVERRIDES[key] ?? key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                      const label = SPEC_LABEL_OVERRIDES[key] ??
+                        (key.startsWith('mfg_')
+                          ? key.replace(/^mfg_/, '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+                          : key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()))
                       const strVal = String(val)
                       const isLong = strVal.length > 50
                       return (
