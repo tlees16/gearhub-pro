@@ -8,7 +8,7 @@ import { SUBCATEGORIES } from '../services/dataService'
 import {
   Package, Loader, Camera, Aperture, Zap, Wind,
   CircleDot, ChevronLeft, ChevronRight, Flame, GitCompareArrows,
-  Search,
+  Search, ArrowUpDown, ChevronDown, Check,
 } from 'lucide-react'
 
 const CATEGORY_META = {
@@ -407,6 +407,57 @@ const SORT_OPTIONS = [
   { key: 'name',      label: 'Name A–Z' },
 ]
 
+function SortDropdown({ value, onChange }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  const current = SORT_OPTIONS.find(o => o.key === value) ?? SORT_OPTIONS[0]
+
+  useEffect(() => {
+    if (!open) return
+    function handler(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(v => !v)}
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all duration-150 text-[11px] font-medium ${
+          open
+            ? 'bg-slate-800/70 border-slate-700/60 text-slate-200'
+            : 'bg-slate-900/50 border-slate-800/50 text-slate-400 hover:border-slate-700/50 hover:bg-slate-800/40 hover:text-slate-300'
+        }`}
+      >
+        <ArrowUpDown size={11} className="text-slate-500 shrink-0" />
+        {current.label}
+        <ChevronDown size={10} className={`text-slate-500 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 top-full mt-1.5 z-30 bg-slate-900 border border-slate-800/60 rounded-xl overflow-hidden shadow-2xl shadow-black/60 min-w-[168px]">
+          {SORT_OPTIONS.map(o => (
+            <button
+              key={o.key}
+              onClick={() => { onChange(o.key); setOpen(false) }}
+              className={`w-full text-left px-3.5 py-2.5 text-[11px] font-medium transition-colors duration-100 flex items-center justify-between gap-3 ${
+                o.key === value
+                  ? 'bg-indigo-600/15 text-indigo-300'
+                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+              }`}
+            >
+              {o.label}
+              {o.key === value && <Check size={10} className="text-indigo-400 shrink-0" />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function sortProducts(products, sortKey) {
   if (sortKey === 'price_asc')  return [...products].sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity))
   if (sortKey === 'price_desc') return [...products].sort((a, b) => (b.price ?? 0) - (a.price ?? 0))
@@ -541,15 +592,7 @@ export default function ProductList() {
                   <span className="text-[11px] text-zinc-600 tabular-nums">
                     {filtered.length.toLocaleString()} result{filtered.length !== 1 ? 's' : ''}
                   </span>
-                  <select
-                    value={sortKey}
-                    onChange={e => setSortKey(e.target.value)}
-                    className="text-[11px] text-zinc-400 bg-zinc-900/60 border border-zinc-800/60 rounded-lg px-2 py-1 outline-none hover:border-zinc-700 focus:border-zinc-600 transition-colors cursor-pointer"
-                  >
-                    {SORT_OPTIONS.map(o => (
-                      <option key={o.key} value={o.key}>{o.label}</option>
-                    ))}
-                  </select>
+                  <SortDropdown value={sortKey} onChange={setSortKey} />
                 </div>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                   {filtered.map(product => (
