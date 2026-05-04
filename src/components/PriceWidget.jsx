@@ -38,6 +38,9 @@ export function PriceRow({ entry, highlight, nested = false }) {
     const inner = (
       <div className="flex items-center justify-between px-4 py-2.5 group">
         <div className="flex items-center gap-2 pl-11">
+          {entry.retailerConfig && (
+            <span className="text-[11px] font-medium text-slate-300">{entry.retailerConfig}</span>
+          )}
           {entry.condition && (
             <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded ring-1 ring-inset ${condStyle}`}>
               {entry.condition}
@@ -74,10 +77,15 @@ export function PriceRow({ entry, highlight, nested = false }) {
     <>
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg bg-slate-800/60 flex items-center justify-center text-[9px] font-bold text-slate-400 shrink-0">
-          {RETAILER_LOGO[entry.retailer_name] || entry.retailer_name.slice(0, 3).toUpperCase()}
+          {RETAILER_LOGO[entry.retailerBase ?? entry.retailer_name] || (entry.retailerBase ?? entry.retailer_name).slice(0, 3).toUpperCase()}
         </div>
         <div>
-          <div className="text-[12px] font-medium text-slate-200 leading-tight">{entry.retailer_name}</div>
+          <div className="text-[12px] font-medium text-slate-200 leading-tight">
+            {entry.retailerBase ?? entry.retailer_name}
+            {entry.retailerConfig && (
+              <span className="ml-1.5 text-[10px] font-normal text-slate-500">({entry.retailerConfig})</span>
+            )}
+          </div>
           <div className="flex items-center gap-1.5 mt-0.5">
             {entry.condition && entry.condition !== 'New' && (
               <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded ring-1 ring-inset ${condStyle}`}>
@@ -117,14 +125,24 @@ export function PriceRow({ entry, highlight, nested = false }) {
   return <div className={sharedClass}>{inner}</div>
 }
 
-// Groups a flat list of price entries by retailer_name.
-// Returns an array of arrays, sorted so the group with the cheapest entry comes first.
+// Splits "B&H Photo (Canon EF)" → { base: "B&H Photo", config: "Canon EF" }
+function parseRetailerName(name) {
+  const m = name.match(/^(.+?)\s*\(([^)]+)\)\s*$/)
+  if (m) return { base: m[1].trim(), config: m[2].trim() }
+  return { base: name, config: null }
+}
+
+// Groups a flat list of price entries by base retailer name.
+// "B&H Photo (Canon EF)" and "B&H Photo (Leica L)" both group under "B&H Photo".
+// Adds retailerBase / retailerConfig fields to each enriched entry.
+// Returns sorted arrays: cheapest group first.
 export function groupByRetailer(entries) {
   const map = new Map()
   for (const entry of entries) {
-    const key = entry.retailer_name
-    if (!map.has(key)) map.set(key, [])
-    map.get(key).push(entry)
+    const { base, config } = parseRetailerName(entry.retailer_name)
+    const enriched = { ...entry, retailerBase: base, retailerConfig: config }
+    if (!map.has(base)) map.set(base, [])
+    map.get(base).push(enriched)
   }
   return Array.from(map.values()).sort((a, b) => {
     const minA = Math.min(...a.map(e => e.price || Infinity))
@@ -138,7 +156,7 @@ export function groupByRetailer(entries) {
 export function RetailerGroup({ entries, highlightCheapest = false }) {
   const [open, setOpen] = useState(true)
   const sorted = [...entries].sort((a, b) => (a.price || Infinity) - (b.price || Infinity))
-  const { retailer_name } = sorted[0]
+  const baseName = sorted[0].retailerBase ?? sorted[0].retailer_name
 
   if (entries.length === 1) {
     return <PriceRow entry={sorted[0]} highlight={highlightCheapest} />
@@ -154,11 +172,11 @@ export function RetailerGroup({ entries, highlightCheapest = false }) {
       >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-slate-800/60 flex items-center justify-center text-[9px] font-bold text-slate-400 shrink-0">
-            {RETAILER_LOGO[retailer_name] || retailer_name.slice(0, 3).toUpperCase()}
+            {RETAILER_LOGO[baseName] || baseName.slice(0, 3).toUpperCase()}
           </div>
           <div>
-            <div className="text-[12px] font-medium text-slate-200 leading-tight">{retailer_name}</div>
-            <div className="text-[10px] text-slate-500">{entries.length} listings</div>
+            <div className="text-[12px] font-medium text-slate-200 leading-tight">{baseName}</div>
+            <div className="text-[10px] text-slate-500">{entries.length} configurations</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
