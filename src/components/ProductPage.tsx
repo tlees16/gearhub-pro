@@ -433,7 +433,7 @@ export default async function ProductPage({ productId }: { productId: string }) 
                             {SPEC_LABEL_OVERRIDES[key] ?? key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                           </span>
                           <span className="text-[12px] font-medium text-slate-200 text-right tabular-nums">
-                            {String(val)}
+                            {val === true || val === 'true' ? 'Yes' : val === false || val === 'false' ? 'No' : String(val)}
                           </span>
                         </div>
                       ))}
@@ -485,7 +485,9 @@ export default async function ProductPage({ productId }: { productId: string }) 
                         (key.startsWith('mfg_')
                           ? key.replace(/^mfg_/, '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
                           : key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()))
-                      const strVal = String(val)
+                      const strVal = val === true || val === 'true' ? 'Yes'
+                        : val === false || val === 'false' ? 'No'
+                        : String(val)
                       const isLong = strVal.length > 50
                       return (
                         <div key={key} className={`flex gap-4 border-b border-slate-800/25 py-2.5 ${isLong ? 'flex-col sm:col-span-2' : 'items-start justify-between'}`}>

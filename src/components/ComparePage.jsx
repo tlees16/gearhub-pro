@@ -23,12 +23,17 @@ const SKIP_ALLSPECS_KEYS = new Set([
   'updated_at', 'last_updated', 'source', 'notes',
 ])
 
+function fmtVal(v) {
+  if (v === true || v === 'true') return 'Yes'
+  if (v === false || v === 'false') return 'No'
+  return String(v)
+}
+
 function getComparisonRows(products, category) {
   const specColDefs = SPEC_COLUMNS[category] || []
   const specColKeys = new Set(specColDefs.map(([col]) => col))
 
   // Build a normalised label index to avoid showing the same spec under two names
-  // (e.g. DB column "sensor_size" / label "Sensor Size" and allSpecs key "Sensor Size")
   const primaryLabelNorm = new Set(specColDefs.map(([, label]) => label.toLowerCase().replace(/\s+/g, '')))
 
   // Primary rows: SPEC_COLUMNS sourced from direct DB columns
@@ -36,10 +41,9 @@ function getComparisonRows(products, category) {
     col, label,
     values: products.map(p => {
       const spec = p.specs?.[col]
-      if (spec && spec.raw !== 'N/A') return spec.raw
-      // fall back to allSpecs using the same snake_case key (works when specs_json mirrors DB columns)
+      if (spec && spec.raw !== 'N/A') return fmtVal(spec.raw)
       const v = p.allSpecs?.[col]
-      return v != null && v !== '' && v !== 'N/A' ? String(v) : null
+      return v != null && v !== '' && v !== 'N/A' ? fmtVal(v) : null
     }),
   }))
 
@@ -49,16 +53,18 @@ function getComparisonRows(products, category) {
     for (const k of Object.keys(p.allSpecs || {})) {
       if (specColKeys.has(k) || SKIP_ALLSPECS_KEYS.has(k)) continue
       const normKey = k.toLowerCase().replace(/[\s_]+/g, '')
-      if (primaryLabelNorm.has(normKey)) continue   // same spec, different name
+      if (primaryLabelNorm.has(normKey)) continue
       extraKeySet.add(k)
     }
   }
   const extraRows = [...extraKeySet].map(col => ({
     col,
-    label: col.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+    label: col.startsWith('mfg_')
+      ? col.replace(/^mfg_/, '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      : col.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
     values: products.map(p => {
       const v = p.allSpecs?.[col]
-      return v != null && v !== '' && v !== 'N/A' ? String(v) : null
+      return v != null && v !== '' && v !== 'N/A' ? fmtVal(v) : null
     }),
   }))
 
@@ -173,7 +179,8 @@ function CategoryCard({ category, products, onRemove }) {
 
   const rows = useMemo(() => {
     const all = getComparisonRows(products, category)
-    return all.filter(row => row.values.some(v => v !== null))
+    // Only show specs that every product in the group has a value for
+    return all.filter(row => row.values.every(v => v !== null))
   }, [products, category])
 
   return (

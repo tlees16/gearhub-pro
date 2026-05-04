@@ -11,8 +11,13 @@ const CATEGORY_LABELS = {
   tripods: 'Tripods', lighting_accessories: 'Lighting Accessories',
 }
 
+function fmtVal(v) {
+  if (v === true || v === 'true') return 'Yes'
+  if (v === false || v === 'false') return 'No'
+  return String(v)
+}
+
 function getComparisonRows(products, category) {
-  // For known categories, use SPEC_COLUMNS for a structured ordered list
   if (SPEC_COLUMNS[category]) {
     return SPEC_COLUMNS[category].map(([col, label]) => ({
       col,
@@ -20,22 +25,24 @@ function getComparisonRows(products, category) {
       values: products.map(p => {
         const spec = p.specs[col]
         if (!spec) return null
-        return spec.raw === 'N/A' ? null : spec.raw
+        return spec.raw === 'N/A' ? null : fmtVal(spec.raw)
       }),
     }))
   }
 
-  // For new categories, union all allSpecs keys across products
+  // Intersection of allSpecs keys (only keys every product has)
   const keySet = new Set()
   for (const p of products) {
     Object.keys(p.allSpecs || {}).forEach(k => keySet.add(k))
   }
   return [...keySet].map(col => ({
     col,
-    label: col.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+    label: col.startsWith('mfg_')
+      ? col.replace(/^mfg_/, '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      : col.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
     values: products.map(p => {
       const v = p.allSpecs?.[col]
-      return v && v !== 'N/A' ? String(v) : null
+      return v != null && v !== '' && v !== 'N/A' ? fmtVal(v) : null
     }),
   }))
 }
@@ -43,8 +50,8 @@ function getComparisonRows(products, category) {
 function ComparisonTable({ products, category }) {
   const rows = useMemo(() => {
     const all = getComparisonRows(products, category)
-    // Only show rows where at least one product has a value
-    return all.filter(row => row.values.some(v => v !== null))
+    // Only show specs that every product has a value for
+    return all.filter(row => row.values.every(v => v !== null))
   }, [products, category])
 
   const isDiff = (values) => {
